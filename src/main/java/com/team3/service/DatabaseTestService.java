@@ -1,4 +1,4 @@
-package com.team3.global.service;
+package com.team3.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
