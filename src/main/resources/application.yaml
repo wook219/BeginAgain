@@ -14,7 +14,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/cloud4?useUnicode=true&serverTimezone=Asia/Seoul
     username: elice
-    password: gusgus9836!
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 logging:
