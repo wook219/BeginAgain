@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserController {
 
-    @GetMapping("/login")
+    @GetMapping("/signup")
     public String loginForm(Model model) {
         model.addAttribute("user", new UserLoginDto());
-        return "login";
+        return "signup";
     }
 }
