@@ -26,7 +26,7 @@ public class TestController {
     @GetMapping("/create")
     public String showCreateForm() {
 
-        return "createTestEntity";  // createTestEntity.html로 이동
+        return "board/test/createTestEntity";  // createTestEntity.html로 이동
     }
 
     // Create
