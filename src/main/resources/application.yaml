@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: team3
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+      defer-datasource-initialization: false
+    show-sql: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/cloud4?useUnicode=true&serverTimezone=Asia/Seoul
+    username: elice
+    password: gusgus9836!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    org.hibernate.sql : debug
+    root: info
