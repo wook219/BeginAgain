@@ -1,9 +1,9 @@
-package com.team3.service;
+package com.team3.board.test.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.team3.entity.TestEntity;
-import com.team3.repository.TestRepository;
+import com.team3.board.test.entity.TestEntity;
+import com.team3.board.test.repository.TestRepository;
 
 import java.util.List;
 import java.util.Optional;

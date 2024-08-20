@@ -1,4 +1,5 @@
-package com.team3.entity;
+package com.team3.board.test.entity;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,3 +22,4 @@ public class TestEntity {
 
 
 }
+

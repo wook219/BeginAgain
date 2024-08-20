@@ -1,7 +1,7 @@
-package com.team3.controller;
+package com.team3.board.test.controller;
 
-import com.team3.entity.TestEntity;
-import com.team3.service.TestService;
+import com.team3.board.test.entity.TestEntity;
+import com.team3.board.test.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +18,14 @@ public class TestController {
 
     @Autowired
     public TestController(TestService testService) {
+
         this.testService = testService;
     }
 
     // Create form 페이지로 이동
     @GetMapping("/create")
     public String showCreateForm() {
+
         return "createTestEntity";  // createTestEntity.html로 이동
     }
 
