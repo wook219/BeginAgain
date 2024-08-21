@@ -18,6 +18,8 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
+/application.yaml
+
 .idea
 *.iws
 *.iml
@@ -25,6 +27,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+
 
 ### NetBeans ###
 /nbproject/private/
@@ -36,6 +39,10 @@ out/
 ### VS Code ###
 .vscode/
 
+<<<<<<< HEAD
+
+=======
 ### 설정파일 ###
 /application.properties
 /application.yaml
+>>>>>>> ff7c409f7b5ffccae3635d4018f32c936323b396
