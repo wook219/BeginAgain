@@ -1,8 +1,8 @@
 package com.team3.comment.mapper;
 
-import com.yourpackage.comment.dto.CommentDto;
-import com.yourpackage.comment.entity.Comment;
-import com.yourpackage.comment.entity.User;
+import com.team3.comment.dto.CommentDto;
+import com.team3.comment.entity.Comment;
+import com.team3.comment.entity.User;
 
 public class CommentMapperImpl implements CommentMapper {
     @Override
