@@ -9,5 +9,4 @@ import lombok.Data;
 public class UpdateBoardDTO {
     private String title;
     private String content;
-    private Integer userId;
 }

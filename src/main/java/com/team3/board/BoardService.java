@@ -45,7 +45,7 @@ public class BoardService {
 
     // TODO : 게시판 상세 조회
     // 게시판 상세 조회
-    public BoardEntity getPost(Integer boardId) {
+    public BoardEntity getBoard(Integer boardId) {
         // 기존 게시판 조회
         BoardEntity existingBoard = boardRepository.findById(boardId)
                 .orElseThrow(() -> new NoSuchElementException("게시판을 찾을 수 없습니다."));
