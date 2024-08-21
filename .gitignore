@@ -39,4 +39,3 @@ out/
 ### 설정파일 ###
 /application.properties
 /application.yaml
-/src/main/resources/application.properties
