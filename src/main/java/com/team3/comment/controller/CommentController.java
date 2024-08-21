@@ -5,8 +5,8 @@ package com.team3.comment.controller;
 // @RequestMapping("/comments")
 // public class CommentController { }
 
-import com.yourpackage.comment.entity.Comment;
-import com.yourpackage.comment.service.CommentService;
+import com.team3.comment.entity.Comment;
+import com.team3.comment.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

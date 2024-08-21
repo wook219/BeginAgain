@@ -1,6 +1,6 @@
 package com.team3.comment.repository;
 
-import com.yourpackage.comment.entity.Comment;
+import com.team3.comment.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

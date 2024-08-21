@@ -1,8 +1,8 @@
 package com.team3.comment.service;
 
-import com.yourpackage.comment.entity.Comment;
-import com.yourpackage.comment.entity.User;
-import com.yourpackage.comment.repository.CommentRepository;
+import com.team3.comment.entity.Comment;
+import com.team3.comment.entity.User;
+import com.team3.comment.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
