@@ -2,7 +2,6 @@ package com.team3.comment.mapper;
 
 import com.team3.comment.dto.CommentDto;
 import com.team3.comment.entity.Comment;
-import com.team3.comment.entity.User;
 
 public class CommentMapperImpl implements CommentMapper {
     @Override
@@ -13,7 +12,7 @@ public class CommentMapperImpl implements CommentMapper {
         CommentDto dto = new CommentDto();
         dto.setId(comment.getId());
         dto.setContent(comment.getContent());
-        dto.setAuthorUsername(comment.getAuthor().getUsername());
+        // dto.setAuthorUsername(comment.getAuthor().getUsername());
         return dto;
     }
 
@@ -22,7 +21,8 @@ public class CommentMapperImpl implements CommentMapper {
         if (commentDto == null) {
             return null;
         }
-        User user = new User(null, commentDto.getAuthorUsername());
-        return new Comment(commentDto.getId(), commentDto.getContent(), user);
+        // User user = new User(null, commentDto.getAuthorUsername());
+        // return new Comment(commentDto.getId(), commentDto.getContent(), user);
+        return null;
     }
 }
