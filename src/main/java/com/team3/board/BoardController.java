@@ -35,7 +35,7 @@ public class BoardController {
     //TODO : GET {id} -> 조회
     // ID로 게시판 조회 후 상세 페이지로 이동
     @GetMapping("/board/{id}")
-    public String getBoard(@RequestParam("id") Integer id, Model model) {
+    public String getBoard(@PathVariable("id") Integer id, Model model) {
         try {
             BoardEntity board = boardService.getPost(id);
             model.addAttribute("board", board);
@@ -70,18 +70,19 @@ public class BoardController {
             int user_id = Integer.parseInt(input_user_id);
             CreateBoardDto createBoardDto = new CreateBoardDto(title, content, user_id);
             boardService.addBoard(createBoardDto);
-            return "redirect:/";  // 저장 후 메인 페이지로 리다이렉트
+//            return "redirect:/";  // 저장 후 메인 페이지로 리다이렉트
+            return "redirect:/api/board/boards";  // 저장 후 게시글 목록 페이지로 리다이렉트
         } catch (NumberFormatException e) {
             model.addAttribute("error", "Invalid User ID format.");
-            return "createBoardEntity";  // 에러 시 작성 페이지로 다시 이동
+            return "board/createBoardEntity";  // 에러 시 작성 페이지로 다시 이동
         }
     }
 
 
     //TODO : GET edit/{id} -> 수정
     // 게시판 수정 폼으로 이동
-    @GetMapping("/board/edit/{id}")
-    public String showEditBoardForm(@RequestParam("id") Integer id, Model model) {
+    @GetMapping("/edit/{id}")
+    public String showEditBoardForm(@PathVariable("id") Integer id, Model model) {
         try {
             BoardEntity board = boardService.getPost(id);
             model.addAttribute("board", board);
@@ -92,8 +93,8 @@ public class BoardController {
     }
     //TODO : POST edit/{id} -> 수정(DB저장)
     // 게시판 수정 처리 후 리다이렉트
-    @PostMapping("/board/edit/{id}")
-    public String updateBoard(@RequestParam("id") Integer id,
+    @PostMapping("/edit/{id}")
+    public String updateBoard(@PathVariable("id") Integer id,
                               @RequestParam("title") String title,
                               @RequestParam("content") String content,
                               Model model) {
@@ -108,11 +109,11 @@ public class BoardController {
 
     //TODO : POST delete/{id} -> 삭제(DB저장)
     // 게시판 삭제 처리 후 리다이렉트
-    @PostMapping("/board/delete/{id}")
-    public String deleteBoard(@RequestParam("id") Integer id) {
+    @PostMapping("/delete/{id}")
+    public String deleteBoard(@PathVariable("id") Integer id) {
         try {
             boardService.deleteBoard(id);
-            return "redirect:/boards";  // 삭제 후 게시글 목록 페이지로 리다이렉트
+            return "redirect:/api/board/boards";  // 삭제 후 게시글 목록 페이지로 리다이렉트
         } catch (NoSuchElementException e) {
             return "error/404";  // 게시글이 없을 때 404 페이지로 이동
         }
