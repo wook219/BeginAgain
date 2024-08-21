@@ -111,7 +111,7 @@ public class BoardController {
     public String deleteBoard(@PathVariable("id") Integer id) {
         try {
             boardService.deleteBoard(id);
-            return "redirect:/api/board/boards";  // 삭제 후 게시글 목록 페이지로 리다이렉트
+            return "redirect:/api/board";  // 삭제 후 게시글 목록 페이지로 리다이렉트
         } catch (NoSuchElementException e) {
             return "error/404";  // 게시글이 없을 때 404 페이지로 이동
         }

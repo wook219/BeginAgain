@@ -41,15 +41,12 @@ public class BoardService {
         return newBoard;
     }
 
-
-
     // TODO : 게시판 상세 조회
     // 게시판 상세 조회
     public BoardEntity getBoard(Integer boardId) {
         // 기존 게시판 조회
         BoardEntity existingBoard = boardRepository.findById(boardId)
                 .orElseThrow(() -> new NoSuchElementException("게시판을 찾을 수 없습니다."));
-
         // 기존 게시판이 삭제되었는지 확인
         if (existingBoard.isDeleted()) {
             // 삭제된 게시글이면 예외를 던집니다.
@@ -60,20 +57,17 @@ public class BoardService {
         }
     }
 
-
 //    // 삭제되지 않은 게시판 조회 및 페이지네이션
 //    public Page<BoardEntity> getAllBoards(int page, int size) {
 //        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 //        return boardRepository.findByDeletedAtIsNull(pageable);
 //    }
 
-
     // TODO : 게시판 전체 (리스트) 조회
     // 삭제되지 않은 모든 게시판 조회
     public List<BoardEntity> getAllBoards() {
         return boardRepository.findByDeletedAtIsNullOrderByCreatedAtDesc();
     }
-
 
     // TODO : 게시판 수정
     public BoardEntity updateBoard(Integer boardId, UpdateBoardDTO updateBoardDTO) {
@@ -83,6 +77,12 @@ public class BoardService {
         // 기존 게시판 조회
         BoardEntity existingBoard = boardRepository.findById(boardId)
                 .orElseThrow(() -> new NoSuchElementException("게시판을 찾을 수 없습니다."));
+
+        // 기존 게시판이 삭제되었는지 확인
+        if (existingBoard.isDeleted()) {
+            // 삭제된 게시글이면 예외를 던집니다.
+            throw new IllegalStateException("게시판이 삭제되었습니다.");
+        }
 
         // TODO : 현재 사용자가 작성자인지 확인
 //        if (! existingBoard.getAuthor().getId().equals(currentUser.getId())) {
@@ -112,7 +112,6 @@ public class BoardService {
         // 기존 게시판 조회
         BoardEntity existingBoard = boardRepository.findById(boardId)
                 .orElseThrow(() -> new NoSuchElementException("게시판을 찾을 수 없습니다."));
-
 
         // TODO : 현재 사용자가 작성자인지 확인
 //        if (!existingBoard.getAuthor().getId().equals(currnetUser.getId())) {
