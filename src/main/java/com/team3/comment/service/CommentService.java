@@ -2,6 +2,7 @@ package com.team3.comment.service;
 
 import com.team3.comment.entity.Comment;
 import com.team3.comment.repository.CommentRepository;
+import com.team3.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class CommentService {
         return commentRepository.findAll();
     }
 
-    public Comment updateComment(Long id, String newContent) {
+    public Comment updateComment(Integer id, String newContent) {
         Comment comment = commentRepository.findById(id);
         if (comment != null) {
             comment.setContent(newContent);
