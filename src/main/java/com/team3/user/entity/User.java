@@ -1,5 +1,6 @@
 package com.team3.user.entity;
 
+import com.team3.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,11 +8,11 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", updatable = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "email", nullable = false, length=200)
     private String email;
