@@ -2,6 +2,7 @@ package com.team3.board;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "board")
+@Data
 public class BoardEntity {
 
     @Id
@@ -41,4 +43,6 @@ public class BoardEntity {
 
     @Column(name = "is_deleted", nullable = true)
     private boolean isDeleted;
+
+
 }
