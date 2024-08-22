@@ -44,5 +44,10 @@ public class BoardEntity {
     @Column(name = "is_deleted", nullable = true)
     private boolean isDeleted;
 
-
+    // 엔티티가 저장되기 전에 호출됨
+    @PrePersist
+    @PreUpdate
+    public void updateIsDeleted() {
+        this.isDeleted = this.deletedAt != null;
+    }
 }
