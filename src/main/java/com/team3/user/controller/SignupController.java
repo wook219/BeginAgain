@@ -25,7 +25,7 @@ public class SignupController {
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute @Valid UserSignupDto userSignupDto, BindingResult bindingResult, Model model) {
+    public String signup(@ModelAttribute("userSignupDto") @Valid UserSignupDto userSignupDto, BindingResult bindingResult, Model model) {
 
         // 비밀번호 확인 로직
         if (!userSignupDto.isPasswordConfirmed()) {
@@ -34,9 +34,16 @@ public class SignupController {
 
         // 유효성 검사 실패 시 다시 회원가입 페이지
         if (bindingResult.hasErrors()) {
+            model.addAttribute("userSignupDto", userSignupDto); // 모델에 userSignupDto 추가
             return "signup";
         }
 
+//        // 유효성 검사 실패 시 다시 회원가입 페이지
+//        if (bindingResult.hasErrors()) {
+//            return "signup";
+//        }
+//            userService.signup(userSignupDto);
+//            return "redirect:/login"; // 회원가입 성공 시 로그인 페이지로 리디렉션
         try {
             userService.signup(userSignupDto);
             return "redirect:/login"; // 회원가입 성공 시 로그인 페이지로 리디렉션
