@@ -27,13 +27,13 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session) {
         User loginResult = userService.login(userLoginDto);
-        session.setAttribute("email", loginResult.getEmail()); // 이메일을 세션에 저장
-        return "redirect:/listBoards";
+        session.setAttribute("userId", loginResult.getId()); // 이메일을 세션에 저장
+        return "redirect:/api/board";
     }
     // 로그아웃 요청 처리
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 세션 무효화
-        return "redirect:/listBoards";
+        return "redirect:/api/board";
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig {
 
-    // ByCrypt 암호화
+    // 비밀번호 암호화 빈
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

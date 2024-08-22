@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class NicknameExistsException extends RuntimeException {
     private final ErrorCode errorCode;
-
+    // 닉네임 중복
     public NicknameExistsException() {
         super(ErrorCode.NICKNAME_ALREADY_EXISTS.getMessage());
         this.errorCode = ErrorCode.NICKNAME_ALREADY_EXISTS;

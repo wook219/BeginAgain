@@ -18,6 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // 로그인
     public User login(UserLoginDto loginDto) {
         // 이메일로 사용자를 조회, 없으면 예외 처리
         User user = userRepository.findByEmail(loginDto.getEmail())
@@ -29,6 +30,7 @@ public class UserService {
         return user;
     }
 
+    // 회원가입
     @Transactional
     public User signup(UserSignupDto signupDto) {
         // 이메일 중복 체크
@@ -54,7 +56,7 @@ public class UserService {
             throw new PasswordExistsException();
         }
 
-        // User 엔티티 생성 및 저장
+        // 회원 저장
         User user = User.builder()
                 .email(signupDto.getEmail())
                 .password(eneryptedPassword)  // 암호화 필요

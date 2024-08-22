@@ -24,6 +24,4 @@ public class ScryptPasswordEncoder implements PasswordEncoder {
     public boolean matches(String rawPassword, String encrpytedPassword) {
         return encoder.matches(rawPassword, encrpytedPassword);
     }
-
-
 }
