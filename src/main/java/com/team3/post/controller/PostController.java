@@ -17,6 +17,11 @@ public class PostController {
         return "post/postList";
     }
 
+    @GetMapping("/postnum")
+    public String postdetail(){
+        return "post/post";
+    }
+
     @GetMapping("/create")
     public String createPost(){
         return "post/post_create";
