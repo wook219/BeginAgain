@@ -30,4 +30,10 @@ public class LoginController {
         session.setAttribute("email", loginResult.getEmail()); // 이메일을 세션에 저장
         return "redirect:/listBoards";
     }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // 세션 무효화
+        return "redirect:/listBoards";
+    }
 }
