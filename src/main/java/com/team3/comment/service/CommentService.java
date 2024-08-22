@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CommentService {
@@ -28,7 +29,7 @@ public class CommentService {
     }
 
     public Comment updateComment(Integer id, String newContent) {
-        Comment comment = commentRepository.findById(id);
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("댓글을 찾을 수 없습니다."));
         if (comment != null) {
             comment.setContent(newContent);
             return commentRepository.save(comment);
@@ -36,7 +37,7 @@ public class CommentService {
         return null;
     }
 
-    public void deleteComment(Long id) {
+    public void deleteComment(Integer id) {
         commentRepository.deleteById(id);
     }
 }
