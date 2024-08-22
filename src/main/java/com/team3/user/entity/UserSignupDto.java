@@ -31,7 +31,7 @@ public class UserSignupDto {
     @NotBlank(message = "닉네임은 필수 입력 항목입니다.")
     private String nickname;
 
-    // 비밀번호 일치 확인
+    // 비밀번호 일치 확인 메소드
     public boolean isPasswordConfirmed() {
         return this.password.equals(this.passwordConfirm);
     }
