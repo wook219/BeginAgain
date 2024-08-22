@@ -1,0 +1,252 @@
+* {
+    font-family: 'Noto Sans KR', 'NanumBarunGothic', '맑은 고딕', 'Malgun Gothic', sans-serif;
+    box-sizing: border-box;
+}
+
+.post-container{
+        display: flex;
+        flex-direction: column;
+        padding: 30px 0;
+        align-items: center;
+        width: 1200px;
+        margin: 0 auto;
+}
+
+.post-text{
+        text-align: center;
+        font-size: 30px;
+}
+
+.post-container input {
+    width: 100%;
+    height: 35px;
+    margin: 5px 0px 10px 0px;
+    border: 1px solid #e9e8e8;
+    padding: 8px;
+    background: #f8f8f8;
+    outline-color: #e6e6e6;
+    font-size: 15px;
+}
+
+.post-container textarea {
+    width: 100%;
+    background: #f8f8f8;
+    margin: 5px 0px 10px 0px;
+    border: 1px solid #e9e8e8;
+    resize: none;
+    padding: 8px;
+    outline-color: #e6e6e6;
+    font-size: 14px;
+}
+
+.button-group{
+    display : flex;
+    gap : 10px;
+}
+
+.post-container.btn {
+    border: 1px solid transparent;
+    color: black;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    padding: 10px 5px;
+    width: 100px;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px / 1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.fa-navicon:before, .fa-reorder:before, .fa-bars:before {
+    content: "\f0c9";
+}
+
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    padding: 100px 0;
+    align-items: center;
+}
+
+.post-category {
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.post-category > a {
+    display: inline-block;
+    font-size: 15px;
+    color: #333;
+    margin-right: 30px;
+    height: 50px;
+    line-height: 50px;
+    border-top: 3px solid #fff;
+    position: relative;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.post-search {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 1px solid #333;
+    font-size: 0;
+}
+
+.post-search input {
+    display: inline-block;
+    border: 0 none;
+    width: 335px;
+    height: 41px;
+    line-height: 41px;
+    font-size: 14px;
+    color: #999;
+    vertical-align: top;
+    padding-left: 10px;
+}
+
+.search-btn {
+    display: inline-block;
+    width: 50px;
+    height: 41px;
+    background: url(http://tkfile.yes24.com/imgNew/common/pf-srch-w.png) no-repeat center center;
+    vertical-align: top;
+    border: 1px solid #999;
+    cursor: pointer;
+}
+
+.post-table {
+    padding-top: 30px;
+    width: 1200px;
+    margin: 0 auto 37px auto;
+    border-bottom: 1px solid #999;
+}
+
+.post-table table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.post-table th {
+    height: 49px;
+    line-height: 49px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    background: #f6f6f6;
+    border-top: 2px solid #333;
+}
+
+.post-tr {
+    border-top: 1px solid lightgray;
+}
+
+.post-td {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.post-td.title {
+    font-weight: bold;
+}
+
+.post-tr a {
+    text-decoration: none;
+    color: black;
+}
+
+.comment-section {
+    width: 1200px;
+    margin: 30px auto;
+    border-top: 1px solid #e9e8e8;
+    padding-top: 20px;
+}
+
+.comment-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.comment {
+    border-bottom: 1px solid #e9e8e8;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-author {
+    font-weight: bold;
+}
+
+.comment-rating {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.comment-date {
+    margin-left: auto;
+    font-size: 14px;
+    color: #999;
+}
+
+.comment-buttons button {
+    margin-left: 10px;
+    border: 1px solid transparent;
+    color: black;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.more-comments {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.comment-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid #e9e8e8;
+}
+
+.comment-input textarea {
+    width: 85%;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid #e9e8e8;
+    resize: none;
+    font-size: 14px;
+}
+
+.comment-submit-btn {
+    width: 100px;
+    height: 50px;
+    border: 1px solid transparent;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}
