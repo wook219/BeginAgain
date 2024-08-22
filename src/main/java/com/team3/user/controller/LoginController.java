@@ -18,19 +18,20 @@ public class LoginController {
 
     private final UserService userService;
 
+    // 로그인 페이지 이동
     @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute("userLoginDto", new UserLoginDto());
         return "login";
     }
-
+    // 로그인 요청 처리
     @PostMapping("/login")
     public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session) {
         User loginResult = userService.login(userLoginDto);
         session.setAttribute("email", loginResult.getEmail()); // 이메일을 세션에 저장
         return "redirect:/listBoards";
     }
-
+    // 로그아웃 요청 처리
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 세션 무효화

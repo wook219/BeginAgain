@@ -17,16 +17,18 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    // 로그인
     public User login(UserLoginDto loginDto) {
+        // 이메일로 사용자를 조회, 없으면 예외 처리
         User user = userRepository.findByEmail(loginDto.getEmail())
                 .orElseThrow(EmailNotFoundException::new);
-
+        // 비밀번호가 일치하지 않으면 예외 처리
         if (!user.getPassword().equals(loginDto.getPassword())) {
             throw new IncorrectPasswordException();
         }
         return user;
     }
-
+    // 회원가입
     @Transactional
     public User signup(UserSignupDto signupDto) {
         // 이메일 중복 체크
@@ -44,7 +46,7 @@ public class UserService {
             throw new IllegalArgumentException("이미 사용 중인 비밀번호입니다.");
         }
 
-        // User 엔티티 생성 및 저장
+        // 회원 저장
         User user = User.builder()
                 .email(signupDto.getEmail())
                 .password(signupDto.getPassword())  // 암호화 필요
