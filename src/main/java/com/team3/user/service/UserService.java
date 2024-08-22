@@ -4,8 +4,7 @@ import com.team3.user.entity.RoleType;
 import com.team3.user.entity.User;
 import com.team3.user.entity.UserLoginDto;
 import com.team3.user.entity.UserSignupDto;
-import com.team3.user.exception.EmailNotFoundException;
-import com.team3.user.exception.IncorrectPasswordException;
+import com.team3.user.exception.*;
 import com.team3.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,17 +30,17 @@ public class UserService {
     public User signup(UserSignupDto signupDto) {
         // 이메일 중복 체크
         if (userRepository.findByEmail(signupDto.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+            throw new EmailExistsException();
         }
 
         // 닉네임 중복 체크
         if (userRepository.findByNickname(signupDto.getNickname()).isPresent()) {
-            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+            throw new NicknameExistsException();
         }
 
         // 비밀번호 중복 체크
         if (isPasswordDuplicate(signupDto.getPassword())) {
-            throw new IllegalArgumentException("이미 사용 중인 비밀번호입니다.");
+            throw new PasswordExistsException();
         }
 
         // User 엔티티 생성 및 저장
