@@ -4,6 +4,8 @@ import com.team3.user.entity.RoleType;
 import com.team3.user.entity.User;
 import com.team3.user.entity.UserLoginDto;
 import com.team3.user.entity.UserSignupDto;
+import com.team3.user.exception.EmailNotFoundException;
+import com.team3.user.exception.IncorrectPasswordException;
 import com.team3.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,10 @@ public class UserService {
 
     public User login(UserLoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("이메일이 존재하지 않습니다."));
+                .orElseThrow(EmailNotFoundException::new);
 
         if (!user.getPassword().equals(loginDto.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
+            throw new IncorrectPasswordException();
         }
         return user;
     }

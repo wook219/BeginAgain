@@ -25,19 +25,9 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session, Model model) {
-        try {
-            User loginResult = userService.login(userLoginDto);
-            session.setAttribute("email", loginResult.getEmail()); // 이메일을 세션에 저장
-            return "redirect:/listBoards";
-        } catch (IllegalArgumentException e) {
-            if (e.getMessage().contains("이메일이 존재하지 않습니다.")) {
-                model.addAttribute("emailError", "존재하지 않는 계정입니다.");
-            } else if (e.getMessage().contains("비밀번호가 맞지 않습니다.")) {
-                model.addAttribute("passwordError", "비밀번호가 맞지 않습니다.");
-            }
-            model.addAttribute("userLoginDto", userLoginDto); // 입력 데이터 유지
-            return "login";
-        }
+    public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session) {
+        User loginResult = userService.login(userLoginDto);
+        session.setAttribute("email", loginResult.getEmail()); // 이메일을 세션에 저장
+        return "redirect:/listBoards";
     }
 }
