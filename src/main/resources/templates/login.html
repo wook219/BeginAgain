@@ -8,16 +8,21 @@
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body class="gradient-custom">
-<section class="d-flex vh-100 justify-content-center align-items-center"> <!-- 중앙 정렬을 위해 수정 -->
-    <div class="container col-md-4"> <!-- container-fluid 대신 container 사용 -->
+<section class="d-flex vh-100 justify-content-center align-items-center">
+    <div class="container col-md-4">
         <div class="card bg-transparent border-0">
             <div class="card-body text-center">
                 <h2 class="mb-4">Begin Again</h2>
                 <p class="text-white-50 mt-2 mb-5">중고거래 게시판</p>
 
-                <!-- 경고 메시지가 있는 경우 경고 창 표시 -->
-                <div th:if="${loginError}" class="alert alert-danger" role="alert">
-                    <span th:text="${loginError}"></span>
+                <!-- 이메일 에러 메시지 -->
+                <div th:if="${emailError}" class="alert alert-danger" role="alert">
+                    <span th:text="${emailError}"></span>
+                </div>
+
+                <!-- 비밀번호 에러 메시지 -->
+                <div th:if="${passwordError}" class="alert alert-danger" role="alert">
+                    <span th:text="${passwordError}"></span>
                 </div>
 
                 <form th:action="@{/login}" method="POST">
