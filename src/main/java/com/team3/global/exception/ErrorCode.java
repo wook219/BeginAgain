@@ -20,6 +20,7 @@ public enum ErrorCode {
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     INVALID_AUTH_TOKEN(HttpStatus.UNAUTHORIZED, "권한 정보가 없는 토큰입니다."),
     USER_NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다"),
+    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "비밀번호가 맞지 않습니다."),
 
     /* 403 FORBIDDEN : 권한이 없는 사용자 */
     USER_NOT_AUTHORIZED(HttpStatus.FORBIDDEN, "권한이 없는 사용자입니다."),
@@ -28,6 +29,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 정보의 사용자를 찾을 수 없습니다."),
     OBJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "대상을 찾을 수 없습니다."),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "대상을 찾을 수 없습니다."),
+    EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 계정입니다."),
 
     /* 409 : CONFLICT : Resource의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "데이터가 이미 존재합니다."),
