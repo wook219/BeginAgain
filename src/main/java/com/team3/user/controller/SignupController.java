@@ -1,6 +1,5 @@
 package com.team3.user.controller;
 
-import com.team3.user.entity.UserLoginDto;
 import com.team3.user.entity.UserSignupDto;
 import com.team3.user.service.UserService;
 import jakarta.validation.Valid;

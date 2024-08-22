@@ -17,19 +17,9 @@
 <div class="signup-container">
     <h2 class="text-center">회원 가입</h2>
 
-    <!-- 전역 에러 메시지 출력 -->
+    <!-- 서버 측 에러 메시지 출력 -->
     <div th:if="${signupError}" class="alert alert-danger" role="alert">
         <span th:text="${signupError}"></span>
-    </div>
-
-    <!-- 이메일 에러 메시지 출력 -->
-    <div th:if="${emailError}" class="alert alert-danger" role="alert">
-        <span th:text="${emailError}"></span>
-    </div>
-
-    <!-- 비밀번호 에러 메시지 출력 -->
-    <div th:if="${passwordError}" class="alert alert-danger" role="alert">
-        <span th:text="${passwordError}"></span>
     </div>
 
     <form th:action="@{/signup}" th:object="${userSignupDto}" method="POST">
