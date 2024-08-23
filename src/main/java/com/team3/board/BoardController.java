@@ -22,22 +22,22 @@ public class BoardController {
         this.boardService = boardService;
     }
 
+
     //TODO : GET -> 목록
     // 모든 게시판 조회 후 목록 페이지로 이동
-    @GetMapping("/boards")
+    @GetMapping("")
     public String getAllBoards(Model model) {
         List<BoardEntity> boards = boardService.getAllBoards();
         model.addAttribute("boards", boards);
         return "board/listBoards";  // listBoards.html로 이동
     }
 
-
     //TODO : GET {id} -> 조회
-    // ID로 게시판 조회 후 상세 페이지로 이동
-    @GetMapping("/board/{id}")
+    // ID로 게시판 조회(수정, 삭제 기능) 후 상세 페이지로 이동
+    @GetMapping("/{id}")
     public String getBoard(@PathVariable("id") Integer id, Model model) {
         try {
-            BoardEntity board = boardService.getPost(id);
+            BoardEntity board = boardService.getBoard(id);
             model.addAttribute("board", board);
             return "board/viewBoardEntity";  // viewBoardEntity.html로 이동
         } catch (NoSuchElementException e) {
@@ -47,6 +47,22 @@ public class BoardController {
         }
     }
 
+
+
+//    //TODO : GET {id} -> 조회
+//    // ID로 게시판 조회 후 게시글 상세페이지로 이동
+//    @GetMapping("/{id}/posts")
+//    public String getPostsByBoard(@PathVariable("id") Integer id, Model model) {
+//        try {
+//            BoardEntity board = boardService.getBoard(id);
+//            List<PostEntity> posts = board.getPosts(); // 게시판에 속한 게시글들 조회
+//            model.addAttribute("board", board);
+//            model.addAttribute("posts", posts);
+//            return "board/listPosts";  // 게시글 목록 페이지로 이동
+//        } catch (NoSuchElementException e) {
+//            return "error/404";  // 게시판이 없을 때 404 페이지로 이동
+//        }
+//    }
 
 
 
@@ -71,26 +87,27 @@ public class BoardController {
             CreateBoardDto createBoardDto = new CreateBoardDto(title, content, user_id);
             boardService.addBoard(createBoardDto);
 //            return "redirect:/";  // 저장 후 메인 페이지로 리다이렉트
-            return "redirect:/api/board/boards";  // 저장 후 게시글 목록 페이지로 리다이렉트
+            return "redirect:/api/board";  // 저장 후 게시글 목록 페이지로 리다이렉트
         } catch (NumberFormatException e) {
             model.addAttribute("error", "Invalid User ID format.");
             return "board/createBoardEntity";  // 에러 시 작성 페이지로 다시 이동
+
         }
     }
-
 
     //TODO : GET edit/{id} -> 수정
     // 게시판 수정 폼으로 이동
     @GetMapping("/edit/{id}")
     public String showEditBoardForm(@PathVariable("id") Integer id, Model model) {
         try {
-            BoardEntity board = boardService.getPost(id);
+            BoardEntity board = boardService.getBoard(id);
             model.addAttribute("board", board);
             return "board/editBoardEntity";  // editBoardEntity.html로 이동
         } catch (NoSuchElementException e) {
             return "error/404";  // 게시글이 없을 때 404 페이지로 이동
         }
     }
+
     //TODO : POST edit/{id} -> 수정(DB저장)
     // 게시판 수정 처리 후 리다이렉트
     @PostMapping("/edit/{id}")
@@ -98,10 +115,12 @@ public class BoardController {
                               @RequestParam("title") String title,
                               @RequestParam("content") String content,
                               Model model) {
-        UpdateBoardDTO updateBoardDTO = new UpdateBoardDTO(title, content, id);
+
+//        System.out.println("id=" + id + "title=" +  title + "title=" +content);
+        UpdateBoardDTO updateBoardDTO = new UpdateBoardDTO(title, content);
         try {
             boardService.updateBoard(id, updateBoardDTO);
-            return "redirect:/board/" + id;  // 수정 후 해당 게시글 상세 페이지로 리다이렉트
+            return "redirect:/api/board/" + id;  // 수정 후 해당 게시글 상세 페이지로 리다이렉트
         } catch (NoSuchElementException e) {
             return "error/404";  // 게시글이 없을 때 404 페이지로 이동
         }
@@ -113,10 +132,9 @@ public class BoardController {
     public String deleteBoard(@PathVariable("id") Integer id) {
         try {
             boardService.deleteBoard(id);
-            return "redirect:/api/board/boards";  // 삭제 후 게시글 목록 페이지로 리다이렉트
+            return "redirect:/api/board";  // 삭제 후 게시글 목록 페이지로 리다이렉트
         } catch (NoSuchElementException e) {
             return "error/404";  // 게시글이 없을 때 404 페이지로 이동
         }
     }
-
 }

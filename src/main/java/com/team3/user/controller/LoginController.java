@@ -17,20 +17,23 @@ public class LoginController {
 
     private final UserService userService;
 
+    // 로그인 페이지 이동
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginForm(Model model) {
+        model.addAttribute("userLoginDto", new UserLoginDto());
         return "login";
     }
-
+    // 로그인 요청 처리
     @PostMapping("/login")
-    public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session, Model model) {
-        try {
-            User loginResult = userService.login(userLoginDto);
-            session.setAttribute("email", loginResult.getEmail());
-            return "home"; // 로그인 성공
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("loginError", "Invalid email or password"); // 에러 메시지 설정
-            return "login"; // 로그인 실패
-        }
+    public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session) {
+        User loginResult = userService.login(userLoginDto);
+        session.setAttribute("userId", loginResult.getId()); // id를 세션에 저장
+        return "redirect:/api/board";
+    }
+    // 로그아웃 요청 처리
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // 세션 무효화
+        return "redirect:/api/board";
     }
 }

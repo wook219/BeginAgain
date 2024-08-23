@@ -14,9 +14,9 @@
         <p><strong>Created By:</strong> <span th:text="${board.userId}">User ID</span></p>
         <p><strong>Created At:</strong> <span th:text="${board.createdAt}">Creation Date</span></p>
     </div>
-    <a th:href="@{/boards}" class="btn btn-secondary">Back to List</a>
-    <a th:href="@{'/board/edit/' + ${board.id}}" class="btn btn-primary">Edit</a>
-    <form th:action="@{'/board/delete/' + ${board.id}}" method="post" style="display:inline;">
+    <a th:href="@{/api/board}" class="btn btn-secondary">Back to List</a>
+    <a th:href="@{'/api/board/edit/' + ${board.boardId}}" class="btn btn-primary">Edit</a>
+    <form th:action="@{'/api/board/delete/' + ${board.boardId}}" method="post" style="display:inline;">
         <button type="submit" class="btn btn-danger">Delete</button>
     </form>
 </div>
