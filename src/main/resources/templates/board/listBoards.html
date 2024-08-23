@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeginAgain 게시판</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-white min-h-screen flex flex-col">
+
+<!--Header fragment-->
+<div th:insert="~{common/header :: header}"></div>
+
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8 flex-grow">
+    <section class="flex justify-between items-center mb-6">
+        <!-- 게시판 home 버튼 -->
+        <button onclick="location.href='http://localhost:8080/api/board'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 home</button>
+        <!-- 게시판 추가 버튼 -->
+        <button onclick="location.href='http://localhost:8080/api/board/create'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 추가</button>
+    </section>
+
+    <!-- 게시판 목록 표시 섹션 -->
+    <section id="boardSection">
+        <h1 class="text-2xl font-bold mb-4 text-center">게시판 목록</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 게시판 항목이 여기에 동적으로 추가됩니다 -->
+            <div th:each="board : ${boards}" class="bg-white border-2 border-blue-500 rounded-lg p-4 shadow-md">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-bold" th:text="${board.title}">게시판 제목</h2>
+                    <!-- 수정 페이지로 이동하는 링크 -->
+                    <a th:href="@{'/api/board/' + ${board.boardId}}" class="text-xl">≡</a>
+                </div>
+                <p class="text-sm text-gray-700 mt-2" th:text="${board.content}">게시판 설명</p>
+                <span class="text-blue-500 block mt-4" th:text="${board.userId}">User ID</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="flex justify-center items-center mt-8">
+        <div class="flex items-center space-x-2 border border-gray-400 rounded">
+            <input type="text" placeholder="게시판 검색" class="px-4 py-2 w-full focus:outline-none">
+            <button class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">enter</button>
+        </div>
+    </section>
+</main>
+
+<!--Footer fragment-->
+<div th:insert="~{common/footer :: footer}"></div>
+
+</body>
+</html>

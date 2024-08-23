@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Post CSS -->
+    <link href="/css/post/post.css" rel="stylesheet">
+</head>
+<body class="min-h-screen flex flex-col">
+    <!--Header fragment-->
+    <div th:insert="~{common/header :: header}"></div>
+
+    <hr>
+    <hr>
+
+    <!--Content-->
+    <div class="list-container flex-grow">
+        <h1 class="post-text" th:text="${boardTitle}"></h1>
+
+        <div class="post-category">
+            <a id="post-order1" href="#">최신순</a>
+            <a id="post-order2" href="#">조회순</a>
+            <a th:href="@{/post/create/{boardId}(boardId=${boardId})}" id="button-link" class="bg-gray-800 text-white">글 작성하기</a>
+            <div class="post-search">
+                <form action="#">
+                    <input type="text" value name="keyword" placeholder="검색할 내용을 입력해주세요.">
+                    <button type="submit" class="search-btn"></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="post-table">
+            <table>
+                <tr>
+                    <th>번호</th>
+                    <th style="width : 700px">제목</th>
+                    <th style="width : 200px">작성일자</th>
+                    <th>조회수</th>
+                </tr>
+                <!--이부분 리스트 받아와서 반복문-->
+                <tr th:each="post : ${posts}">
+                    <td th:text="${post.postId}"></td>
+                    <td><a th:href="@{/post/postdetail/{postId}(postId=${post.postId})}" th:text="${post.title}"></a></td>
+                    <td th:text="${post.createdAt}"></td>
+                    <td th:text="${post.views}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="post-paging">
+                <!--페이징 구현할 곳-->
+        </div>
+    </div>
+
+    <!--Footer fragment-->
+    <div th:insert="~{common/footer :: footer}"></div>
+</body>
+</html>

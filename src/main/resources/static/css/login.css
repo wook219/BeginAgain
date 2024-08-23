@@ -1,0 +1,49 @@
+.gradient-custom {
+    background: url('../images/background_blue.png') no-repeat center center fixed;
+    background-size: cover; /* 이미지를 화면에 꽉 채우도록 설정 */
+    color: white;
+    font-family: 'Poppins', sans-serif; /* Poppins 폰트 적용 */
+}
+.form-control {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    font-family: 'Poppins', sans-serif; /* Poppins 폰트 적용 */
+}
+.form-control::placeholder {
+    color: #d4d4d4;
+}
+.input-group-text {
+    background: none;
+    border: 1px solid white;
+    border-right: none;
+    color: white;
+    padding: 0.375rem 0.75rem;
+}
+.input-group-text img {
+    width: 20px; /* 아이콘 크기 조절 */
+    height: 20px;
+}
+.btn-primary {
+    background-color: white;
+    border-color: black;
+    color: #264ECA;
+    font-weight: bold;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4); /* 그림자 효과 강화 */
+    font-family: 'Nunito', sans-serif; /* Nunito 폰트 적용 */
+}
+.btn-primary:hover {
+    background-color: #264ECA;
+    border-color: black;
+    color: white;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.5); /* 호버 시 그림자 효과 더 강화 */
+}
+.create-account-link {
+    color: #d4d4d4;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif; /* Poppins 폰트 적용 */
+}
+.create-account-link:hover {
+    color: white;
+    text-decoration: underline;
+}
