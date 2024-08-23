@@ -69,6 +69,7 @@ public class PostService {
         return post;
     }
 
+    //게시글 수정
     public PostEntity modifyPost(PostDto postDto){
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 
@@ -82,6 +83,7 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    //게시글 삭제
     public void deletePost(Integer postId){
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
