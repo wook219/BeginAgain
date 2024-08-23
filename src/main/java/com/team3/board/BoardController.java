@@ -22,6 +22,7 @@ public class BoardController {
         this.boardService = boardService;
     }
 
+
     //TODO : GET -> 목록
     // 모든 게시판 조회 후 목록 페이지로 이동
     @GetMapping("")
@@ -32,7 +33,7 @@ public class BoardController {
     }
 
     //TODO : GET {id} -> 조회
-    // ID로 게시판 조회 후 상세 페이지로 이동
+    // ID로 게시판 조회(수정, 삭제 기능) 후 상세 페이지로 이동
     @GetMapping("/{id}")
     public String getBoard(@PathVariable("id") Integer id, Model model) {
         try {
@@ -45,6 +46,25 @@ public class BoardController {
             return "error/410";  // 게시글이 삭제되었을 때 410 페이지로 이동
         }
     }
+
+
+
+//    //TODO : GET {id} -> 조회
+//    // ID로 게시판 조회 후 게시글 상세페이지로 이동
+//    @GetMapping("/{id}/posts")
+//    public String getPostsByBoard(@PathVariable("id") Integer id, Model model) {
+//        try {
+//            BoardEntity board = boardService.getBoard(id);
+//            List<PostEntity> posts = board.getPosts(); // 게시판에 속한 게시글들 조회
+//            model.addAttribute("board", board);
+//            model.addAttribute("posts", posts);
+//            return "board/listPosts";  // 게시글 목록 페이지로 이동
+//        } catch (NoSuchElementException e) {
+//            return "error/404";  // 게시판이 없을 때 404 페이지로 이동
+//        }
+//    }
+
+
 
     //TODO : GET create -> 작성
     //Create form 페이지로 이동

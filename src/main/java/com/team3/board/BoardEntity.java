@@ -1,11 +1,13 @@
 package com.team3.board;
 
+import com.team3.post.entity.PostEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -50,4 +52,9 @@ public class BoardEntity {
     public void updateIsDeleted() {
         this.isDeleted = this.deletedAt != null;
     }
+
+
+//    //게시글과 맵핍하기 위한 게시글 엔티티
+//    @OneToMany(mappedBy = "board")
+//    private List<PostEntity> posts;
 }
