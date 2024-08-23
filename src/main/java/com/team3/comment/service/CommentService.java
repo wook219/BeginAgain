@@ -39,6 +39,7 @@ public class CommentService {
         return commentRepository.findAll();  // 모든 댓글을 데이터베이스에서 조회하여 반환
     }
 
+
     // 댓글 수정
     public Comment updateComment(Integer id, String newContent) { //특정 ID의 댓글을 수정.
         Comment comment = commentRepository.findById(id) //주어진 ID로 댓글을 검색. 댓글이 없으면 NoSuchElementException을 발생.
@@ -51,6 +52,7 @@ public class CommentService {
     public void deleteComment(Integer id) { //특정 ID의 댓글을 삭제합니다.
         commentRepository.deleteById(id);  // ID로 댓글을 삭제
     }
+
 
     // ID로 특정 댓글 조회
     public Comment getCommentById(Integer id) { //특정 ID의 댓글을 조회합니다. 댓글이 없으면 예외를 발생시킵니다.
