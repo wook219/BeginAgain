@@ -10,7 +10,7 @@ public class CommentMapperImpl implements CommentMapper {
             return null;
         }
         CommentDto dto = new CommentDto();
-        dto.setId(comment.getId());
+        dto.setId(comment.getCommentId());
         dto.setContent(comment.getContent());
         // dto.setAuthorUsername(comment.getAuthor().getUsername());
         return dto;
