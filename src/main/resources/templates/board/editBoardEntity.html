@@ -26,7 +26,7 @@
                     <textarea class="form-control" id="content" name="content" rows="8" required th:text="${board.content}"></textarea>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <a th:href="@{'/board/' + ${board.boardId}}" class="btn btn-secondary">Cancel</a>
+                    <a th:href="@{'/api/board/' + ${board.boardId}}" class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
