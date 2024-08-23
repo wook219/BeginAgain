@@ -16,61 +16,17 @@
 <!-- Main Content -->
 <main class="container mx-auto px-4 py-8 flex-grow">
     <section class="flex justify-between items-center mb-6">
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 home</button>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 추가</button>
+        <!-- 게시판 home 버튼 -->
+        <button onclick="location.href='http://localhost:8080/api/board'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 home</button>
+        <!-- 게시판 추가 버튼 -->
+        <button onclick="location.href='http://localhost:8080/api/board/create'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 추가</button>
     </section>
 
-    <section>
+    <!-- 이 섹션은 "게시판 추가" 버튼을 누른 후에만 게시판이 표시됩니다 -->
+    <section id="boardSection">
         <h1 class="text-2xl font-bold mb-4 text-center">게시판 목록</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            <div class="bg-white border-2 border-blue-500 rounded-lg p-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-bold">중고거래 게시판</h2>
-                    <div class="text-xl">≡</div>
-                </div>
-                <p class="text-sm text-gray-700 mt-2">사용자들이 중고 물품을 사고팔 수 있는 게시판입니다.</p>
-                <span class="text-blue-500 block mt-4">mango</span>
-            </div>
-            <div class="bg-white border-2 border-blue-500 rounded-lg p-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-bold">동네소통 게시판</h2>
-                    <div class="text-xl">≡</div>
-                </div>
-                <p class="text-sm text-gray-700 mt-2">사용자들이 동네 이야기를 공유할 수 있는 게시판입니다.</p>
-                <span class="text-blue-500 block mt-4">apple</span>
-            </div>
-            <div class="bg-white border-2 border-blue-500 rounded-lg p-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-bold">알바 게시판</h2>
-                    <div class="text-xl">≡</div>
-                </div>
-                <p class="text-sm text-gray-700 mt-2">사용자들이 알바를 구인 구직 할 수 있는 게시판입니다.</p>
-                <span class="text-blue-500 block mt-4">nano</span>
-            </div>
-            <div class="bg-white border-2 border-blue-500 rounded-lg p-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-bold">부동산 게시판</h2>
-                    <div class="text-xl">≡</div>
-                </div>
-                <p class="text-sm text-gray-700 mt-2">사용자들이 부동산 매물을 거래할 수 있는 게시판입니다.</p>
-                <span class="text-blue-500 block mt-4">mango</span>
-            </div>
-            <div class="bg-white border-2 border-blue-500 rounded-lg p-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-bold">중고차 직거래 게시판</h2>
-                    <div class="text-xl">≡</div>
-                </div>
-                <p class="text-sm text-gray-700 mt-2">사용자들이 중고차를 직거래 할 수 있는 게시판입니다.</p>
-                <span class="text-blue-500 block mt-4">apple</span>
-            </div>
-            <div class="bg-white border-2 border-blue-500 rounded-lg p-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-bold">동네 업체 게시판</h2>
-                    <div class="text-xl">≡</div>
-                </div>
-                <p class="text-sm text-gray-700 mt-2">사용자들이 다양한 동네업체와 후기를 볼 수 있는 게시판입니다.</p>
-                <span class="text-blue-500 block mt-4">nano</span>
-            </div>
+            <!-- 게시판 항목이 여기에 동적으로 추가됩니다 -->
         </div>
     </section>
 

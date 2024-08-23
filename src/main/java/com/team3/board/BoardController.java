@@ -90,7 +90,9 @@ public class BoardController {
             return "redirect:/api/board";  // 저장 후 게시글 목록 페이지로 리다이렉트
         } catch (NumberFormatException e) {
             model.addAttribute("error", "Invalid User ID format.");
+            System.out.println(e.getMessage());
             return "board/createBoardEntity";  // 에러 시 작성 페이지로 다시 이동
+
         }
     }
 
