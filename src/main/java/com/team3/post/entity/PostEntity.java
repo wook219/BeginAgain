@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "post")
 public class PostEntity {
 

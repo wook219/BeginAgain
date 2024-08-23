@@ -6,26 +6,29 @@
     <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Post CSS -->
-    <link href="/post/post.css" rel="stylesheet">
+    <link href="/css/post/post.css" rel="stylesheet">
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 <!--Header fragment-->
 <div th:insert="~{common/header :: header}"></div>
 
 <!--Content-->
-    <div class="post-container">
-        <h1 class="post-text">글 제목 들어갈 곳</h1>
-            <input type="text" placeholder="제목을 입력해 주세요." readonly>
-            <textarea cols="120" rows="30" placeholder="내용을 입력해 주세요." readonly></textarea>
-            <div class="button-group">
-                <button type="button" id="post-container-listbtn" class="post-container btn">목록</button>
-                <button type="button" id="post-container-modifybtn" class="post-container btn">수정</button>
-                <button type="button" id="post-container-deletebtn" class="post-container btn">삭제</button>
-            </div>
-    </div>
+<div class="post-container flex-grow">
+    <h1 class="post-text">게시글 조회</h1>
+        <input type="text" th:value="${post.title}" placeholder="제목을 입력해 주세요." readonly>
+        <textarea th:text="${post.content}" cols="120" rows="30" placeholder="내용을 입력해 주세요." readonly></textarea>
+        <div class="button-group">
+            <a th:href="@{/post/{boardId}(boardId=${boardId})}" id="post-container-listbtn" class="post-container btn">목록</a>
+            <a th:href="@{/post/modify/{postId}(postId=${postId})}" id="post-container-modifybtn" class="post-container btn">수정</a>
+            <form th:action="@{/post/delete/{postId}(postId=${postId})}" method="post">
+                <input type="hidden" th:value="${boardId}" name="boardId">
+                <button type="submit" id="post-container-deletebtn" class="post-container btn">삭제</button>
+            </form>
+        </div>
+</div>
 
 <!-- Comment Section -->
-<div class="comment-section">
+<div class="comment-section flex-grow">
     <h2 class="comment-title">댓글 목록 최신순</h2>
     <div class="comment">
         <span class="comment-author">선규</span>
