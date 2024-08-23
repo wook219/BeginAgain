@@ -80,6 +80,8 @@
 }
 
 .post-category {
+    display : flex;
+    align-items : center;
     width: 1200px;
     margin: 0 auto;
     position: relative;
@@ -99,8 +101,10 @@
 }
 
 .post-search {
+    display: flex;
+    align-items: center;
     position: absolute;
-    top: 0;
+    top: 20%;
     right: 0;
     border: 1px solid #333;
     font-size: 0;
@@ -145,10 +149,22 @@
     height: 49px;
     line-height: 49px;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
     background: #f6f6f6;
     border-top: 2px solid #333;
+}
+
+.post-table tr {
+    border-top: 1px solid lightgray;
+    height : 60px
+}
+
+.post-table td {
+    height: 49px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
 }
 
 .post-tr {
@@ -249,4 +265,18 @@
     font-weight: bold;
     cursor: pointer;
     border-radius: 5px;
+}
+
+#button-link {
+        display: inline-flex;
+        text-align: center;
+        align-items: center;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 10px;
+        color: white;
+        position: absolute;
+        right: 30.5%;
+        top: 10%;
 }
