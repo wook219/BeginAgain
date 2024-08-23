@@ -30,7 +30,8 @@
             <div th:each="board : ${boards}" class="bg-white border-2 border-blue-500 rounded-lg p-4 shadow-md">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold" th:text="${board.title}">게시판 제목</h2>
-                    <div class="text-xl">≡</div>
+                    <!-- 수정 페이지로 이동하는 링크 -->
+                    <a th:href="@{'/api/board/' + ${board.boardId}}" class="text-xl">≡</a>
                 </div>
                 <p class="text-sm text-gray-700 mt-2" th:text="${board.content}">게시판 설명</p>
                 <span class="text-blue-500 block mt-4" th:text="${board.userId}">User ID</span>
