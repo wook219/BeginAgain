@@ -31,7 +31,7 @@ public class LoginController {
         return "redirect:/api/board";
     }
     // 로그아웃 요청 처리
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 세션 무효화
         return "redirect:/api/board";
