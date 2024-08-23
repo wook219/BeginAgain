@@ -28,12 +28,7 @@ public class SignupController {
     @PostMapping("/signup")
     public String signup(@ModelAttribute("userSignupDto") @Valid UserSignupDto userSignupDto, BindingResult bindingResult, Model model) {
 
-        // 비밀번호 확인 로직
-        if (!userSignupDto.isPasswordConfirmed()) {
-            bindingResult.rejectValue("passwordConfirm", "error.userSignupDto", "비밀번호가 일치하지 않습니다.");
-        }
-
-        // 유효성 검사 실패 시 다시 회원가입 페이지
+        // 유효성 검사
         if (bindingResult.hasErrors()) {
             model.addAttribute("userSignupDto", userSignupDto);
             return "signup";

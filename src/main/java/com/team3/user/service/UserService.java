@@ -7,7 +7,6 @@ import com.team3.user.entity.UserSignupDto;
 import com.team3.user.exception.*;
 import com.team3.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordService passwordEncoder;
 
     // 로그인
     public User login(UserLoginDto loginDto) {
@@ -33,33 +32,15 @@ public class UserService {
     // 회원가입
     @Transactional
     public User signup(UserSignupDto signupDto) {
-        // 이메일 중복 체크
-        if (userRepository.findByEmail(signupDto.getEmail()).isPresent()) {
-            throw new EmailExistsException();
-        }
-
-        // 닉네임 중복 체크
-        if (userRepository.findByNickname(signupDto.getNickname()).isPresent()) {
-            throw new NicknameExistsException();
-        }
-
-        String eneryptedPassword = passwordEncoder.encode(signupDto.getPassword());
-
-        // 비밀번호 중복 체크
-        if (isPasswordDuplicate(signupDto.getPassword())) {
-            throw new PasswordExistsException();
-        }
-
-        // 비밀번호 중복 체크
-        if (userRepository.findAll().stream()
-                .anyMatch(user -> passwordEncoder.matches(signupDto.getPassword(), user.getPassword()))) {
-            throw new PasswordExistsException();
-        }
+        // 중복 체크
+        validateSignup(signupDto);
+        // 비밀번호 암호화
+        String eneryptedPassword = passwordEncoder.encrypt(signupDto.getPassword());
 
         // 회원 저장
         User user = User.builder()
                 .email(signupDto.getEmail())
-                .password(eneryptedPassword)  // 암호화 필요
+                .password(eneryptedPassword)
                 .username(signupDto.getUsername())
                 .nickname(signupDto.getNickname())
                 .role(RoleType.USER)  // 기본 역할 (User)
@@ -68,8 +49,25 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // 비밀번호 중복 체크 메소드
-    private boolean isPasswordDuplicate(String password) {
-        return userRepository.existsByPassword(password);
+    // 회원가입 중복 처리 메소드
+    private void validateSignup(UserSignupDto signupDto){
+
+        // 비밀번호 != 비밀번호 확인
+        if (!signupDto.isPasswordConfirmed()) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        // 이메일 중복 체크
+        if (userRepository.findByEmail(signupDto.getEmail()).isPresent()) {
+            throw new EmailExistsException();
+        }
+        // 닉네임 중복 체크
+        if (userRepository.findByNickname(signupDto.getNickname()).isPresent()) {
+            throw new NicknameExistsException();
+        }
+        // 비밀번호 중복 체크
+        if (userRepository.findAll().stream()
+                .anyMatch(user -> passwordEncoder.matches(signupDto.getPassword(), user.getPassword()))) {
+            throw new PasswordExistsException();
+        }
     }
 }
