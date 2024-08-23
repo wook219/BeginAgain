@@ -11,17 +11,33 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "comment")
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "comment_id", nullable = false)
+    private Integer commentId;
 
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @ManyToOne
-    private User author;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
+    @Column(name = "updated_at", nullable = true)
+    private LocalDateTime updatedAt;
 
-    // 생성자, Getter, Setter 등 기본 메서드들
+    @Column(name = "user_id2", nullable = false)
+    private Integer userId2;
+
+    @Column(name = "post_id", nullable = false)
+    private Integer postId;
+
+    public Comment(String content, Integer userId2, Integer postId) {
+        this.content = content;
+        this.userId2 = userId2;
+        this.postId = postId;
+    }
 }
+
