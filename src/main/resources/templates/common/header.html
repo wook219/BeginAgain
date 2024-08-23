@@ -14,7 +14,14 @@
             </div>
             <nav>
                 <ul class="flex space-x-4">
-                    <li><a href="#" class="hover:underline">Login</a></li>
+                    <!-- 세션이 있는 경우: 로그아웃 링크 표시 -->
+                    <li th:if="${session.userId}">
+                        <a href="/logout" class="hover:underline">Logout</a>
+                    </li>
+                    <!-- 세션이 없는 경우: 로그인 링크 표시 -->
+                    <li th:unless="${session.userId}">
+                        <a href="/login" class="hover:underline">Login</a>
+                    </li>
                     <li><a href="#" class="hover:underline">MyPage</a></li>
                 </ul>
             </nav>
