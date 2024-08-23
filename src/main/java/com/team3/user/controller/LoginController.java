@@ -27,7 +27,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session) {
         User loginResult = userService.login(userLoginDto);
-        session.setAttribute("userId", loginResult.getId()); // 이메일을 세션에 저장
+        session.setAttribute("userId", loginResult.getId()); // id를 세션에 저장
         return "redirect:/api/board";
     }
     // 로그아웃 요청 처리

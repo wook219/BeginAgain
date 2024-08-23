@@ -7,7 +7,6 @@ import com.team3.user.entity.UserSignupDto;
 import com.team3.user.exception.*;
 import com.team3.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordService passwordEncoder;
 
     // 로그인
     public User login(UserLoginDto loginDto) {
@@ -43,12 +42,7 @@ public class UserService {
             throw new NicknameExistsException();
         }
 
-        String eneryptedPassword = passwordEncoder.encode(signupDto.getPassword());
-
-        // 비밀번호 중복 체크
-        if (isPasswordDuplicate(signupDto.getPassword())) {
-            throw new PasswordExistsException();
-        }
+        String eneryptedPassword = passwordEncoder.encrypt(signupDto.getPassword());
 
         // 비밀번호 중복 체크
         if (userRepository.findAll().stream()
@@ -59,17 +53,12 @@ public class UserService {
         // 회원 저장
         User user = User.builder()
                 .email(signupDto.getEmail())
-                .password(eneryptedPassword)  // 암호화 필요
+                .password(eneryptedPassword)
                 .username(signupDto.getUsername())
                 .nickname(signupDto.getNickname())
                 .role(RoleType.USER)  // 기본 역할 (User)
                 .build();
 
         return userRepository.save(user);
-    }
-
-    // 비밀번호 중복 체크 메소드
-    private boolean isPasswordDuplicate(String password) {
-        return userRepository.existsByPassword(password);
     }
 }
