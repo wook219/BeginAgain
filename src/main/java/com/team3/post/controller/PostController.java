@@ -24,6 +24,7 @@ public class PostController {
     @Autowired
     private BoardService boardService;
 
+    //boardId에 따른 게시글 목록 조회
     @GetMapping("/{boardId}")
     public String postList(@PathVariable("boardId") Integer boardId, Model m){
         List<PostDto> posts = postService.getPostsByBoardId(boardId);
@@ -38,6 +39,7 @@ public class PostController {
         return "post/postList";
     }
 
+    //게시글 번호에 따른 게시글 조회
     @GetMapping("/postdetail/{postId}")
     public String postdetail(@PathVariable("postId") Integer postId, Model m){
         PostEntity post = postService.getPostByPostId(postId);
@@ -49,17 +51,20 @@ public class PostController {
         return "post/post";
     }
 
+    //게시판번호에 따른 게시글 작성페이지 이동
     @GetMapping("/create/{boardId}")
     public String createPostForm(@PathVariable("boardId") Integer boardId, Model m){
         m.addAttribute("boardId",boardId);
         return "post/post_create";
     }
 
+    //게시글 작성
     @PostMapping("/create")
     public String createPost(@RequestParam("boardId") Integer boardId,
                                 PostDto postDto,
                              HttpSession session){
 
+        //로그인한 사용자의 세션을 postDto에 set
         Integer userId = (Integer)session.getAttribute("userId");
         postDto.setUserId(userId);
 
@@ -70,6 +75,7 @@ public class PostController {
         return "redirect:/post/" + boardId;
     }
 
+    //게시글 번호에 따른 게시글 수정 페이지
     @GetMapping("/modify/{postId}")
     public String modifyForm(@PathVariable("postId") Integer postId, Model m){
         PostEntity post = postService.getPostByPostId(postId);
@@ -78,6 +84,7 @@ public class PostController {
         return "post/post_modify";
     }
 
+    //게시글 번호에 따른 게시글 수정
     @PostMapping("/modify/{postId}")
     public String modifyPost(@PathVariable("postId") Integer postId,
                              PostDto postDto){
@@ -86,6 +93,7 @@ public class PostController {
         return "redirect:/post/postdetail/"+postId;
     }
 
+    //게시글 번호에 따른 게시글 삭제
     @PostMapping("/delete/{postId}")
     public String deletePost(@PathVariable("postId") Integer postId,
                              @RequestParam("boardId") Integer boardId){
