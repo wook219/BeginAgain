@@ -26,7 +26,7 @@ public class BoardController {
     //TODO : GET -> 목록
     // 모든 게시판 조회 후 목록 페이지로 이동
     @GetMapping("")
-    public String getAllBoards(Model model) {
+    public String getAllBoards(Model model) { //controller 와 view 사이에서 데이터를 주고받을 수 있는 데이터 꾸러미 = model
         List<BoardEntity> boards = boardService.getAllBoards();
         model.addAttribute("boards", boards);
         return "board/listBoards";  // listBoards.html로 이동
