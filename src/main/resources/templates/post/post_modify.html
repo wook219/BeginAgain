@@ -6,20 +6,22 @@
   <!-- Tailwind CSS CDN -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <!-- Post CSS -->
-  <link href="/post/post.css" rel="stylesheet">
+  <link href="/css/post/post.css" rel="stylesheet">
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 <!--Header fragment-->
 <div th:insert="~{common/header :: header}"></div>
 
 <!--Content-->
-<div class="post-container">
+<div class="post-container flex-grow">
   <h2 class="post-text">게시글 수정</h2>
-  <input type="text" placeholder="제목을 입력해 주세요." readonly>
-  <textarea cols="120" rows="30" placeholder="내용을 입력해 주세요." readonly></textarea>
-  <div class="button-group">
-    <button type="button" id="post-container-modifybtn" class="post-container btn">수정완료</button>
-  </div>
+  <form th:action="@{/post/modify/{postId}(postId=${postId})}" method="post">
+    <input type="text" th:value="${post.title}" name="title">
+    <textarea cols="120" rows="30"  th:text="${post.content}" name="content"></textarea>
+    <div class="button-group">
+      <button type="submit" id="post-container-modifybtn" class="post-container btn">수정완료</button>
+    </div>
+  </form>
 </div>
 
 <!--Footer fragment-->

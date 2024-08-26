@@ -1,8 +1,14 @@
 package com.team3.user.entity;
 
+import com.team3.board.BoardEntity;
+import com.team3.comment.entity.Comment;
 import com.team3.global.entity.BaseTimeEntity;
+import com.team3.post.entity.PostEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +35,15 @@ public class User extends BaseTimeEntity {
     @Column(name = "role", nullable = false)
     private RoleType role; // ADMIN, USER
 
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PostEntity> posts = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Comment> comments = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<BoardEntity> boards = new ArrayList<>();
+
     @Builder
     public User(String email, String password, String username, String nickname, RoleType role) {
         this.email = email;
@@ -36,5 +51,9 @@ public class User extends BaseTimeEntity {
         this.username = username;
         this.nickname = nickname;
         this.role = role;
+    }
+    // 닉네임 변경 로직
+    public void updateNickname(String newNickname) {
+        this.nickname = newNickname;
     }
 }

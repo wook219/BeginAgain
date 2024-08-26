@@ -16,5 +16,4 @@ public class PostDto {
     private Integer boardId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-
 }

@@ -10,12 +10,22 @@
     <header class="bg-gray-800 text-white">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="text-lg font-bold">
-                BeginAgain
+                <a href="/api/board">BeginAgain</a>
             </div>
             <nav>
                 <ul class="flex space-x-4">
-                    <li><a href="#" class="hover:underline">Login</a></li>
-                    <li><a href="#" class="hover:underline">MyPage</a></li>
+                    <!-- 세션이 있는 경우: 로그아웃 링크 표시 -->
+                    <li th:if="${session.userId}">
+                        <a href="/logout" class="hover:underline">Logout</a>
+                    </li>
+                    <!-- 세션이 없는 경우: 로그인 링크 표시 -->
+                    <li th:unless="${session.userId}">
+                        <a href="/login" class="hover:underline">Login</a>
+                    </li>
+                    <!-- 세션이 있는 경우: 마이페이지 링크 표시 -->
+                    <li th:if="${session.userId}">
+                        <a th:href="@{/mypage/{id}(id=${session.userId})}" class="hover:underline">MyPage</a>
+                    </li>
                 </ul>
             </nav>
         </div>
