@@ -68,7 +68,7 @@ public class UserService {
         }
     }
     // 회원 정보 조회
-    public MyPageDto getUserById(Integer userId) {
+    public MyPageDto getMyPageById(Integer userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을수 없습니다. " + userId));
         return new MyPageDto(user);

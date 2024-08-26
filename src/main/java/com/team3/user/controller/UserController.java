@@ -25,7 +25,7 @@ public class UserController {
             return "redirect:/login";
         }
 
-        MyPageDto userMyPageDto = userService.getUserById(userId);
+        MyPageDto userMyPageDto = userService.getMyPageById(userId);
 
         model.addAttribute("userMyPageDto", userMyPageDto);
         return "mypage";
@@ -40,7 +40,7 @@ public class UserController {
             userService.updateNickname(userId, newNickname);
         } catch (NicknameExistsException e) {
             model.addAttribute("nicknameError", e.getMessage());
-            MyPageDto userMyPageDto = userService.getUserById(userId);
+            MyPageDto userMyPageDto = userService.getMyPageById(userId);
             model.addAttribute("userMyPageDto", userMyPageDto);
             return "mypage";
         }
@@ -49,14 +49,9 @@ public class UserController {
     // 회원 탈퇴 처리
     @PostMapping("/delete/{id}")
     public String deleteMyPage(@PathVariable("id") Integer userId, HttpSession session) {
-//        Integer sessionUserId = (Integer) session.getAttribute("userId");
-//
-//        if (sessionUserId == null || !sessionUserId.equals(userId)) {
-//            return "redirect:/login";
-//        }
 
         userService.deleteUserById(userId);
         session.invalidate();
-        return "redirect:/board";
+        return "redirect:/api/board";
     }
 }

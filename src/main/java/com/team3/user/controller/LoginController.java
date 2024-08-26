@@ -28,12 +28,12 @@ public class LoginController {
     public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session) {
         User loginResult = userService.login(userLoginDto);
         session.setAttribute("userId", loginResult.getId()); // id를 세션에 저장
-        return "redirect:/board";
+        return "redirect:/api/board";
     }
     // 로그아웃 요청 처리
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 세션 무효화
-        return "redirect:/board";
+        return "redirect:/api/board";
     }
 }
