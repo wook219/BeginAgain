@@ -37,4 +37,19 @@ public class User extends BaseTimeEntity {
         this.nickname = nickname;
         this.role = role;
     }
+
+    // 닉네임 변경
+    public User withNickname(String newNickname) {
+        return User.builder()
+                .email(this.email)
+                .password(this.password)
+                .username(this.username)
+                .nickname(newNickname)
+                .role(this.role)
+                .build();
+    }
+
+    public void updateNickname(String newNickname) {
+        this.nickname = newNickname;
+    }
 }

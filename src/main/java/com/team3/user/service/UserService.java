@@ -1,9 +1,6 @@
 package com.team3.user.service;
 
-import com.team3.user.entity.RoleType;
-import com.team3.user.entity.User;
-import com.team3.user.entity.UserLoginDto;
-import com.team3.user.entity.UserSignupDto;
+import com.team3.user.entity.*;
 import com.team3.user.exception.*;
 import com.team3.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,5 +66,30 @@ public class UserService {
                 .anyMatch(user -> passwordEncoder.matches(signupDto.getPassword(), user.getPassword()))) {
             throw new PasswordExistsException();
         }
+    }
+    // 회원 정보 조회
+    public MyPageDto getUserById(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을수 없습니다. " + userId));
+        return new MyPageDto(user);
+    }
+    // 닉네임 수정
+    @Transactional
+    public void updateNickname(Integer userId, String newNickname) {
+        if (userRepository.existsByNickname(newNickname)) {
+            throw new NicknameExistsException();
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을수 없습니다. " + userId));
+
+        user.updateNickname(newNickname);
+        userRepository.save(user);
+    }
+
+    public void deleteUserById(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다. ID: " + userId));
+        userRepository.delete(user);
     }
 }
