@@ -19,8 +19,8 @@ public class LoginController {
 
     // 로그인 페이지 이동
     @GetMapping("/login")
-    public String loginForm(Model model) {
-        model.addAttribute("userLoginDto", new UserLoginDto());
+    public String loginForm() {
+       // model.addAttribute("userLoginDto", new UserLoginDto());
         return "login";
     }
     // 로그인 요청 처리
@@ -28,12 +28,12 @@ public class LoginController {
     public String login(@ModelAttribute UserLoginDto userLoginDto, HttpSession session) {
         User loginResult = userService.login(userLoginDto);
         session.setAttribute("userId", loginResult.getId()); // id를 세션에 저장
-        return "redirect:/api/board";
+        return "redirect:/board";
     }
     // 로그아웃 요청 처리
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // 세션 무효화
-        return "redirect:/api/board";
+        return "redirect:/board";
     }
 }

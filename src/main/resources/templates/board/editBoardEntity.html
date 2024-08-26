@@ -16,7 +16,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="card-title text-center mb-4">Edit Board</h2>
-            <form th:action="@{'/api/board/edit/' + ${board.boardId}}" th:method="post">
+            <form id="editForm">
                 <div class="mb-3">
                     <label for="title" class="form-label fw-bold">Title</label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${board.title}" required>
@@ -26,8 +26,8 @@
                     <textarea class="form-control" id="content" name="content" rows="8" required th:text="${board.content}"></textarea>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <a th:href="@{'/api/board/' + ${board.boardId}}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a th:href="@{'/board/' + ${board.boardId}}" class="btn btn-secondary">Cancel</a> <!-- 경로 수정 -->
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">Update</button>
                 </div>
             </form>
         </div>
@@ -36,6 +36,42 @@
 
 <!--Footer fragment-->
 <div th:insert="~{common/footer :: footer}"></div>
+
+<script>
+    function submitForm() {
+        const boardId = /* Use Thymeleaf to get the boardId */ [[${board.boardId}]];
+        const title = document.getElementById("title").value;
+        const content = document.getElementById("content").value;
+
+        const data = {
+            title: title,
+            content: content
+        };
+
+        fetch(`/board/edit/${boardId}`, {  // 경로를 '/api/board/edit/${boardId}'에서 '/board/edit/${boardId}'로 변경
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Failed to update board');
+                }
+            })
+            .then(result => {
+                if (result.includes("redirect:")) {
+                    window.location.href = result.replace("redirect:", "");
+                } else {
+                    alert('Error updating board');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 
 </body>
 </html>
