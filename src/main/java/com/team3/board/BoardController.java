@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
-@RequestMapping("api/board")
+@RequestMapping("/board")
 public class BoardController {
 
     private final BoardService boardService;
@@ -126,7 +126,7 @@ public class BoardController {
 
         try {
             boardService.addBoard(createBoardDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("redirect:/api/board");  // 저장 후 게시글 목록 페이지로 리다이렉트
+            return ResponseEntity.status(HttpStatus.CREATED).body("redirect:/board");  // 저장 후 게시글 목록 페이지로 리다이렉트
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the board.");  // 기타 에러 발생 시 에러 메시지를 반환
         }
@@ -172,7 +172,7 @@ public class BoardController {
                                               @RequestBody UpdateBoardDTO updateBoardDTO) {
         try {
             boardService.updateBoard(id, updateBoardDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("redirect:/api/board/" + id);  // 수정 후 해당 게시글 상세 페이지로 리다이렉트
+            return ResponseEntity.status(HttpStatus.OK).body("redirect:/board/" + id);  // 수정 후 해당 게시글 상세 페이지로 리다이렉트
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("error/404");  // 게시글이 없을 때 404 페이지로 이동
         }
@@ -186,7 +186,7 @@ public class BoardController {
     public String deleteBoard(@PathVariable("id") Integer id) {
         try {
             boardService.deleteBoard(id);
-            return "redirect:/api/board";  // 삭제 후 게시글 목록 페이지로 리다이렉트
+            return "redirect:/board";  // 삭제 후 게시글 목록 페이지로 리다이렉트
         } catch (NoSuchElementException e) {
             return "error/404";  // 게시글이 없을 때 404 페이지로 이동
         }

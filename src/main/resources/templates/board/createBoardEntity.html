@@ -57,7 +57,7 @@
             userId: parseInt(userId)  // 문자열을 정수로 변환하여 전송
         };
 
-        fetch('/api/board/create', {
+        fetch('/board/create', {  // 경로를 '/api/board/create'에서 '/board/create'로 변경
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
