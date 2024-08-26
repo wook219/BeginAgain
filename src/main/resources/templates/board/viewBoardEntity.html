@@ -21,14 +21,15 @@
                 <p th:text="${board.content}" class="lead">Board Content</p>
             </div>
             <div class="mb-4">
-                <p><strong>Created By:</strong> <span th:text="${board.userId}" class="text-muted">User ID</span></p>
+                <!-- 수정된 부분: 사용자 닉네임 출력 -->
+                <p><strong>Created By:</strong> <span th:text="${board.user.nickname}" class="text-muted">User Nickname</span></p>
                 <p><strong>Created At:</strong> <span th:text="${board.createdAt}" class="text-muted">Creation Date</span></p>
             </div>
             <div class="d-flex justify-content-between">
-                <a th:href="@{/board}" class="btn btn-secondary">Back to List</a> <!-- 경로 수정 -->
+                <a th:href="@{/board}" class="btn btn-secondary">Back to List</a>
                 <div>
-                    <a th:href="@{'/board/edit/' + ${board.boardId}}" class="btn btn-primary me-2">Edit</a> <!-- 경로 수정 -->
-                    <form th:action="@{'/board/delete/' + ${board.boardId}}" method="post" style="display:inline;"> <!-- 경로 수정 -->
+                    <a th:href="@{'/board/edit/' + ${board.boardId}}" class="btn btn-primary me-2">Edit</a>
+                    <form th:action="@{'/board/delete/' + ${board.boardId}}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </div>

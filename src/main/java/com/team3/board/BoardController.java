@@ -167,6 +167,13 @@ public class BoardController {
 
     }
 
+    // DELETE delete/{id} -> 삭제(DB저장)
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteBoardRest(@PathVariable("id") Integer id) {
+        boardService.deleteBoard(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Board deleted successfully.");
+    }
+
 
 
 /*

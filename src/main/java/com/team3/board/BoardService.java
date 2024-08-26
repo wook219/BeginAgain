@@ -1,5 +1,7 @@
 package com.team3.board;
 
+import com.team3.user.entity.User;
+import com.team3.user.repository.UserRepository;
 import com.team3.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,26 +13,29 @@ import java.util.NoSuchElementException;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;  // UserService 대신 UserRepository 사용
+
 
     @Autowired
-    public BoardService(BoardRepository boardRepository, UserService userService) {
+    public BoardService(BoardRepository boardRepository, UserRepository userRepository) {
         this.boardRepository = boardRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     // 게시판 생성
     public BoardEntity addBoard(CreateBoardDto createBoardDto) {
-        BoardEntity newBoard = new BoardEntity(
-                null, // id는 자동 생성
-                createBoardDto.getTitle(),
-                createBoardDto.getContent(),
-                createBoardDto.getUserId(),
-                LocalDateTime.now(), // 생성일자 설정
-                null, // 수정일자는 처음에는 null로 설정
-                null,  // 삭제일자는 처음에는 null로 설정
-                false
-        );
+        // UserRepository를 사용하여 User 엔티티를 조회
+        User user = userRepository.findById(createBoardDto.getUserId())
+                .orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다."));
+
+        // 새로운 BoardEntity 생성
+        BoardEntity newBoard = BoardEntity.builder()
+                .title(createBoardDto.getTitle())
+                .content(createBoardDto.getContent())
+                .user(user) // 연관된 User 엔티티 설정
+                .createdAt(LocalDateTime.now()) // 생성일자 설정
+                .isDeleted(false) // 삭제 여부 false로 설정
+                .build();
 
         boardRepository.save(newBoard);
         return newBoard;

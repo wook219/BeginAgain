@@ -34,7 +34,7 @@
                     <a th:href="@{'/board/' + ${board.boardId}}" class="text-xl">≡</a>
                 </div>
                 <p class="text-sm text-gray-700 mt-2" th:text="${board.content}">게시판 설명</p>
-                <span class="text-blue-500 block mt-4" th:text="${board.userId}">User ID</span>
+                <span class="text-blue-500 block mt-4" th:text="${board.user.nickname}">User ID</span>
             </div>
         </div>
     </section>
