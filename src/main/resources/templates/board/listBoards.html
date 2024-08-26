@@ -17,9 +17,9 @@
 <main class="container mx-auto px-4 py-8 flex-grow">
     <section class="flex justify-between items-center mb-6">
         <!-- 게시판 home 버튼 -->
-        <button onclick="location.href='http://localhost:8080/api/board'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 home</button>
+        <button onclick="location.href='http://localhost:8080/board'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 home</button>
         <!-- 게시판 추가 버튼 -->
-        <button onclick="location.href='http://localhost:8080/api/board/create'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 추가</button>
+        <button onclick="location.href='http://localhost:8080/board/create'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 추가</button>
     </section>
 
     <!-- 게시판 목록 표시 섹션 -->
@@ -31,7 +31,7 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold" th:text="${board.title}">게시판 제목</h2>
                     <!-- 수정 페이지로 이동하는 링크 -->
-                    <a th:href="@{'/api/board/' + ${board.boardId}}" class="text-xl">≡</a>
+                    <a th:href="@{'/board/' + ${board.boardId}}" class="text-xl">≡</a>
                 </div>
                 <p class="text-sm text-gray-700 mt-2" th:text="${board.content}">게시판 설명</p>
                 <span class="text-blue-500 block mt-4" th:text="${board.userId}">User ID</span>

@@ -25,10 +25,10 @@
                 <p><strong>Created At:</strong> <span th:text="${board.createdAt}" class="text-muted">Creation Date</span></p>
             </div>
             <div class="d-flex justify-content-between">
-                <a th:href="@{/api/board}" class="btn btn-secondary">Back to List</a>
+                <a th:href="@{/board}" class="btn btn-secondary">Back to List</a> <!-- 경로 수정 -->
                 <div>
-                    <a th:href="@{'/api/board/edit/' + ${board.boardId}}" class="btn btn-primary me-2">Edit</a>
-                    <form th:action="@{'/api/board/delete/' + ${board.boardId}}" method="post" style="display:inline;">
+                    <a th:href="@{'/board/edit/' + ${board.boardId}}" class="btn btn-primary me-2">Edit</a> <!-- 경로 수정 -->
+                    <form th:action="@{'/board/delete/' + ${board.boardId}}" method="post" style="display:inline;"> <!-- 경로 수정 -->
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </div>
