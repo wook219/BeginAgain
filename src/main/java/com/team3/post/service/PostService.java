@@ -62,6 +62,7 @@ public class PostService {
         return postDtos;
     }
 
+    //최신 업데이트 순 정렬
     public List<PostDto> getPostsByBoardIdUpdatedAtDesc(Integer boardId){
         //boardId에 해당하는 게시글 목록을 DB에서 조회
         List<PostEntity> posts = postRepository.findByBoardIdOrderByUpdatedAtDesc(boardId);
@@ -88,6 +89,33 @@ public class PostService {
         return postDtos;
     }
 
+    //키워드(글의 내용) 검색을 통한 목록 조회
+    public List<PostDto> getPostsBySearch(Integer boardId, String keyword){
+        List<PostEntity> posts = postRepository.searchByContent(boardId, keyword);
+
+        //PostDto 객체를 담을 리스트 생성
+        List<PostDto> postDtos = new ArrayList<>();
+
+        // 조회한 게시글 목록 루프 돌면서 postDtos에 추가
+        for (PostEntity post : posts) {
+            PostDto postDto = new PostDto();
+            postDto.setPostId(post.getPostId());
+            postDto.setTitle(post.getTitle());
+            postDto.setViews(post.getViews());
+            postDto.setContent(post.getContent());
+            postDto.setUserId(post.getUserId());
+            postDto.setBoardId(post.getBoardId());
+            postDto.setCreatedAt(post.getCreatedAt());
+            postDto.setUpdatedAt(post.getUpdatedAt());
+
+            postDtos.add(postDto);
+        }
+
+        //변환된 postDtos를 반환
+        return postDtos;
+    }
+
+    //조회순 정렬
     public List<PostDto> getPostsByBoardIdViewsDesc(Integer boardId){
         //boardId에 해당하는 게시글 목록을 DB에서 조회
         List<PostEntity> posts = postRepository.findByBoardIdOrderByViewsDesc(boardId);
