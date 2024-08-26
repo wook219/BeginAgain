@@ -70,7 +70,20 @@ public class UserService {
     // 회원 정보 조회
     public MyPageDto getUserById(Integer userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을수 없습니다. " + userId));
         return new MyPageDto(user);
+    }
+    // 닉네임 수정
+    @Transactional
+    public void updateNickname(Integer userId, String newNickname) {
+        if (userRepository.existsByNickname(newNickname)) {
+            throw new NicknameExistsException();
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을수 없습니다. " + userId));
+
+        user.updateNickname(newNickname);
+        userRepository.save(user);
     }
 }
