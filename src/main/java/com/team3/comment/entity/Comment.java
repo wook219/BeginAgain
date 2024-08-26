@@ -28,15 +28,15 @@ public class Comment {
     @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
 
-    @Column(name = "user_id2", nullable = false)
-    private Integer userId2;
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
 
     @Column(name = "post_id", nullable = false)
     private Integer postId;
 
-    public Comment(String content, Integer userId2, Integer postId) {
+    public Comment(String content, Integer userId, Integer postId) {
         this.content = content;
-        this.userId2 = userId2;
+        this.userId = userId;
         this.postId = postId;
     }
 }

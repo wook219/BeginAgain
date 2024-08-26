@@ -26,7 +26,7 @@ public class CommentService {
 
         Comment newComment = new Comment(
                 commentDto.getContent(),
-                commentDto.getUserId2(),
+                commentDto.getUserId(),
                 commentDto.getPostId()
         );  // 새로운 댓글 객체 생성
         return commentRepository.save(newComment);  // 댓글을 저장하고 저장된 댓글 반환
