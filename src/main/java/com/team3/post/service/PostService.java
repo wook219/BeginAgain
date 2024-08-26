@@ -3,13 +3,13 @@ package com.team3.post.service;
 import com.team3.post.entity.PostDto;
 import com.team3.post.entity.PostEntity;
 import com.team3.post.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 public class PostService {
@@ -21,7 +21,7 @@ public class PostService {
     }
 
     //게시글 생성
-    public PostEntity createPost(PostDto postDto){
+    public void createPost(PostDto postDto){
 
         PostEntity newPost = new PostEntity(
                 postDto.getTitle(),
@@ -32,7 +32,6 @@ public class PostService {
 
         postRepository.save(newPost);
 
-        return newPost;
     }
 
     //BoardId에 따른 게시글리스트 조회
@@ -70,7 +69,7 @@ public class PostService {
     }
 
     //게시글 수정
-    public PostEntity modifyPost(PostDto postDto){
+    public void modifyPost(PostDto postDto){
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 
         PostEntity post = postRepository.findById(postDto.getPostId())
@@ -80,7 +79,7 @@ public class PostService {
         post.setContent(postDto.getContent());
         post.setUpdatedAt(currentTimestamp);
 
-        return postRepository.save(post);
+        postRepository.save(post);
     }
 
     //게시글 삭제
@@ -89,5 +88,14 @@ public class PostService {
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
 
         postRepository.delete(post);
+    }
+
+    // 수정 or 삭제하려는 글의 작성자인지 아닌지 체크하는 메서드
+    public boolean userCheck(Integer sessionId, Integer userId){
+
+        if(Objects.equals(sessionId, userId)){
+            return true;
+        }
+        return false;
     }
 }
