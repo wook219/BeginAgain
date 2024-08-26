@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body class="gradient-custom">
+<script th:inline="javascript" type="text/javascript">
+    var user_session = [[${userSession} ?: 'Y']];
+    if(user_session === 'N'){
+        alert("로그인이 필요한 서비스입니다.");
+    }
+</script>
 <section class="d-flex vh-100 justify-content-center align-items-center">
     <div class="container col-md-4">
         <div class="card bg-transparent border-0">
