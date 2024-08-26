@@ -3,6 +3,7 @@ package com.team3.post.service;
 import com.team3.post.entity.PostDto;
 import com.team3.post.entity.PostEntity;
 import com.team3.post.repository.PostRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -48,6 +49,59 @@ public class PostService {
             postDto.setPostId(post.getPostId());
             postDto.setTitle(post.getTitle());
             postDto.setContent(post.getContent());
+            postDto.setViews(post.getViews());
+            postDto.setUserId(post.getUserId());
+            postDto.setBoardId(post.getBoardId());
+            postDto.setCreatedAt(post.getCreatedAt());
+            postDto.setUpdatedAt(post.getUpdatedAt());
+
+            postDtos.add(postDto);
+        }
+
+        //변환된 postDtos를 반환
+        return postDtos;
+    }
+
+    public List<PostDto> getPostsByBoardIdUpdatedAtDesc(Integer boardId){
+        //boardId에 해당하는 게시글 목록을 DB에서 조회
+        List<PostEntity> posts = postRepository.findByBoardIdOrderByUpdatedAtDesc(boardId);
+
+        //PostDto 객체를 담을 리스트 생성
+        List<PostDto> postDtos = new ArrayList<>();
+
+        // 조회한 게시글 목록 루프 돌면서 postDtos에 추가
+        for (PostEntity post : posts) {
+            PostDto postDto = new PostDto();
+            postDto.setPostId(post.getPostId());
+            postDto.setTitle(post.getTitle());
+            postDto.setViews(post.getViews());
+            postDto.setContent(post.getContent());
+            postDto.setUserId(post.getUserId());
+            postDto.setBoardId(post.getBoardId());
+            postDto.setCreatedAt(post.getCreatedAt());
+            postDto.setUpdatedAt(post.getUpdatedAt());
+
+            postDtos.add(postDto);
+        }
+
+        //변환된 postDtos를 반환
+        return postDtos;
+    }
+
+    public List<PostDto> getPostsByBoardIdViewsDesc(Integer boardId){
+        //boardId에 해당하는 게시글 목록을 DB에서 조회
+        List<PostEntity> posts = postRepository.findByBoardIdOrderByViewsDesc(boardId);
+
+        //PostDto 객체를 담을 리스트 생성
+        List<PostDto> postDtos = new ArrayList<>();
+
+        // 조회한 게시글 목록 루프 돌면서 postDtos에 추가
+        for (PostEntity post : posts) {
+            PostDto postDto = new PostDto();
+            postDto.setPostId(post.getPostId());
+            postDto.setTitle(post.getTitle());
+            postDto.setViews(post.getViews());
+            postDto.setContent(post.getContent());
             postDto.setUserId(post.getUserId());
             postDto.setBoardId(post.getBoardId());
             postDto.setCreatedAt(post.getCreatedAt());
@@ -70,14 +124,12 @@ public class PostService {
 
     //게시글 수정
     public void modifyPost(PostDto postDto){
-        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 
         PostEntity post = postRepository.findById(postDto.getPostId())
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
 
         post.setTitle(postDto.getTitle());
         post.setContent(postDto.getContent());
-        post.setUpdatedAt(currentTimestamp);
 
         postRepository.save(post);
     }
@@ -98,4 +150,5 @@ public class PostService {
         }
         return false;
     }
+
 }

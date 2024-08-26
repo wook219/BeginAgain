@@ -17,9 +17,9 @@ public abstract class BaseTimeEntity {
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
-    private Timestamp createdAt;
+    protected Timestamp createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_at", updatable = false)
-    private Timestamp updatedAt;
+    @Column(name = "updated_at", updatable = true)
+    protected Timestamp updatedAt;
 }
