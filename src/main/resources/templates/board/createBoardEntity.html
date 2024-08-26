@@ -16,7 +16,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="card-title text-center mb-4">Create Board</h2>
-            <form th:action="@{/api/board/create}" th:method="post">
+            <form id="createForm">
                 <div class="mb-3">
                     <label for="title" class="form-label fw-bold">Title</label>
                     <input type="text" class="form-control" id="title" name="title" placeholder="Enter board title" required>
@@ -30,7 +30,7 @@
                     <input type="text" class="form-control" id="user_id" name="user_id" placeholder="Enter your User ID" required>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">Create</button>
                 </div>
             </form>
         </div>
@@ -39,6 +39,48 @@
 
 <!--Footer fragment-->
 <div th:insert="~{common/footer :: footer}"></div>
+
+<script>
+    function submitForm() {
+        const title = document.getElementById("title").value;
+        const content = document.getElementById("content").value;
+        const userId = document.getElementById("user_id").value;
+
+        if (!userId) {
+            alert('User ID cannot be empty');
+            return;
+        }
+
+        const data = {
+            title: title,
+            content: content,
+            userId: parseInt(userId)  // 문자열을 정수로 변환하여 전송
+        };
+
+        fetch('/api/board/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Failed to create board');
+                }
+            })
+            .then(result => {
+                if (result.includes("redirect:")) {
+                    window.location.href = result.replace("redirect:", "");
+                } else {
+                    alert('Error creating board');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 
 </body>
 </html>
