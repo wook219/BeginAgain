@@ -10,6 +10,21 @@
 </head>
 <body class="min-h-screen flex flex-col">
 <!--Header fragment-->
+<script th:inline="javascript" type="text/javascript">
+    var user_check = [[${user_check} ?: 'Y']];
+    if (user_check === 'N') {
+      alert("해당 게시글의 작성자가 아닙니다.");
+    }
+
+    function confirmDelete(){
+        var result = confirm("게시글을 삭제하시겠습니까?");
+        if(result){
+            document.getElementById("delete-form").submit();
+            alert("게시글이 삭제되었습니다.");
+        }
+    }
+</script>
+
 <div th:insert="~{common/header :: header}"></div>
 
 <!--Content-->
@@ -20,9 +35,9 @@
         <div class="button-group">
             <a th:href="@{/post/{boardId}(boardId=${boardId})}" id="post-container-listbtn" class="post-container btn">목록</a>
             <a th:href="@{/post/modify/{postId}(postId=${postId})}" id="post-container-modifybtn" class="post-container btn">수정</a>
-            <form th:action="@{/post/delete/{postId}(postId=${postId})}" method="post">
+            <form th:action="@{/post/delete/{postId}(postId=${postId})}" method="post" id="delete-form">
                 <input type="hidden" th:value="${boardId}" name="boardId">
-                <button type="submit" id="post-container-deletebtn" class="post-container btn">삭제</button>
+                <button type="submit" id="post-container-deletebtn" class="post-container btn" onclick="confirmDelete()">삭제</button>
             </form>
         </div>
 </div>
