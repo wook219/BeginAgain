@@ -86,7 +86,8 @@ public class UserService {
         user.updateNickname(newNickname);
         userRepository.save(user);
     }
-
+    // 회원 삭제
+    @Transactional
     public void deleteUserById(Integer userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다. ID: " + userId));
