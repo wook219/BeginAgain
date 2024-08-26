@@ -160,12 +160,11 @@ public class BoardController {
     // POST delete/{id} -> 삭제(DB저장)
     // 게시판 삭제 처리 후 리다이렉트
 
-    @PostMapping("/delete/{id}")
-    public String deleteBoard(@PathVariable("id") Integer id) {
-        boardService.deleteBoard(id);
-        return "redirect:/board";  // 삭제 후 게시글 목록 페이지로 리다이렉트
-
-    }
+//    @PostMapping("/delete/{id}")
+//    public String deleteBoard(@PathVariable("id") Integer id) {
+//        boardService.deleteBoard(id);
+//        return "redirect:/board";  // 삭제 후 게시글 목록 페이지로 리다이렉트
+//    }
 
     // DELETE delete/{id} -> 삭제(DB저장)
     @DeleteMapping("/delete/{id}")
@@ -173,8 +172,6 @@ public class BoardController {
         boardService.deleteBoard(id);
         return ResponseEntity.status(HttpStatus.OK).body("Board deleted successfully.");
     }
-
-
 
 /*
     @DeleteMapping("/delete/{id}")
