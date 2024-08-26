@@ -20,7 +20,6 @@ public class BoardController {
 
     @Autowired
     public BoardController(BoardService boardService) {
-
         this.boardService = boardService;
     }
 
@@ -38,17 +37,10 @@ public class BoardController {
     // ID로 게시판 조회(수정, 삭제 기능) 후 상세 페이지로 이동
     @GetMapping("/{id}")
     public String getBoard(@PathVariable("id") Integer id, Model model) {
-        try {
-            BoardEntity board = boardService.getBoard(id);
-            model.addAttribute("board", board);
-            return "board/viewBoardEntity";  // viewBoardEntity.html로 이동
-        } catch (NoSuchElementException e) {
-            return "error/404";  // 게시글이 없을 때 404 페이지로 이동
-        } catch (IllegalStateException e) {
-            return "error/410";  // 게시글이 삭제되었을 때 410 페이지로 이동
-        }
+        BoardEntity board = boardService.getBoard(id);
+        model.addAttribute("board", board);
+        return "board/viewBoardEntity";  // viewBoardEntity.html로 이동
     }
-
 
 
 //    // GET {id} -> 조회
@@ -65,7 +57,6 @@ public class BoardController {
 //            return "error/404";  // 게시판이 없을 때 404 페이지로 이동
 //        }
 //    }
-
 
 
     // GET create -> 작성
@@ -123,28 +114,18 @@ public class BoardController {
 
         // createBoardDto에 userId 설정
         createBoardDto.setUserId(sessionUserId);
-
-        try {
-            boardService.addBoard(createBoardDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("redirect:/board");  // 저장 후 게시글 목록 페이지로 리다이렉트
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while creating the board.");  // 기타 에러 발생 시 에러 메시지를 반환
-        }
+        boardService.addBoard(createBoardDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("redirect:/board");  // 저장 후 게시글 목록 페이지로 리다이렉트
     }
-
 
 
     // GET edit/{id} -> 수정
     // 게시판 수정 폼으로 이동
     @GetMapping("/edit/{id}")
     public String showEditBoardForm(@PathVariable("id") Integer id, Model model) {
-        try {
-            BoardEntity board = boardService.getBoard(id);
-            model.addAttribute("board", board);
-            return "board/editBoardEntity";  // editBoardEntity.html로 이동
-        } catch (NoSuchElementException e) {
-            return "error/404";  // 게시글이 없을 때 404 페이지로 이동
-        }
+        BoardEntity board = boardService.getBoard(id);
+        model.addAttribute("board", board);
+        return "board/editBoardEntity";  // editBoardEntity.html로 이동
     }
 
     // POST edit/{id} -> 수정(DB저장)
@@ -170,12 +151,9 @@ public class BoardController {
     @PutMapping("/edit/{id}")
     public ResponseEntity<String> updateBoard(@PathVariable("id") Integer id,
                                               @RequestBody UpdateBoardDTO updateBoardDTO) {
-        try {
-            boardService.updateBoard(id, updateBoardDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("redirect:/board/" + id);  // 수정 후 해당 게시글 상세 페이지로 리다이렉트
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("error/404");  // 게시글이 없을 때 404 페이지로 이동
-        }
+
+        boardService.updateBoard(id, updateBoardDTO);
+        return ResponseEntity.status(HttpStatus.OK).body("redirect:/board/" + id);  // 수정 후 해당 게시글 상세 페이지로 리다이렉트
     }
 
 
@@ -184,12 +162,9 @@ public class BoardController {
 
     @PostMapping("/delete/{id}")
     public String deleteBoard(@PathVariable("id") Integer id) {
-        try {
-            boardService.deleteBoard(id);
-            return "redirect:/board";  // 삭제 후 게시글 목록 페이지로 리다이렉트
-        } catch (NoSuchElementException e) {
-            return "error/404";  // 게시글이 없을 때 404 페이지로 이동
-        }
+        boardService.deleteBoard(id);
+        return "redirect:/board";  // 삭제 후 게시글 목록 페이지로 리다이렉트
+
     }
 
 
