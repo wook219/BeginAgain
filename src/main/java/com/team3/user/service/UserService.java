@@ -1,9 +1,6 @@
 package com.team3.user.service;
 
-import com.team3.user.entity.RoleType;
-import com.team3.user.entity.User;
-import com.team3.user.entity.UserLoginDto;
-import com.team3.user.entity.UserSignupDto;
+import com.team3.user.entity.*;
 import com.team3.user.exception.*;
 import com.team3.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,5 +66,11 @@ public class UserService {
                 .anyMatch(user -> passwordEncoder.matches(signupDto.getPassword(), user.getPassword()))) {
             throw new PasswordExistsException();
         }
+    }
+    // 회원 정보 조회
+    public MyPageDto getUserById(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
+        return new MyPageDto(user);
     }
 }
