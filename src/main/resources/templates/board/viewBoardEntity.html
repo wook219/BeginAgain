@@ -22,7 +22,7 @@
                         if (response.ok) {
                             window.location.href = '/board';
                         } else {
-                            alert('Failed to delete the board.');
+                            alert('작성자가 아닙니다.');
                         }
                     })
                     .catch(error => {
@@ -30,6 +30,31 @@
                         alert('An error occurred while deleting the board.');
                     });
             }
+        }
+
+        // 추가된 함수: 게시글 편집 함수
+        function editBoard(boardId) {
+            fetch(`/board/edit/validate/${boardId}`, { // 서버에 GET 요청을 보내어 편집 페이지로 이동
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    console.log(boardId)
+                    console.log(response.body)
+                    console.log('Response Status:', response.status); // 응답 상태 코드
+                    console.log('Response Status Text:', response.statusText); // 응답 상태 텍스트
+                    if (response.ok) {
+                        window.location.href = `/board/edit/${boardId}`;
+                    } else {
+                        alert('작성자가 아닙니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while navigating to the edit page.');
+                });
         }
     </script>
 </head>
@@ -54,7 +79,7 @@
             <div class="d-flex justify-content-between">
                 <a th:href="@{/board}" class="btn btn-secondary">Back to List</a>
                 <div>
-                    <a th:href="@{'/board/edit/' + ${board.boardId}}" class="btn btn-primary me-2">Edit</a>
+                    <button type="button" class="btn btn-primary me-2" th:onclick="editBoard('[[${board.boardId}]]')">Edit</button>
                     <button type="button" class="btn btn-danger" th:onclick="deleteBoard('[[${board.boardId}]]')">Delete</button>
                 </div>
             </div>

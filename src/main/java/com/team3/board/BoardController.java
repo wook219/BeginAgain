@@ -114,6 +114,35 @@ public class BoardController {
         return "board/editBoardEntity";  // 뷰 이름 반환
     }
 
+
+    @GetMapping("/edit/validate/{id}")
+    public ResponseEntity<String> validateEditBoardForm(@PathVariable("id") Integer id, Model model, HttpSession session) {
+
+        // 세션에서 userId 가져오기
+        Object sessionUserIdValue = session.getAttribute("userId");
+
+        // sessionUserIdValue가 null인지 확인
+        if (sessionUserIdValue == null || sessionUserIdValue.toString().isEmpty()) {
+            // ResponseEntity로 리다이렉트 수행
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create("/login"));  // 리다이렉트할 경로 설정
+            return ResponseEntity.status(HttpStatus.SEE_OTHER).headers(headers).build();
+        }
+
+        // sessionUserIdValue를 Integer로 변환
+        Integer sessionUserId = (Integer) sessionUserIdValue;
+
+        BoardEntity board = boardService.getBoard(id);
+        Integer authorUserId = board.getUser().getId();
+
+        // 게시글 작성자와 세션 유저 ID가 일치하지 않는 경우
+        if (!authorUserId.equals(sessionUserId)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 다릅니다.");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("수정페이지로 접근해도돼");
+    }
+
     @PutMapping("/edit/{id}")
     public ResponseEntity<String> updateBoard(@PathVariable("id") Integer id,
                                               @RequestBody UpdateBoardDTO updateBoardDTO,
