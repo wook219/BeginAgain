@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,10 +36,17 @@ public class BoardEntity {
 //    @JoinColumn(name = "user_id", nullable = false)
 //    private UserEntity user;
 
-    @Column(name = "created_at", nullable = false)
+//    @Column(name = "created_at", nullable = false)
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "updated_at", nullable = true)
+//    private LocalDateTime updatedAt;
+
+
+    @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = true)
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     @Column(name = "deleted_at", nullable = true)
