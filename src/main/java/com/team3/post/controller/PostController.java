@@ -92,6 +92,8 @@ public class PostController {
             m.addAttribute("user_check", "N");
         }
 
+        postService.incrementViews(postId);
+
         m.addAttribute("boardId", boardId);
         m.addAttribute("post", post);
 
