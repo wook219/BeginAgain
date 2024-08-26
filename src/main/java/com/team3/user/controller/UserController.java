@@ -48,4 +48,17 @@ public class UserController {
         }
         return "redirect:/mypage/" + userId;
     }
+
+    @PostMapping("/mypage/delete/{id}")
+    public String deleteMyPage(@PathVariable("id") Integer userId, HttpSession session) {
+        Integer sessionUserId = (Integer) session.getAttribute("userId");
+
+        if (sessionUserId == null || !sessionUserId.equals(userId)) {
+            return "redirect:/login";
+        }
+
+        userService.deleteUserById(userId);
+        session.invalidate();
+        return "redirect:/api/board";
+    }
 }
