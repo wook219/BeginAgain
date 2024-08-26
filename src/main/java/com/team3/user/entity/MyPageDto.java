@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
+//@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyPageDto {
@@ -16,6 +16,7 @@ public class MyPageDto {
     private String username;
     private String nickname;
 
+    // entity -> dto
     public MyPageDto(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
