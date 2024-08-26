@@ -2,11 +2,10 @@ package com.team3.user.controller;
 
 import com.team3.user.entity.User;
 import com.team3.user.entity.UserLoginDto;
-import com.team3.user.service.UserService;
+import com.team3.user.service.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,12 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     // 로그인 페이지 이동
     @GetMapping("/login")
-    public String loginForm(Model model) {
-        model.addAttribute("userLoginDto", new UserLoginDto());
+    public String loginForm() {
         return "login";
     }
     // 로그인 요청 처리

@@ -47,14 +47,4 @@ public class PostEntity extends BaseTimeEntity {
         this.userId = userId;
         this.boardId = boardId;
     }
-
-    @PreUpdate
-    public void setUpdatedAt(){
-        this.updatedAt = new Timestamp(System.currentTimeMillis());
-    }
-
-    @PrePersist
-    public void setCreatedAt(){
-        this.createdAt = new Timestamp(System.currentTimeMillis());
-    }
 }

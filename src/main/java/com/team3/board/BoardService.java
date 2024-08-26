@@ -1,6 +1,6 @@
 package com.team3.board;
 
-import com.team3.user.service.UserService;
+import com.team3.user.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.NoSuchElementException;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository, UserService userService) {
+    public BoardService(BoardRepository boardRepository, UserServiceImpl userService) {
         this.boardRepository = boardRepository;
         this.userService = userService;
     }
