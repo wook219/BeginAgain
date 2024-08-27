@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class CreateBoardDto {
     private String title;
     private String content;
-    private Integer userId;
+    private Integer userId;  // User의 ID를 받도록 설정
 }
