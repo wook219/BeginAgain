@@ -15,19 +15,25 @@
 
 <!-- Main Content -->
 <main class="container mx-auto px-4 py-8 flex-grow">
+
+    <!-- 게시판 목록 제목 -->
+    <section id="boardTitle" class="mb-6 text-center">
+        <h1 class="text-3xl font-bold mb-4">게시판 목록</h1> <!-- 글씨 크기를 키움 -->
+    </section>
+
+    <!-- 게시판 home 및 추가 버튼 -->
     <section class="flex justify-between items-center mb-6">
-        <!-- 게시판 home 버튼 -->
         <button onclick="location.href='/board'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 home</button>
-        <!-- 게시판 추가 버튼 -->
         <button onclick="location.href='/board/create'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">게시판 추가</button>
     </section>
 
     <!-- 게시판 목록 표시 섹션 -->
     <section id="boardSection">
-        <h1 class="text-2xl font-bold mb-4 text-center">게시판 목록</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- 게시판 항목이 여기에 동적으로 추가됩니다 -->
-            <div th:each="board : ${boards}" class="bg-white border-2 border-blue-500 rounded-lg p-4 shadow-md">
+            <div th:each="board : ${boards}"
+                 class="bg-white border-2 border-blue-500 rounded-lg p-4 shadow-md hover:bg-gray-100 transition"
+                 th:onclick="location.href = '/post/' + [[${board.boardId}]]" style="cursor:pointer;">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold" th:text="${board.title}">게시판 제목</h2>
                     <!-- 수정 페이지로 이동하는 링크 -->

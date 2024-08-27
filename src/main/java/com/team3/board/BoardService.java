@@ -1,20 +1,25 @@
 package com.team3.board;
 
+import com.team3.global.exception.CustomException;
 import com.team3.user.entity.User;
 import com.team3.user.repository.UserRepository;
-import com.team3.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.team3.global.exception.ErrorCode.USER_NOT_AUTHENTICATED;
 
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;  // UserService 대신 UserRepository 사용
-
 
     @Autowired
     public BoardService(BoardRepository boardRepository, UserRepository userRepository) {
@@ -64,17 +69,13 @@ public class BoardService {
     }
 
     // 게시판 수정
-    public BoardEntity updateBoard(Integer boardId, UpdateBoardDTO updateBoardDTO) {
-        // TODO : 현재 접속 중인 사용자 정보 조회
-//        UserDocument currentUser = userService.getCurrentUser();
-
+    public BoardEntity updateBoard(Integer boardId, Integer currentUserId, UpdateBoardDTO updateBoardDTO) {
         // 공통 메서드를 사용하여 기존 게시판 조회
         BoardEntity existingBoard = findExistingBoard(boardId);
 
-        // TODO : 현재 사용자가 작성자인지 확인
-//        if (!existingBoard.getAuthor().getId().equals(currentUser.getId())) {
-//            throw new CustomException(USER_NOT_AUTHENTICATED);
-//        }
+        if (!existingBoard.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(USER_NOT_AUTHENTICATED);
+        }
 
         // 업데이트할 필드만 설정
         if (updateBoardDTO.getTitle() != null) {
@@ -91,17 +92,17 @@ public class BoardService {
         return boardRepository.save(existingBoard);
     }
 
+
     // 게시판 삭제
-    public BoardEntity deleteBoard(Integer boardId) {
-        // TODO : 현재 접속 중인 사용자 정보 조회
+    public BoardEntity deleteBoard(Integer boardId, Integer currentUserId) {
 
         // 공통 메서드를 사용하여 기존 게시판 조회
         BoardEntity existingBoard = findExistingBoard(boardId);
 
-        // TODO : 현재 사용자가 작성자인지 확인
-//        if (!existingBoard.getAuthor().getId().equals(currentUser.getId())) {
-//            throw new CustomException(USER_NOT_AUTHENTICATED);
-//        }
+        if (!existingBoard.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(USER_NOT_AUTHENTICATED);
+        }
+
 
         // 삭제일자 업데이트
         existingBoard.setDeletedAt(LocalDateTime.now());
