@@ -140,7 +140,7 @@ public class BoardController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 다릅니다.");
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body("수정페이지로 접근해도돼");
+        return ResponseEntity.status(HttpStatus.OK).body("수정페이지로 접근해도 됩니다.");
     }
 
     @PutMapping("/edit/{id}")

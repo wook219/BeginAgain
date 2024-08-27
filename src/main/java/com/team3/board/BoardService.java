@@ -1,5 +1,6 @@
 package com.team3.board;
 
+import com.team3.global.exception.CustomException;
 import com.team3.user.entity.User;
 import com.team3.user.repository.UserRepository;
 import com.team3.user.service.UserService;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.team3.global.exception.ErrorCode.BOARD_NOT_FOUND;
 
 @Service
 public class BoardService {
