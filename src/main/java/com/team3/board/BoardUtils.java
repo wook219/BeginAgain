@@ -25,4 +25,6 @@ public class BoardUtils {
         headers.setLocation(URI.create("/login"));
         return ResponseEntity.status(HttpStatus.SEE_OTHER).headers(headers).build();
     }
+
+
 }

@@ -80,13 +80,6 @@ public class BoardController {
         }
 
         BoardEntity board = boardService.getBoard(id);
-        Integer authorUserId = board.getUser().getId();
-
-        if (!authorUserId.equals(sessionUserId)) {
-            model.addAttribute("error", "유저 정보가 다릅니다.");
-            return "error/404";
-        }
-
         model.addAttribute("board", board);
         return "board/editBoardEntity";
     }
@@ -138,11 +131,8 @@ public class BoardController {
         BoardEntity board = boardService.getBoard(id);
         Integer authorUserId = board.getUser().getId();
 
-        if (!authorUserId.equals(sessionUserId)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보가 다릅니다.");
-        }
 
-        boardService.deleteBoard(id);
+        boardService.deleteBoard(id, sessionUserId);
         return ResponseEntity.status(HttpStatus.OK).body("Board deleted successfully.");
     }
 }

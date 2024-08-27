@@ -73,7 +73,6 @@ public class BoardService {
         // 공통 메서드를 사용하여 기존 게시판 조회
         BoardEntity existingBoard = findExistingBoard(boardId);
 
-        // TODO : 현재 사용자가 작성자인지 확인
         if (!existingBoard.getUser().getId().equals(currentUserId)) {
             throw new CustomException(USER_NOT_AUTHENTICATED);
         }
@@ -95,16 +94,15 @@ public class BoardService {
 
 
     // 게시판 삭제
-    public BoardEntity deleteBoard(Integer boardId) {
-        // TODO : 현재 접속 중인 사용자 정보 조회
+    public BoardEntity deleteBoard(Integer boardId, Integer currentUserId) {
 
         // 공통 메서드를 사용하여 기존 게시판 조회
         BoardEntity existingBoard = findExistingBoard(boardId);
 
-        // TODO : 현재 사용자가 작성자인지 확인
-//        if (!existingBoard.getAuthor().getId().equals(currentUser.getId())) {
-//            throw new CustomException(USER_NOT_AUTHENTICATED);
-//        }
+        if (!existingBoard.getUser().getId().equals(currentUserId)) {
+            throw new CustomException(USER_NOT_AUTHENTICATED);
+        }
+
 
         // 삭제일자 업데이트
         existingBoard.setDeletedAt(LocalDateTime.now());
