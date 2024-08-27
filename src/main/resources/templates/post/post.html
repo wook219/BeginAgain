@@ -13,6 +13,7 @@
 <script th:inline="javascript" type="text/javascript">
 
     var user_check = [[${user_check}]];
+    var currentSessionUserId = [[${currentSessionUserId}]];
 
     function handleDelete(){
         if(user_check === 'N'){
@@ -24,6 +25,10 @@
         }
     }
 
+    function commentDelete(){
+        var result = confirm("댓글을 삭제하시겠습니까?");
+        return result;
+    }
 </script>
 
 <div th:insert="~{common/header :: header}"></div>
@@ -45,22 +50,35 @@
 
 <!-- Comment Section -->
 <div class="comment-section flex-grow">
-    <h2 class="comment-title">댓글 목록 최신순</h2>
-    <div class="comment">
-        <span class="comment-author">선규</span>
-        <span class="comment-rating">0.8</span>
-        <span class="comment-date">2024.08.20 08:20</span>
-        <div class="comment-buttons">
-            <button type="button" class="comment-modify-btn">수정</button>
-            <button type="button" class="comment-delete-btn">삭제</button>
+    <h2 class="comment-title">댓글 목록</h2>
+    <div th:each="comment : ${comments}" class="bg-white p-4 rounded-lg shadow mb-4">
+        <div class="bg-white p-4 rounded-lg shadow mb-4">
+            <span class="comment-author" th:text="'작성자 : ' + ${comment.userId}"></span>
+            <span class="comment-date" th:text="${comment.updatedAt}"></span>
+        </div>
+        <p class="text-gray-800 mb-3" th:text="${comment.content}">댓글 내용</p>
+        <div class="flex justify-end space-x-2" th:if="${currentSessionUserId == comment.userId}">
+            <a th:href="@{/post/comment/modify(commentId=${comment.commentId}, postId=${post.postId})}"
+               class="text-blue-600 hover:text-blue-800">
+                수정
+            </a>
+            <form th:action="@{/post/comment/delete}" method="post" class="inline" onsubmit="return commentDelete()">
+                <button type="submit" class="text-red-600 hover:text-red-800">삭제</button>
+                <input type="hidden" th:value="${post.postId}" name="postId">
+                <input type="hidden" th:value="${comment.commentId}" name="commentId">
+            </form>
         </div>
     </div>
-    <div class="more-comments">
-        <a href="#">더보기</a>
-    </div>
+
     <div class="comment-input">
-        <textarea placeholder="댓글을 남겨보세요"></textarea>
-        <button type="button" class="comment-submit-btn">등록하기</button>
+        <form th:action="@{/post/comment/create}" method="post" class="flex justify-center">
+            <textarea th:if="${currentSessionUserId != null}" placeholder="댓글을 남겨보세요" rows="30" cols="200" name="content" required></textarea>
+            <textarea th:if="${currentSessionUserId == null}" rows="30" cols="200" readonly>로그인 후 이용해주세요</textarea>
+
+            <button th:if="${currentSessionUserId != null}" type="submit" class="comment-submit-btn">등록하기</button>
+
+            <input type="hidden" th:value="${post.postId}" name="postId">
+        </form>
     </div>
 </div>
 

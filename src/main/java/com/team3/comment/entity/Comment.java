@@ -1,5 +1,6 @@
 package com.team3.comment.entity;
 
+import com.team3.global.entity.BaseTimeEntity;
 import com.team3.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,21 +23,21 @@ public class Comment {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+//    @Column(name = "created_at", nullable = false)
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "updated_at", nullable = true)
+//    private LocalDateTime updatedAt;
 
-    @Column(name = "updated_at", nullable = true)
-    private LocalDateTime updatedAt;
-
-    @Column(name = "user_id2", nullable = false)
-    private Integer userId2;
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
 
     @Column(name = "post_id", nullable = false)
     private Integer postId;
 
-    public Comment(String content, Integer userId2, Integer postId) {
+    public Comment(String content, Integer userId, Integer postId) {
         this.content = content;
-        this.userId2 = userId2;
+        this.userId = userId;
         this.postId = postId;
     }
 }

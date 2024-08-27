@@ -258,6 +258,7 @@
 
 .comment-submit-btn {
     width: 100px;
+    margin-left: 40px;
     height: 50px;
     border: 1px solid transparent;
     background-color: black;
@@ -279,4 +280,26 @@
         position: absolute;
         right: 30.5%;
         top: 10%;
+}
+
+.post-paging {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.post-paging a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.post-paging a.active {
+    font-weight: bold;
+    color: #333;
+}
+
+.post-paging span {
+    margin: 0 10px;
 }
