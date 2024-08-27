@@ -3,6 +3,9 @@ package com.team3.post.service;
 import com.team3.post.entity.PostDto;
 import com.team3.post.entity.PostEntity;
 import com.team3.post.repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -36,30 +39,14 @@ public class PostService {
     }
 
     //BoardId에 따른 게시글리스트 조회
-    public List<PostDto> getPostsByBoardId(Integer boardId){
-        //boardId에 해당하는 게시글 목록을 DB에서 조회
-        List<PostEntity> posts = postRepository.findByBoardId(boardId);
+    public Page<PostDto> getPostsByBoardId(Integer boardId, int pageNumber, int pageSize, String sortBy, boolean ascending) {
+        int page = Math.max(0, pageNumber - 1);
 
-        //PostDto 객체를 담을 리스트 생성
-        List<PostDto> postDtos = new ArrayList<>();
+        Pageable pageable = PageRequest.of(page, pageSize,
+                Sort.by(ascending ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy));
+        Page<PostEntity> pageResult = postRepository.findByBoardId(boardId, pageable);
 
-        // 조회한 게시글 목록 루프 돌면서 postDtos에 추가
-        for (PostEntity post : posts) {
-            PostDto postDto = new PostDto();
-            postDto.setPostId(post.getPostId());
-            postDto.setTitle(post.getTitle());
-            postDto.setContent(post.getContent());
-            postDto.setViews(post.getViews());
-            postDto.setUserId(post.getUserId());
-            postDto.setBoardId(post.getBoardId());
-            postDto.setCreatedAt(post.getCreatedAt());
-            postDto.setUpdatedAt(post.getUpdatedAt());
-
-            postDtos.add(postDto);
-        }
-
-        //변환된 postDtos를 반환
-        return postDtos;
+        return pageResult.map(PostDto::new);
     }
 
     //최신 업데이트 순 정렬
