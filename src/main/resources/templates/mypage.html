@@ -68,8 +68,8 @@
 
     // 탈퇴 버튼 클릭 시 경고창 띄우기
     document.getElementById('delete-button').addEventListener('click', function() {
-        if (confirm('정말로 탈퇴하시겠습니까?')) {
-            window.location.href = '/mypage/delete'; // 서버로 탈퇴 요청
+        if (!confirm('정말로 탈퇴하시겠습니까?')) {
+            event.preventDefault(); // 탈퇴를 취소한 경우 폼 제출 중지
         }
     });
 </script>

@@ -17,26 +17,25 @@ public class UserController {
     private final UserServiceImpl userService;
 
     // 회원 정보 폼
-    @GetMapping
-    public String myPageForm(HttpSession session, Model model) {
+    @GetMapping("/{id}")
+    public String myPageForm(@PathVariable("id") Integer userId, HttpSession session, Model model) {
         Integer sessionUserId = (Integer) session.getAttribute("userId");
 
-        if (sessionUserId == null) {
+        if (sessionUserId == null || !sessionUserId.equals(userId)) {
             return "redirect:/login";
         }
 
-        MyPageDto userMyPageDto = userService.getMyPageById(sessionUserId);
+        MyPageDto userMyPageDto = userService.getMyPageById(userId);
 
         model.addAttribute("userMyPageDto", userMyPageDto);
         return "mypage";
     }
 
     // 회원 정보 수정 처리
-    @PostMapping("/update")
-    public String updateMyPage(HttpSession session,
+    @PostMapping("/update/{id}")
+    public String updateMyPage(@PathVariable("id") Integer userId,
                                @RequestParam("nickname") String newNickname,
                                Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
 
         try {
             userService.updateNickname(userId, newNickname);
@@ -46,15 +45,14 @@ public class UserController {
             model.addAttribute("userMyPageDto", userMyPageDto);
             return "mypage";
         }
-        return "redirect:/mypage";
+        return "redirect:/mypage/" +userId;
     }
     // 회원 탈퇴 처리
-    @PostMapping("/delete")
-    public String deleteMyPage(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("userId");
+    @PostMapping("/delete/{id}")
+    public String deleteMyPage(@PathVariable("id") Integer userId, HttpSession session) {
 
         userService.deleteUserById(userId);
         session.invalidate();
-        return "redirect:/api/board";
+        return "redirect:/board";
     }
 }
