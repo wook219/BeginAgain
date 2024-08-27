@@ -1,43 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>My Page</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body class="min-h-screen flex flex-col bg-gray-100">
 
+<body class="min-h-screen flex flex-col bg-gray-100">
 <!--Header fragment-->
 <div th:insert="~{common/header :: header}"></div>
 
 <div class="flex justify-center items-center flex-grow">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 class="text-3xl font-semibold text-center mb-8">My Page</h2>
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+        <div class="flex items-center justify-between mb-8 relative">
+            <div class="flex items-center">
+                <img src="https://via.placeholder.com/100" alt="Profile Image" class="rounded-full mr-4">
+                <div>
+                    <!-- 로그인된 사용자의 이름을 동적으로 표시 -->
+                    <h2 class="text-3xl font-semibold" th:text="${userMyPageDto.username} + ' 님'">Hyun 님</h2>
+                    <p class="text-gray-500">환영합니다 :)</p>
+                </div>
+            </div>
+            <!-- 수정 아이콘 -->
+            <i class="fas fa-pencil-alt absolute top-0 right-0 cursor-pointer w-6 h-6 text-gray-500" id="edit-button" title="수정하기"></i>
+        </div>
 
         <!-- 마이페이지 폼 -->
         <form th:action="@{/mypage/update/{id}(id=${userMyPageDto.id})}" method="POST" id="mypage-form" class="space-y-6">
-            <div>
-                <label for="email" class="block text-lg font-medium text-gray-700">이메일</label>
-                <input type="email" id="email" name="email" th:value="${userMyPageDto.email}" readonly class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg bg-gray-100 cursor-not-allowed">
+            <div class="flex items-center">
+                <i class="fas fa-envelope text-gray-500 mr-2"></i>
+                <label for="email" class="block text-lg font-medium text-gray-700">
+                    이메일
+                </label>
+                <input type="email" id="email" name="email" th:value="${userMyPageDto.email}" readonly
+                       class="ml-4 block w-2/3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg bg-gray-100 cursor-not-allowed">
             </div>
 
-            <div>
-                <label for="username" class="block text-lg font-medium text-gray-700">이름</label>
-                <input type="text" id="username" name="username" th:value="${userMyPageDto.username}" readonly class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg bg-gray-100 cursor-not-allowed">
+            <div class="flex items-center">
+                <i class="fas fa-user text-gray-500 mr-2"></i>
+                <label for="username" class="block text-lg font-medium text-gray-700">
+                    이름
+                </label>
+                <input type="text" id="username" name="username" th:value="${userMyPageDto.username}" readonly
+                       class="ml-4 block w-2/3 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg bg-gray-100 cursor-not-allowed">
             </div>
 
-            <div>
-                <label for="nickname" class="block text-lg font-medium text-gray-700">닉네임</label>
-                <input type="text" id="nickname" name="nickname" th:value="${userMyPageDto.nickname}" readonly class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg bg-gray-100">
-                <div th:if="${nicknameError != null}" class="text-red-500 text-sm mt-1">
-                    <p th:text="${nicknameError}"></p>
+            <div class="flex items-center relative">
+                <i class="fas fa-user-tag text-gray-500 mr-2"></i>
+                <label for="nickname" class="block text-lg font-medium text-gray-700">
+                    닉네임
+                </label>
+                <div class="flex items-center w-2/3 ml-4">
+                    <input type="text" id="nickname" name="nickname" th:value="${userMyPageDto.nickname}" readonly
+                           class="flex-grow rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg bg-gray-100 cursor-not-allowed pr-2">
+                    <button id="confirm-button" class="ml-2 bg-green-500 text-white px-2 py-1 rounded-md hidden">편집 완료</button>
                 </div>
             </div>
-
-            <!-- 수정 및 확인 버튼 -->
-            <button type="button" id="edit-button" class="w-full py-3 px-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75">
-                수정
-            </button>
+            <div th:if="${nicknameError != null}" class="text-red-500 text-sm mt-1">
+                <p th:text="${nicknameError}"></p>
+            </div>
         </form>
 
         <!-- 탈퇴 버튼 -->
@@ -50,24 +73,26 @@
 </div>
 
 <script>
-    // 수정 버튼 클릭 시 닉네임 입력 필드 활성화 및 버튼 텍스트 변경
-    document.getElementById('edit-button').addEventListener('click', function() {
+    // 수정 버튼 클릭 시 닉네임 입력 필드 활성화 및 확인 버튼 표시
+    document.getElementById('edit-button').addEventListener('click', function () {
         const nicknameField = document.getElementById('nickname');
-        const editButton = document.getElementById('edit-button');
+        const confirmButton = document.getElementById('confirm-button');
 
         if (nicknameField.hasAttribute('readonly')) {
             nicknameField.removeAttribute('readonly');
             nicknameField.classList.remove('bg-gray-100', 'cursor-not-allowed');
-            editButton.textContent = '수정 완료';
-            editButton.classList.replace('bg-indigo-600', 'bg-green-600');
-            editButton.classList.replace('hover:bg-indigo-700', 'hover:bg-green-700');
-        } else {
-            document.getElementById('mypage-form').submit();
+            confirmButton.classList.remove('hidden');
+            nicknameField.focus();
         }
     });
 
+    // 편집 완료 버튼 클릭 시 폼 제출
+    document.getElementById('confirm-button').addEventListener('click', function () {
+        document.getElementById('mypage-form').submit();
+    });
+
     // 탈퇴 버튼 클릭 시 경고창 띄우기
-    document.getElementById('delete-button').addEventListener('click', function() {
+    document.getElementById('delete-button').addEventListener('click', function () {
         if (!confirm('정말로 탈퇴하시겠습니까?')) {
             event.preventDefault(); // 탈퇴를 취소한 경우 폼 제출 중지
         }
@@ -78,4 +103,5 @@
 <div th:insert="~{common/footer :: footer}" class="mt-auto"></div>
 
 </body>
+
 </html>

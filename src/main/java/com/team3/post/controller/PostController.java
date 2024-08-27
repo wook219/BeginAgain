@@ -64,6 +64,21 @@ public class PostController {
         return "post/postList";
     }
 
+    // 검색 기능
+    @GetMapping("/{boardId}/search")
+    public String searchPost(@PathVariable("boardId") Integer boardId,
+                             @RequestParam("keyword") String keyword,
+                             Model m){
+        List<PostDto> posts = postService.getPostsBySearch(boardId, keyword);
+        String boardTitle = boardService.getBoard(boardId).getTitle();
+
+        m.addAttribute("posts",posts);
+        m.addAttribute("boardId", boardId);
+        m.addAttribute("boardTitle", boardTitle);
+
+        return "post/postList";
+    }
+
     //게시글 번호에 따른 게시글 조회
     @GetMapping("/postdetail/{postId}")
     public String postdetail(@PathVariable("postId") Integer postId,
@@ -74,9 +89,10 @@ public class PostController {
 
         Integer userId = postService.getPostByPostId(postId).getUserId();
         if(!postService.userCheck((Integer)session.getAttribute("userId"), userId)) {
-            System.out.println("여기 들왕ㅅ");
             m.addAttribute("user_check", "N");
         }
+
+        postService.incrementViews(postId);
 
         m.addAttribute("boardId", boardId);
         m.addAttribute("post", post);

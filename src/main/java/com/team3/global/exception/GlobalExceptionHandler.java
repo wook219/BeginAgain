@@ -34,11 +34,4 @@ public class GlobalExceptionHandler {
         model.addAttribute("signupError", ex.getErrorCode().getMessage());
         return "signup";
     }
-
-    @ExceptionHandler(PasswordExistsException.class)
-    public String handlePasswordExistsException(PasswordExistsException ex, Model model) {
-        model.addAttribute("userSignupDto", new UserSignupDto());
-        model.addAttribute("signupError", ex.getErrorCode().getMessage());
-        return "signup";
-    }
 }

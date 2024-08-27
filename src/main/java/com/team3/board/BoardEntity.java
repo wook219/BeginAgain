@@ -1,12 +1,15 @@
 package com.team3.board;
 
 import com.team3.post.entity.PostEntity;
+import com.team3.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "board")
 @Data
+@Builder
+//@EntityListeners(AuditingEntityListener.class)
 public class BoardEntity {
 
     @Id
@@ -29,19 +34,18 @@ public class BoardEntity {
     @Column(name = "content", length = 200, nullable = false)
     private String content;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
+//    @Column(name = "user_id", nullable = false)
+//    private Integer userId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private UserEntity user;
+    @ManyToOne(fetch = FetchType.LAZY) // LAZY에서 EAGER로 변경
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;  // User와의 관계 설정
 
 //    @Column(name = "created_at", nullable = false)
 //    private LocalDateTime createdAt;
 //
 //    @Column(name = "updated_at", nullable = true)
 //    private LocalDateTime updatedAt;
-
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -62,8 +66,4 @@ public class BoardEntity {
         this.isDeleted = this.deletedAt != null;
     }
 
-
-//    //게시글과 맵핍하기 위한 게시글 엔티티
-//    @OneToMany(mappedBy = "board")
-//    private List<PostEntity> posts;
 }
