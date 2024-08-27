@@ -20,11 +20,11 @@
         <h1 class="post-text" th:text="${boardTitle}"></h1>
 
         <div class="post-category">
-            <a id="post-order1" href="#">최신순</a>
-            <a id="post-order2" href="#">조회순</a>
+            <a id="post-order1" th:href="@{/post/{boardId}/updatedAt(boardId=${boardId})}">최신 업데이트순</a>
+            <a id="post-order2" th:href="@{/post/{boardId}/views(boardId=${boardId})}">조회순</a>
             <a th:href="@{/post/create/{boardId}(boardId=${boardId})}" id="button-link" class="bg-gray-800 text-white">글 작성하기</a>
             <div class="post-search">
-                <form action="#">
+                <form th:action="@{/post/{boardId}/search(boardId=${boardId})}" method="get">
                     <input type="text" value name="keyword" placeholder="검색할 내용을 입력해주세요.">
                     <button type="submit" class="search-btn"></button>
                 </form>

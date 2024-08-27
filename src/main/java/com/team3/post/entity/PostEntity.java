@@ -1,6 +1,7 @@
 package com.team3.post.entity;
 
 import com.team3.board.BoardEntity;
+import com.team3.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.sql.Timestamp;
 @Entity
 @NoArgsConstructor
 @Table(name = "post")
-public class PostEntity {
+public class PostEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +29,7 @@ public class PostEntity {
     private String content;
 
     @Column(name = "views", nullable = false)
-    private Integer views;
+    private Integer views = 0;
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
@@ -38,13 +39,6 @@ public class PostEntity {
     //    private BoardEntity board;
     @Column(name = "board_id", nullable = false)
     private Integer boardId;
-
-    @Column(name = "created_at", nullable = false)
-    private Timestamp createdAt;
-
-    @Column(name = "updated_at", nullable = true)
-    private Timestamp updatedAt;
-
 
     //게시글 create를 위한 생성자
     public PostEntity(String title, String content, Integer userId, Integer boardId) {

@@ -1,7 +1,7 @@
 package com.team3.user.controller;
 
 import com.team3.user.entity.UserSignupDto;
-import com.team3.user.service.UserService;
+import com.team3.user.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class SignupController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     // 회원가입 페이지 이동
     @GetMapping("/signup")
@@ -38,7 +38,7 @@ public class SignupController {
             userService.signup(userSignupDto);
             return "redirect:/login";
         } catch (IllegalArgumentException e) {
-            model.addAttribute("signupError", e.getMessage()); // 회원가입 실패 이유
+            model.addAttribute("signupError", e.getMessage()); // 사용자에게 회원가입 실패 이유 전달
             model.addAttribute("userSignupDto", userSignupDto); // 입력 데이터 유지
             return "signup";
         }
