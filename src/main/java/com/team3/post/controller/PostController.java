@@ -1,8 +1,10 @@
 package com.team3.post.controller;
 
 
-import com.team3.board.BoardEntity;
 import com.team3.board.BoardService;
+import com.team3.comment.entity.Comment;
+import com.team3.comment.entity.CommentDto;
+import com.team3.comment.service.CommentService;
 import com.team3.post.entity.PostDto;
 import com.team3.post.entity.PostEntity;
 import com.team3.post.service.PostService;
@@ -24,6 +26,9 @@ public class PostController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private CommentService commentService;
 
     //boardId에 따른 게시글 목록 조회
     @GetMapping("/{boardId}")
@@ -80,6 +85,8 @@ public class PostController {
 
         m.addAttribute("boardId", boardId);
         m.addAttribute("post", post);
+        List<Comment> comments = commentService.getCommentsByPostId(postId);
+        m.addAttribute("comments", comments);
 
         return "post/post";
     }
@@ -166,5 +173,22 @@ public class PostController {
         };
 
         return "redirect:/post/postdetail/"+postId;
+    }
+
+    // 댓글 등록
+    @PostMapping("/{postId}/comment")
+    public String addComment(@PathVariable("postId") Integer postId,
+                             @ModelAttribute CommentDto commentDto,
+                             HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";  // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+        }
+
+        commentDto.setUserId(userId);
+        commentDto.setPostId(postId);
+        commentService.addComment(commentDto);
+
+        return "redirect:/post/postdetail/" + postId;
     }
 }
