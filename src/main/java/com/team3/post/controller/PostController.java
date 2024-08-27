@@ -99,7 +99,7 @@ public class PostController {
         return "post/postList";
     }
 
-    //게시글 번호에 따른 게시글 조회
+    // 게시글 번호에 따른 게시글 조회
     @GetMapping("/postdetail/{postId}")
     public String postdetail(@PathVariable("postId") Integer postId,
                              Model m,
@@ -107,9 +107,10 @@ public class PostController {
         //게시글 로직
         PostEntity post = postService.getPostByPostId(postId);
         Integer boardId = post.getBoardId();
+        Integer currentSessionUserId = (Integer)session.getAttribute("userId");
 
         Integer userId = postService.getPostByPostId(postId).getUserId();
-        if(!postService.userCheck((Integer)session.getAttribute("userId"), userId)) {
+        if(!postService.userCheck(currentSessionUserId, userId)) {
             m.addAttribute("user_check", "N");
         }
 
@@ -121,8 +122,8 @@ public class PostController {
 
         //댓글 로직
         List<CommentDto> comments = commentService.getCommentsByPostId(postId);
-        System.out.println(comments);
         m.addAttribute("comments", comments);
+        m.addAttribute("currentSessionUserId", currentSessionUserId);
         return "post/post";
     }
 
@@ -136,9 +137,6 @@ public class PostController {
         commentDto.setUserId(userId);
 
         commentDto.setPostId(postId);
-
-        System.out.println("postId = " + commentDto.getPostId());
-        System.out.println("userId = " + commentDto.getUserId());
 
         commentService.addComment(commentDto);
 
@@ -172,7 +170,13 @@ public class PostController {
     //댓글 삭제
     @PostMapping("/comment/delete")
     public String deleteComment(@RequestParam("commentId") Integer commentId,
-                                @RequestParam("postId") Integer postId){
+                                @RequestParam("postId") Integer postId,
+                                RedirectAttributes rattr,
+                                HttpSession session){
+
+        Integer userId = commentService.getCommentById(commentId).getUserId();
+        Integer currentUserId = (Integer) session.getAttribute("userId");
+
         commentService.deleteComment(commentId);
 
         return "redirect:/post/postdetail/"+postId;
