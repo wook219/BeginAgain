@@ -35,7 +35,8 @@
             <table>
                 <tr>
                     <th>번호</th>
-                    <th style="width : 700px">제목</th>
+                    <th style="width : 600px">제목</th>
+                    <th style="width : 200px">작성자</th>
                     <th style="width : 200px">작성일자</th>
                     <th>조회수</th>
                 </tr>
@@ -43,6 +44,7 @@
                 <tr th:each="post : ${posts}">
                     <td th:text="${post.postId}"></td>
                     <td><a th:href="@{/post/postdetail/{postId}(postId=${post.postId})}" th:text="${post.title}"></a></td>
+                    <td th:text="${post.nickname}"></td>
                     <td th:text="${post.createdAt}"></td>
                     <td th:text="${post.views}"></td>
                 </tr>

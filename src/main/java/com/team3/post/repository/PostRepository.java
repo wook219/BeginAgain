@@ -11,11 +11,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<PostEntity, Integer> {
-    Page<PostEntity> findByBoardId(Integer boardId, Pageable pageable);
-    List<PostEntity> findByBoardId(Integer boardId);
-    List<PostEntity> findByBoardIdOrderByUpdatedAtDesc(Integer boardId);
-    List<PostEntity> findByBoardIdOrderByViewsDesc(Integer boardId);
+    Page<PostEntity> findByBoard_BoardId(Integer boardId, Pageable pageable);
+    List<PostEntity> findByBoard_BoardId(Integer boardId);
+    List<PostEntity> findByBoard_BoardIdOrderByUpdatedAtDesc(Integer boardId);
+    List<PostEntity> findByBoard_BoardIdOrderByViewsDesc(Integer boardId);
 
-    @Query("SELECT p FROM PostEntity p WHERE p.content LIKE %:keyword% AND p.boardId = :boardId")
+    @Query("SELECT p FROM PostEntity p WHERE p.content LIKE %:keyword% AND p.board.id = :boardId")
     List<PostEntity> searchByContent(@Param("boardId")Integer boardId, @Param("keyword")String keyword);
 }

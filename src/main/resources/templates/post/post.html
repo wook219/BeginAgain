@@ -85,7 +85,7 @@
     <h2 class="comment-title">댓글 목록</h2>
     <div th:each="comment : ${comments}" class="bg-white p-4 rounded-lg shadow mb-4">
         <div class="bg-white p-4 rounded-lg shadow mb-4">
-            <span class="comment-author" th:text="'작성자 : ' + ${comment.userId}"></span>
+            <span class="comment-author" th:text="'작성자 : ' + ${comment.nickname}"></span>
             <span class="comment-date" th:text="${comment.updatedAt}"></span>
         </div>
         <p class="text-gray-800 mb-3" th:text="${comment.content}">댓글 내용</p>
