@@ -30,7 +30,7 @@ public enum ErrorCode {
     OBJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "대상을 찾을 수 없습니다."),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "대상을 찾을 수 없습니다."),
     EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 계정입니다."), // hyun : 추가
-    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "게시판 번호가 존재하지 않습니다."),
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "게시판 번호가 존재하지 않습니다."), // 하현 : 추가
 
     /* 409 : CONFLICT : Resource의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "데이터가 이미 존재합니다."),

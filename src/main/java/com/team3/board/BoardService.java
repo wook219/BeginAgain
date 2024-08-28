@@ -4,6 +4,7 @@ import com.team3.global.exception.CustomException;
 import com.team3.user.entity.User;
 import com.team3.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,10 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import static com.team3.global.exception.ErrorCode.USER_NOT_AUTHENTICATED;
 
 @Service
@@ -64,8 +68,21 @@ public class BoardService {
     }
 
     // 게시판 전체 (리스트) 조회
-    public List<BoardEntity> getAllBoards() {
-        return boardRepository.findByDeletedAtIsNullOrderByCreatedAtDesc();
+//    public List<BoardEntity> getAllBoards() {
+//        return boardRepository.findByDeletedAtIsNullOrderByCreatedAtDesc();
+//    }
+
+    // 게시판 전체 (리스트) 조회 + 페이징 + 정렬 + 검색
+    public Page<BoardEntity> getBoards(int page, int size, String sortField, String sortDir, String keyword) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equalsIgnoreCase("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            return boardRepository.searchByKeyword(keyword, pageable);
+        } else {
+            return boardRepository.findAll(pageable);
+        }
     }
 
     // 게시판 수정

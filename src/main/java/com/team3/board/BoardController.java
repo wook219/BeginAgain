@@ -2,6 +2,7 @@ package com.team3.board;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,31 @@ public class BoardController {
         this.boardUtils = boardUtils;
     }
 
-    // GET -> 목록 : 모든 게시판 조회 후 목록 페이지로 이동
+    /*
+    GET -> 목록 : 모든 게시판 조회 후 목록 페이지로 이동
     @GetMapping("")
     public String getAllBoards(Model model) {
         List<BoardEntity> boards = boardService.getAllBoards();
         model.addAttribute("boards", boards);
         return "board/listBoards";  // listBoards.html로 이동
+    }
+    */
+
+    @GetMapping("")
+    public String getAllBoards(Model model,
+                               @RequestParam(value = "page", defaultValue = "0") int page,
+                               @RequestParam(value = "size", defaultValue = "10") int size,
+                               @RequestParam(value = "sortField", defaultValue = "createdAt") String sortField,
+                               @RequestParam(value = "sortDir", defaultValue = "desc") String sortDir,
+                               @RequestParam(value = "keyword", required = false) String keyword) {
+        Page<BoardEntity> boards = boardService.getBoards(page, size, sortField, sortDir, keyword);
+        model.addAttribute("boards", boards.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", boards.getTotalPages());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("keyword", keyword); // 검색 키워드를 모델에 추가
+        return "board/listBoards";
     }
 
     // GET {id} -> 조회 : ID로 게시판 조회 후 상세 페이지로 이동
