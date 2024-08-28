@@ -135,4 +135,43 @@ public class BoardController {
         boardService.deleteBoard(id, sessionUserId);
         return ResponseEntity.status(HttpStatus.OK).body("Board deleted successfully.");
     }
+
+    /////////////추가기능
+    // 최신 생성 순 정렬
+    @GetMapping("/createdAtDesc")
+    public String getBoardsOrderByCreatedAtDesc(Model model) {
+        List<BoardSortDto> boards = boardService.getAllBoardsOrderByCreatedAtDesc();  // 서비스에서 유사한 메서드 호출
+        model.addAttribute("boards", boards);
+        return "board/listBoards";  // listBoards.html로 이동
+    }
+
+    // 오래된 순 정렬
+    @GetMapping("/createdAtAsc")
+    public String getBoardsOrderByCreatedAtAsc(Model model) {
+        List<BoardSortDto> boards = boardService.getAllBoardsOrderByCreatedAtAsc();  // 서비스에서 유사한 메서드 호출
+        model.addAttribute("boards", boards);
+        return "board/listBoards";  // listBoards.html로 이동
+    }
+
+    // 게시판 제목으로 키워드 검색 메서드
+    @GetMapping("/search")
+    public String searchBoardsByTitle(@RequestParam("keyword") String keyword, Model model) {
+        List<BoardSearchDto> boards = boardService.searchBoardsByTitle(keyword);
+        model.addAttribute("boards", boards);
+        model.addAttribute("keyword", keyword);  // 검색어를 뷰에 전달
+        return "board/listBoards";  // listBoards.html로 이동
+    }
+
+//    // GET -> 목록 : 모든 게시판 조회 후 목록 페이지로 이동
+//    @GetMapping("")
+//    public String getAllBoards(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
+//        List<BoardEntity> boards;
+//        if (keyword != null && !keyword.isEmpty()) {
+//            boards = boardService.searchBoardsByTitle(keyword);
+//        } else {
+//            boards = boardService.getAllBoards();
+//        }
+//        model.addAttribute("boards", boards);
+//        return "board/listBoards";  // listBoards.html로 이동
+//    }
 }

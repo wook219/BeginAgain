@@ -13,7 +13,10 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import static com.team3.global.exception.ErrorCode.USER_NOT_AUTHENTICATED;
 
 @Service
@@ -109,4 +112,51 @@ public class BoardService {
 
         return boardRepository.save(existingBoard);
     }
+
+////////////////////////////////////////
+
+
+
+    // 게시판 생성일자 내림차순으로 조회
+    public List<BoardSortDto> getAllBoardsOrderByCreatedAtDesc() {
+        List<BoardEntity> boards = boardRepository.findByDeletedAtIsNullOrderByCreatedAtDesc();
+        return boards.stream().map(BoardSortDto::new).collect(Collectors.toList());
+    }
+
+    // 게시판 생성일자 오름차순으로 조회
+    public List<BoardSortDto> getAllBoardsOrderByCreatedAtAsc() {
+        List<BoardEntity> boards = boardRepository.findByDeletedAtIsNullOrderByCreatedAtAsc();
+        return boards.stream().map(BoardSortDto::new).collect(Collectors.toList());
+    }
+
+    // 페이징 처리된 게시판 생성일자 내림차순으로 조회
+    public Page<BoardSortDto> getAllBoardsOrderByCreatedAtDesc(Pageable pageable) {
+        Page<BoardEntity> boards = boardRepository.findByDeletedAtIsNullOrderByCreatedAtDesc(pageable);
+        return boards.map(BoardSortDto::new);
+    }
+
+    // 페이징 처리된 게시판 생성일자 오름차순으로 조회
+    public Page<BoardSortDto> getAllBoardsOrderByCreatedAtAsc(Pageable pageable) {
+        Page<BoardEntity> boards = boardRepository.findByDeletedAtIsNullOrderByCreatedAtAsc(pageable);
+        return boards.map(BoardSortDto::new);
+    }
+
+    // 게시판 제목으로 키워드 검색
+    public List<BoardSearchDto> searchBoardsByTitle(String keyword) {
+        List<BoardEntity> boards = boardRepository.searchByName(keyword);
+        return boards.stream().map(BoardSearchDto::new).collect(Collectors.toList());
+    }
+
+    // 게시판 내용으로 키워드 검색
+    public List<BoardSearchDto> searchBoardsByContent(String keyword) {
+        List<BoardEntity> boards = boardRepository.searchByDescription(keyword);
+        return boards.stream().map(BoardSearchDto::new).collect(Collectors.toList());
+    }
+
+    // 제목 또는 내용으로 키워드 검색 + 페이지네이션
+    public Page<BoardSearchDto> searchBoardsByTitleOrContent(String keyword, Pageable pageable) {
+        Page<BoardEntity> boards = boardRepository.searchByNameOrDescription(keyword, pageable);
+        return boards.map(BoardSearchDto::new);
+    }
+
 }
