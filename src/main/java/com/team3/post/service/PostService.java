@@ -65,7 +65,9 @@ public class PostService {
                         IOUtils.copy(inputStream, outputStream);
                     }
 
-                    PostPhotoEntity postPhotoEntity = new PostPhotoEntity(newPost, uuidFile.getAbsolutePath());
+                    String webPath = "/uploads/" + uuidFileName;
+
+                    PostPhotoEntity postPhotoEntity = new PostPhotoEntity(newPost, webPath);
                     postPhotoRepository.save(postPhotoEntity);
                 }
             }
