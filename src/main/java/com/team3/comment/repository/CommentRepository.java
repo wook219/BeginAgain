@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
-    // JpaRepository를 상속받아 기본 CRUD 메서드를 사용
-    List<Comment> findByPostId(Integer postId);
+    List<Comment> findByPost_PostId(Integer postId);
 }

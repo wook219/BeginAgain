@@ -1,10 +1,14 @@
 package com.team3.post.service;
 
+import com.team3.board.BoardEntity;
+import com.team3.board.BoardRepository;
 import com.team3.post.entity.PostDto;
 import com.team3.post.entity.PostEntity;
 import com.team3.post.entity.PostPhotoEntity;
 import com.team3.post.repository.PostPhotoRepository;
 import com.team3.post.repository.PostRepository;
+import com.team3.user.entity.User;
+import com.team3.user.repository.UserRepository;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -26,21 +30,33 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostPhotoRepository postPhotoRepository;
+    private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
 
-    public PostService(PostRepository postRepository, PostPhotoRepository postPhotoRepository){
+    public PostService(PostRepository postRepository, PostPhotoRepository postPhotoRepository, UserRepository userRepository, BoardRepository boardRepository){
         this.postRepository = postRepository;
         this.postPhotoRepository = postPhotoRepository;
+        this.userRepository = userRepository;
+        this.boardRepository = boardRepository;
     }
 
     //게시글 생성
     public void createPost(PostDto postDto, List<MultipartFile> images) throws IOException {
 
-        PostEntity newPost = new PostEntity(
-                postDto.getTitle(),
-                postDto.getContent(),
-                postDto.getUserId(),
-                postDto.getBoardId()
-        );
+        User user = userRepository.findById(postDto.getUserId())
+                .orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다."));
+
+        BoardEntity board = boardRepository.findById(postDto.getBoardId())
+                .orElseThrow(() -> new NoSuchElementException("게시판을 찾을 수 없습니다."));
+
+        PostEntity newPost = PostEntity.builder()
+                .title(postDto.getTitle())
+                .content(postDto.getContent())
+                .views(0)
+                .user(user) // Convert postDto.getUserId() to User entity as needed
+                .board(board) // Convert postDto.getBoardId() to BoardEntity as needed
+                .build();
+
 
         postRepository.save(newPost);
 
@@ -81,7 +97,7 @@ public class PostService {
 
         Pageable pageable = PageRequest.of(page, pageSize,
                 Sort.by(ascending ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy));
-        Page<PostEntity> pageResult = postRepository.findByBoardId(boardId, pageable);
+        Page<PostEntity> pageResult = postRepository.findByBoard_BoardId(boardId, pageable);
 
         return pageResult.map(PostDto::new);
     }
@@ -89,7 +105,7 @@ public class PostService {
     //최신 업데이트 순 정렬
     public List<PostDto> getPostsByBoardIdUpdatedAtDesc(Integer boardId){
         //boardId에 해당하는 게시글 목록을 DB에서 조회
-        List<PostEntity> posts = postRepository.findByBoardIdOrderByUpdatedAtDesc(boardId);
+        List<PostEntity> posts = postRepository.findByBoard_BoardIdOrderByUpdatedAtDesc(boardId);
 
         //PostDto 객체를 담을 리스트 생성
         List<PostDto> postDtos = new ArrayList<>();
@@ -101,8 +117,8 @@ public class PostService {
             postDto.setTitle(post.getTitle());
             postDto.setViews(post.getViews());
             postDto.setContent(post.getContent());
-            postDto.setUserId(post.getUserId());
-            postDto.setBoardId(post.getBoardId());
+            postDto.setUserId(post.getUser().getId());
+            postDto.setBoardId(post.getBoard().getBoardId());
             postDto.setCreatedAt(post.getCreatedAt());
             postDto.setUpdatedAt(post.getUpdatedAt());
 
@@ -127,8 +143,8 @@ public class PostService {
             postDto.setTitle(post.getTitle());
             postDto.setViews(post.getViews());
             postDto.setContent(post.getContent());
-            postDto.setUserId(post.getUserId());
-            postDto.setBoardId(post.getBoardId());
+            postDto.setUserId(post.getUser().getId());
+            postDto.setBoardId(post.getBoard().getBoardId());
             postDto.setCreatedAt(post.getCreatedAt());
             postDto.setUpdatedAt(post.getUpdatedAt());
 
@@ -142,7 +158,7 @@ public class PostService {
     //조회순 정렬
     public List<PostDto> getPostsByBoardIdViewsDesc(Integer boardId){
         //boardId에 해당하는 게시글 목록을 DB에서 조회
-        List<PostEntity> posts = postRepository.findByBoardIdOrderByViewsDesc(boardId);
+        List<PostEntity> posts = postRepository.findByBoard_BoardIdOrderByViewsDesc(boardId);
 
         //PostDto 객체를 담을 리스트 생성
         List<PostDto> postDtos = new ArrayList<>();
@@ -154,8 +170,8 @@ public class PostService {
             postDto.setTitle(post.getTitle());
             postDto.setViews(post.getViews());
             postDto.setContent(post.getContent());
-            postDto.setUserId(post.getUserId());
-            postDto.setBoardId(post.getBoardId());
+            postDto.setUserId(post.getUser().getId());
+            postDto.setBoardId(post.getBoard().getBoardId());
             postDto.setCreatedAt(post.getCreatedAt());
             postDto.setUpdatedAt(post.getUpdatedAt());
 

@@ -3,7 +3,10 @@ package com.team3.comment.service;
 import com.team3.comment.entity.Comment;
 import com.team3.comment.entity.CommentDto;
 import com.team3.comment.repository.CommentRepository;
+import com.team3.post.entity.PostEntity;
+import com.team3.post.repository.PostRepository;
 import com.team3.user.entity.User;
+import com.team3.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +18,32 @@ import java.util.NoSuchElementException;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     // 생성자를 통한 의존성 주입
     @Autowired
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
+        this.postRepository = postRepository;
     }
 
     // 댓글 추가
     public Comment addComment(CommentDto commentDto) { //content와 author(작성자)를 인자로 받아 새로운 Comment 객체를 생성하고, 이를 데이터베이스에 저장합니다.
 
-        Comment newComment = new Comment(
-                commentDto.getContent(),
-                commentDto.getUserId(),
-                commentDto.getPostId()
-        );  // 새로운 댓글 객체 생성
+        User user = userRepository.findById(commentDto.getUserId())
+                .orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다."));
+
+        PostEntity post = postRepository.findById(commentDto.getPostId())
+                .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
+
+        Comment newComment = Comment.builder()
+                        .content(commentDto.getContent())
+                        .user(user)
+                        .post(post)
+                        .build();
+
         return commentRepository.save(newComment);  // 댓글을 저장하고 저장된 댓글 반환
     }
 
@@ -42,7 +56,7 @@ public class CommentService {
 
     // 게시글 번호에 따른 모든 댓글 조회
     public List<CommentDto> getCommentsByPostId(Integer postId){
-        List<Comment> comments = commentRepository.findByPostId(postId);
+        List<Comment> comments = commentRepository.findByPost_PostId(postId);
 
         List<CommentDto> commentDtos = new ArrayList<>();
 
@@ -50,8 +64,8 @@ public class CommentService {
             CommentDto commentDto = new CommentDto();
             commentDto.setCommentId(comment.getCommentId());
             commentDto.setContent(comment.getContent());
-            commentDto.setUserId(comment.getUserId());
-            commentDto.setPostId(comment.getPostId());
+            commentDto.setUserId(comment.getUser().getId());
+            commentDto.setPostId(comment.getPost().getPostId());
 
             commentDtos.add(commentDto);
         }
