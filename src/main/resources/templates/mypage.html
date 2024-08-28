@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>My Page</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/mypage.css">
 </head>
 
 <body class="min-h-screen flex flex-col bg-gray-100">
@@ -16,22 +16,22 @@
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
         <div class="flex items-center justify-between mb-8 relative">
             <div class="flex items-center">
-                <img src="https://via.placeholder.com/100" alt="Profile Image" class="rounded-full mr-4">
                 <div>
-                    <!-- 로그인된 사용자의 이름을 동적으로 표시 -->
-                    <h2 class="text-3xl font-semibold" th:text="${userMyPageDto.username} + ' 님'">Hyun 님</h2>
+                    <h2 class="text-3xl font-semibold" th:text="${userMyPageDto.username} + ' 님'"></h2>
                     <p class="text-gray-500">환영합니다 :)</p>
                 </div>
             </div>
-            <!-- 수정 아이콘 -->
-            <i class="fas fa-pencil-alt absolute top-0 right-0 cursor-pointer w-6 h-6 text-gray-500" id="edit-button" title="수정하기"></i>
+            <!-- 수정 버튼 (연필 아이콘) -->
+            <img src="/images/edit-mypage.png" id="edit-button" class="absolute top-0 right-0 cursor-pointer w-6 h-6" title="수정하기" onclick="enableEditMode()">
         </div>
 
         <!-- 마이페이지 폼 -->
-        <form th:action="@{/mypage/update/{id}(id=${userMyPageDto.id})}" method="POST" id="mypage-form" class="space-y-6">
+        <form th:action="@{/mypage/update/{id}(id=${userMyPageDto.id})}" method="POST" id="mypage-form" enctype="multipart/form-data">
             <div class="flex items-center">
-                <i class="fas fa-envelope text-gray-500 mr-2"></i>
-                <label for="email" class="block text-lg font-medium text-gray-700">
+                <label for="email" class="flex items-center text-lg font-medium text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2.94 4.94A2.5 2.5 0 015.38 3.5h9.24a2.5 2.5 0 012.44 1.44L10 9.507 2.94 4.94zM2 5.383v8.747l5.546-4.327L2 5.383zm6.707 5.66l-5.253 4.097c.46.373 1.05.6 1.683.6h9.426c.633 0 1.223-.227 1.683-.6l-5.253-4.097L10 11.81l-1.293-.767zM18 5.383l-5.546 4.42L18 14.13V5.383z"/>
+                    </svg>
                     이메일
                 </label>
                 <input type="email" id="email" name="email" th:value="${userMyPageDto.email}" readonly
@@ -39,8 +39,10 @@
             </div>
 
             <div class="flex items-center">
-                <i class="fas fa-user text-gray-500 mr-2"></i>
-                <label for="username" class="block text-lg font-medium text-gray-700">
+                <label for="username" class="flex items-center text-lg font-medium text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z"/>
+                    </svg>
                     이름
                 </label>
                 <input type="text" id="username" name="username" th:value="${userMyPageDto.username}" readonly
@@ -48,14 +50,16 @@
             </div>
 
             <div class="flex items-center relative">
-                <i class="fas fa-user-tag text-gray-500 mr-2"></i>
-                <label for="nickname" class="block text-lg font-medium text-gray-700">
+                <label for="nickname" class="flex items-center text-lg font-medium text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 6.5a1.5 1.5 0 00-3 0v1.964a3.5 3.5 0 10-5 0V6.5a1.5 1.5 0 00-3 0v5.028a3.5 3.5 0 10-1 0V6.5a1.5 1.5 0 00-3 0v7.07a2 2 0 001 1.732V15.5a1.5 1.5 0 103 0v-1.264a3.5 3.5 0 005 0V15.5a1.5 1.5 0 103 0v-1.264a2 2 0 001-1.732V6.5z" clip-rule="evenodd"/>
+                    </svg>
                     닉네임
                 </label>
-                <div class="flex items-center w-2/3 ml-4">
+                <div class="relative w-2/3 ml-4">
                     <input type="text" id="nickname" name="nickname" th:value="${userMyPageDto.nickname}" readonly
                            class="flex-grow rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg bg-gray-100 cursor-not-allowed pr-2">
-                    <button id="confirm-button" class="ml-2 bg-green-500 text-white px-2 py-1 rounded-md hidden">편집 완료</button>
+                    <button id="confirm-button" type="submit" class="ml-2 bg-green-500 text-white px-2 py-1 rounded-md hidden">편집 완료</button>
                 </div>
             </div>
             <div th:if="${nicknameError != null}" class="text-red-500 text-sm mt-1">
@@ -73,8 +77,8 @@
 </div>
 
 <script>
-    // 수정 버튼 클릭 시 닉네임 입력 필드 활성화 및 확인 버튼 표시
-    document.getElementById('edit-button').addEventListener('click', function () {
+    // 수정 버튼 클릭 시 필드 및 프로필 이미지 업로드 활성화
+    function enableEditMode() {
         const nicknameField = document.getElementById('nickname');
         const confirmButton = document.getElementById('confirm-button');
 
@@ -84,9 +88,9 @@
             confirmButton.classList.remove('hidden');
             nicknameField.focus();
         }
-    });
+    }
 
-    // 편집 완료 버튼 클릭 시 폼 제출
+    // 편집 완료 버튼을 누르면 전체 폼 제출
     document.getElementById('confirm-button').addEventListener('click', function () {
         document.getElementById('mypage-form').submit();
     });
