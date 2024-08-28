@@ -2,30 +2,38 @@ package com.team3.post.service;
 
 import com.team3.post.entity.PostDto;
 import com.team3.post.entity.PostEntity;
+import com.team3.post.entity.PostPhotoEntity;
+import com.team3.post.repository.PostPhotoRepository;
 import com.team3.post.repository.PostRepository;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class PostService {
 
-    private final PostRepository postRepository;
+    @Value("${spring.servlet.multipart.location:C:/uploads/}")
+    private String uploadDir;
 
-    public PostService(PostRepository postRepository){
+    private final PostRepository postRepository;
+    private final PostPhotoRepository postPhotoRepository;
+
+    public PostService(PostRepository postRepository, PostPhotoRepository postPhotoRepository){
         this.postRepository = postRepository;
+        this.postPhotoRepository = postPhotoRepository;
     }
 
     //게시글 생성
-    public void createPost(PostDto postDto){
+    public void createPost(PostDto postDto, List<MultipartFile> images) throws IOException {
 
         PostEntity newPost = new PostEntity(
                 postDto.getTitle(),
@@ -36,7 +44,34 @@ public class PostService {
 
         postRepository.save(newPost);
 
+        if (images != null && !images.isEmpty()) {
+            File uploadDirFile = new File(uploadDir);
+            if (!uploadDirFile.exists() && !uploadDirFile.mkdirs()) {
+                throw new IOException("Failed to create directory: " + uploadDir);
+            }
+
+            for (MultipartFile image : images) {
+                if (!image.isEmpty()) {
+                    String originalFileName = image.getOriginalFilename();
+                    if (originalFileName == null) {
+                        throw new IOException("Original filename is null");
+                    }
+
+                    String uuidFileName = UUID.randomUUID() + "_" + originalFileName;
+                    File uuidFile = new File(uploadDirFile, uuidFileName);
+
+                    try (InputStream inputStream = image.getInputStream();
+                         OutputStream outputStream = new FileOutputStream(uuidFile)) {
+                        IOUtils.copy(inputStream, outputStream);
+                    }
+
+                    PostPhotoEntity postPhotoEntity = new PostPhotoEntity(newPost, uuidFile.getAbsolutePath());
+                    postPhotoRepository.save(postPhotoEntity);
+                }
+            }
+        }
     }
+
 
     //BoardId에 따른 게시글리스트 조회
     public Page<PostDto> getPostsByBoardId(Integer boardId, int pageNumber, int pageSize, String sortBy, boolean ascending) {

@@ -8,6 +8,8 @@ import com.team3.comment.entity.CommentDto;
 import com.team3.comment.service.CommentService;
 import com.team3.post.entity.PostDto;
 import com.team3.post.entity.PostEntity;
+import com.team3.post.entity.PostPhotoEntity;
+import com.team3.post.service.PostPhotoService;
 import com.team3.post.service.PostService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/post")
@@ -31,6 +37,9 @@ public class PostController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private PostPhotoService postPhotoService;
 
     //boardId에 따른 게시글 목록 조회
     @GetMapping("/{boardId}")
@@ -119,6 +128,14 @@ public class PostController {
         m.addAttribute("boardId", boardId);
         m.addAttribute("post", post);
 
+        //게시글 사진 로직
+        List<PostPhotoEntity> postPhotos = postPhotoService.getPhotosByPostId(postId);
+        List<String> imageUrls = postPhotos.stream()
+                .map(PostPhotoEntity::getImagePath)  // 파일 경로를 가져와서 URL로 변환
+                .toList();
+
+        m.addAttribute("imageUrls", imageUrls);
+
 
         //댓글 로직
         List<CommentDto> comments = commentService.getCommentsByPostId(postId);
@@ -185,16 +202,21 @@ public class PostController {
     //게시글 작성
     @PostMapping("/create")
     public String createPost(@RequestParam("boardId") Integer boardId,
+                             @RequestParam("images") List<MultipartFile> images,
                              PostDto postDto,
                              HttpSession session){
 
         //로그인한 사용자의 세션을 postDto에 set
         Integer userId = (Integer)session.getAttribute("userId");
         postDto.setUserId(userId);
-
         postDto.setBoardId(boardId);
 
-        postService.createPost(postDto);
+        try{
+            postService.createPost(postDto, images);
+        }catch (IOException e){
+            e.printStackTrace();
+            return "redirect:/create/" + boardId;
+        }
 
         return "redirect:/post/" + boardId;
     }

@@ -38,6 +38,13 @@
     <h1 class="post-text">게시글 조회</h1>
         <input type="text" th:value="${post.title}" placeholder="제목을 입력해 주세요." readonly>
         <textarea th:text="${post.content}" cols="120" rows="30" placeholder="내용을 입력해 주세요." readonly></textarea>
+
+        <div class="post-images">
+            <div th:each="imageUrl : ${imageUrls}">
+                <img th:src="@{${imageUrl}}" alt="Post Image" class="post-image">
+            </div>
+        </div>
+
         <div class="button-group">
             <a th:href="@{/post/{boardId}(boardId=${boardId})}" id="post-container-listbtn" class="post-container btn">목록</a>
             <a th:href="@{/post/modify/{postId}(postId=${postId})}" id="post-container-modifybtn" class="post-container btn">수정</a>

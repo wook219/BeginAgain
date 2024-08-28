@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,6 +41,13 @@ public class PostEntity extends BaseTimeEntity {
     //    private BoardEntity board;
     @Column(name = "board_id", nullable = false)
     private Integer boardId;
+
+    // 새로운 필드: 이미지 파일 경로
+    @Column(name = "image_url", length = 255)
+    private String imageUrl;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PostPhotoEntity> postPhoto = new ArrayList<>();
 
     //게시글 create를 위한 생성자
     public PostEntity(String title, String content, Integer userId, Integer boardId) {
