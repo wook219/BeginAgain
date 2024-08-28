@@ -1,14 +1,12 @@
 package com.team3.user.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-//@Setter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MyPageDto {
 
     private Integer id;
