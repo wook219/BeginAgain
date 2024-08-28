@@ -32,12 +32,30 @@
         <h1 class="text-3xl font-bold mb-4">게시판 목록</h1>
     </section>
 
+    <!-- 한 줄로 정렬된 섹션 -->
     <section class="flex justify-between items-center mb-6">
+        <!-- 검색 섹션: 좌측 정렬 -->
         <div class="flex items-center">
-            <div class="relative inline-block text-left mr-4">
-                <button id="sortButton" class="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none">
+            <form th:action="@{/board}" method="get" class="flex items-center border border-gray-400 rounded">
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                <input type="text" name="keyword" placeholder="게시판 검색" th:value="${keyword}" class="px-4 py-2 focus:outline-none">
+                <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">enter</button>
+            </form>
+        </div>
+
+        <!-- 정렬 드롭다운과 게시판 추가 버튼: 우측 정렬 -->
+        <div class="flex items-center space-x-4">
+            <!-- 드롭다운 버튼과 메뉴 -->
+            <div class="relative inline-block text-left">
+                <button id="sortButton" type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none">
                     정렬 기준
+                    <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
                 </button>
+
+                <!-- 드롭다운 메뉴 -->
                 <div id="dropdownMenu" class="dropdown-menu">
                     <a class="dropdown-item text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
                        th:href="@{/board(page=${currentPage}, sortField='createdAt', sortDir='desc', keyword=${keyword})}">최신순</a>
@@ -45,19 +63,11 @@
                        th:href="@{/board(page=${currentPage}, sortField='createdAt', sortDir='asc', keyword=${keyword})}">날짜순</a>
                 </div>
             </div>
-        </div>
 
-        <div class="flex flex-col items-end">
-            <button onclick="location.href='/board/create'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-2">
+            <!-- 게시판 추가 버튼 -->
+            <button onclick="location.href='/board/create'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                 게시판 추가
             </button>
-
-            <form th:action="@{/board}" method="get" class="flex items-center border border-gray-400 rounded">
-                <input type="hidden" name="sortField" th:value="${sortField}">
-                <input type="hidden" name="sortDir" th:value="${sortDir}">
-                <input type="text" name="keyword" placeholder="게시판 검색" th:value="${keyword}" class="px-4 py-2 focus:outline-none">
-                <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">enter</button>
-            </form>
         </div>
     </section>
 
@@ -103,13 +113,15 @@
 <div th:insert="~{common/footer :: footer}"></div>
 
 <script>
+    // 드롭다운 버튼 클릭 시 메뉴 표시/숨김
     document.getElementById('sortButton').addEventListener('click', function () {
         var dropdown = document.getElementById('dropdownMenu');
         dropdown.classList.toggle('show');
     });
 
+    // 드롭다운 외부 클릭 시 메뉴 숨김
     window.addEventListener('click', function (e) {
-        if (!e.target.matches('#sortButton')) {
+        if (!e.target.closest('#sortButton') && !e.target.closest('#dropdownMenu')) {
             var dropdown = document.getElementById('dropdownMenu');
             if (dropdown.classList.contains('show')) {
                 dropdown.classList.remove('show');
