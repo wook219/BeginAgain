@@ -34,11 +34,6 @@ public class UserServiceImpl implements UserService{
         // 비밀번호 암호화
         String encryptedPassword = passwordEncoder.encrypt(signupDto.getPassword());
 
-        // 비밀번호 중복 체크
-        if (userRepository.existsByPassword(encryptedPassword)) {
-            throw new PasswordExistsException();
-        }
-
         // 회원 저장
         User user = User.builder()
                 .email(signupDto.getEmail())

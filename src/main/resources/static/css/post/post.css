@@ -303,3 +303,68 @@
 .post-paging span {
     margin: 0 10px;
 }
+
+.post-images-wrapper {
+    overflow-x: auto; /* 수평 스크롤을 허용합니다 */
+    white-space: nowrap; /* 자식 요소들을 수평으로 나열합니다 */
+    margin: 20px 0; /* 상하 마진을 추가하여 콘텐츠와 이미지를 구분합니다 */
+}
+
+.post-images {
+    display: inline-block; /* 내부 요소가 수평으로 나열되도록 설정합니다 */
+    padding: 10px; /* 이미지와 주변 공간을 확보하기 위한 여백을 추가합니다 */
+}
+
+.post-image-container {
+    display: inline-block; /* 자식 요소들이 수평으로 나열되도록 설정합니다 */
+    margin-right: 10px; /* 각 이미지 간의 간격을 설정합니다 */
+}
+
+.post-image {
+    width: 200px; /* 이미지의 너비를 설정합니다 */
+    height: auto; /* 이미지의 비율을 유지하며 높이를 자동으로 설정합니다 */
+    border-radius: 5px; /* 이미지의 모서리를 둥글게 설정합니다 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 이미지에 약간의 그림자를 추가하여 입체감을 줍니다 */
+}
+
+/* 모달 창 스타일 */
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 1000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9); /* 반투명 검정 배경 */
+}
+
+/* 닫기 버튼 스타일 */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 모달 안의 이미지 스타일 */
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+/* 이미지 축소 및 확대 효과 */
+.modal-content, .post-image {
+    transition: transform 0.2s;
+}
+
+.post-image:hover {
+    transform: scale(1.1);
+}
