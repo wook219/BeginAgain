@@ -17,6 +17,7 @@ public class PostDto {
     private String content;
     private Integer views;
     private Integer userId;
+    private String nickname;
     private Integer boardId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -27,6 +28,7 @@ public class PostDto {
         this.content = postEntity.getContent();
         this.views = postEntity.getViews();
         this.userId = postEntity.getUser().getId();
+        this.nickname = postEntity.getUser().getNickname();
         this.boardId = postEntity.getBoard().getBoardId();
         this.createdAt = postEntity.getCreatedAt();
         this.updatedAt = postEntity.getUpdatedAt();
