@@ -4,6 +4,7 @@ import com.team3.global.exception.CustomException;
 import com.team3.user.entity.User;
 import com.team3.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,8 +68,21 @@ public class BoardService {
     }
 
     // 게시판 전체 (리스트) 조회
-    public List<BoardEntity> getAllBoards() {
-        return boardRepository.findByDeletedAtIsNullOrderByCreatedAtDesc();
+//    public List<BoardEntity> getAllBoards() {
+//        return boardRepository.findByDeletedAtIsNullOrderByCreatedAtDesc();
+//    }
+
+    // 게시판 전체 (리스트) 조회 + 페이징 + 정렬 + 검색
+    public Page<BoardEntity> getBoards(int page, int size, String sortField, String sortDir, String keyword) {
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equalsIgnoreCase("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            return boardRepository.searchByKeyword(keyword, pageable);
+        } else {
+            return boardRepository.findAll(pageable);
+        }
     }
 
     // 게시판 수정
@@ -112,51 +126,4 @@ public class BoardService {
 
         return boardRepository.save(existingBoard);
     }
-
-////////////////////////////////////////
-
-
-
-    // 게시판 생성일자 내림차순으로 조회
-    public List<BoardSortDto> getAllBoardsOrderByCreatedAtDesc() {
-        List<BoardEntity> boards = boardRepository.findByDeletedAtIsNullOrderByCreatedAtDesc();
-        return boards.stream().map(BoardSortDto::new).collect(Collectors.toList());
-    }
-
-    // 게시판 생성일자 오름차순으로 조회
-    public List<BoardSortDto> getAllBoardsOrderByCreatedAtAsc() {
-        List<BoardEntity> boards = boardRepository.findByDeletedAtIsNullOrderByCreatedAtAsc();
-        return boards.stream().map(BoardSortDto::new).collect(Collectors.toList());
-    }
-
-    // 페이징 처리된 게시판 생성일자 내림차순으로 조회
-    public Page<BoardSortDto> getAllBoardsOrderByCreatedAtDesc(Pageable pageable) {
-        Page<BoardEntity> boards = boardRepository.findByDeletedAtIsNullOrderByCreatedAtDesc(pageable);
-        return boards.map(BoardSortDto::new);
-    }
-
-    // 페이징 처리된 게시판 생성일자 오름차순으로 조회
-    public Page<BoardSortDto> getAllBoardsOrderByCreatedAtAsc(Pageable pageable) {
-        Page<BoardEntity> boards = boardRepository.findByDeletedAtIsNullOrderByCreatedAtAsc(pageable);
-        return boards.map(BoardSortDto::new);
-    }
-
-    // 게시판 제목으로 키워드 검색
-    public List<BoardSearchDto> searchBoardsByTitle(String keyword) {
-        List<BoardEntity> boards = boardRepository.searchByName(keyword);
-        return boards.stream().map(BoardSearchDto::new).collect(Collectors.toList());
-    }
-
-    // 게시판 내용으로 키워드 검색
-    public List<BoardSearchDto> searchBoardsByContent(String keyword) {
-        List<BoardEntity> boards = boardRepository.searchByDescription(keyword);
-        return boards.stream().map(BoardSearchDto::new).collect(Collectors.toList());
-    }
-
-    // 제목 또는 내용으로 키워드 검색 + 페이지네이션
-    public Page<BoardSearchDto> searchBoardsByTitleOrContent(String keyword, Pageable pageable) {
-        Page<BoardEntity> boards = boardRepository.searchByNameOrDescription(keyword, pageable);
-        return boards.map(BoardSearchDto::new);
-    }
-
 }

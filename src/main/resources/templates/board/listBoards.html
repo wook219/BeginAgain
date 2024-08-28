@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BeginAgain 게시판</title>
-    <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* Dropdown 메뉴가 처음에 숨겨지도록 설정 */
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -19,8 +17,6 @@
             border-radius: 0.375rem;
             z-index: 100;
         }
-
-        /* Dropdown 메뉴가 활성화되었을 때 보이도록 설정 */
         .dropdown-menu.show {
             display: block;
         }
@@ -29,63 +25,51 @@
 
 <body class="bg-white min-h-screen flex flex-col">
 
-<!--Header fragment-->
 <div th:insert="~{common/header :: header}"></div>
 
-<!-- Main Content -->
 <main class="container mx-auto px-4 py-8 flex-grow">
-
-    <!-- 게시판 목록 제목 -->
     <section id="boardTitle" class="mb-6 text-center">
         <h1 class="text-3xl font-bold mb-4">게시판 목록</h1>
     </section>
 
-    <!-- 정렬 기준 버튼, 게시판 추가 버튼 및 검색창 배치 -->
     <section class="flex justify-between items-center mb-6">
-        <!-- 왼쪽 정렬 기준 버튼 -->
         <div class="flex items-center">
-            <!-- 정렬 기준 선택 Dropdown -->
             <div class="relative inline-block text-left mr-4">
                 <button id="sortButton" class="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none">
                     정렬 기준
                 </button>
                 <div id="dropdownMenu" class="dropdown-menu">
-                    <!-- 최신순 정렬 버튼 -->
-                    <a class="dropdown-item text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" th:href="@{/board/createdAtDesc}">최신순</a>
-                    <!-- 날짜순 정렬 버튼 -->
-                    <a class="dropdown-item text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" th:href="@{/board/createdAtAsc}">날짜순</a>
+                    <a class="dropdown-item text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                       th:href="@{/board(page=${currentPage}, sortField='createdAt', sortDir='desc', keyword=${keyword})}">최신순</a>
+                    <a class="dropdown-item text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                       th:href="@{/board(page=${currentPage}, sortField='createdAt', sortDir='asc', keyword=${keyword})}">날짜순</a>
                 </div>
             </div>
         </div>
 
-        <!-- 오른쪽 게시판 추가 버튼과 검색창 -->
         <div class="flex flex-col items-end">
-            <!-- 게시판 추가 버튼 -->
             <button onclick="location.href='/board/create'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-2">
                 게시판 추가
             </button>
 
-            <!-- 검색창 -->
             <form th:action="@{/board}" method="get" class="flex items-center border border-gray-400 rounded">
-                <input type="text" name="keyword" placeholder="게시판 검색" class="px-4 py-2 focus:outline-none">
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                <input type="text" name="keyword" placeholder="게시판 검색" th:value="${keyword}" class="px-4 py-2 focus:outline-none">
                 <button type="submit" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">enter</button>
             </form>
         </div>
     </section>
 
-    <!-- 구분선 추가 -->
     <hr class="my-8 border-gray-300">
 
-    <!-- 게시판 목록 표시 섹션 -->
     <section id="boardSection">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- 게시판 항목이 여기에 동적으로 추가됩니다 -->
             <div th:each="board : ${boards}"
                  class="bg-white border-2 border-blue-500 rounded-lg p-4 shadow-md hover:bg-gray-100 transition"
-                 th:onclick="location.href = '/post/' + [[${board.boardId}]]" style="cursor:pointer;">
+                 th:onclick="|location.href='/post/' + [[${board.boardId}]]|" style="cursor:pointer;">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold" th:text="${board.title}">게시판 제목</h2>
-                    <!-- 수정 페이지로 이동하는 링크 -->
                     <a th:href="@{'/board/' + ${board.boardId}}" class="text-xl">≡</a>
                 </div>
                 <p class="text-sm text-gray-700 mt-2" th:text="${board.content}">게시판 설명</p>
@@ -94,19 +78,36 @@
         </div>
     </section>
 
+    <!-- 페이지네이션 -->
+    <div class="mt-8 flex justify-center">
+        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+            <a th:href="@{/board(page=${currentPage - 1}, sortField=${sortField}, sortDir=${sortDir}, keyword=${keyword})}"
+               th:if="${currentPage > 0}"
+               class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                이전
+            </a>
+            <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                <a th:href="@{/board(page=${i}, sortField=${sortField}, sortDir=${sortDir}, keyword=${keyword})}"
+                   th:text="${i + 1}"
+                   th:class="${i == currentPage} ? 'relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium bg-blue-500 text-white' : 'relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium bg-white text-gray-500 hover:bg-gray-50'"></a>
+            </span>
+            <a th:href="@{/board(page=${currentPage + 1}, sortField=${sortField}, sortDir=${sortDir}, keyword=${keyword})}"
+               th:if="${currentPage < totalPages - 1}"
+               class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                다음
+            </a>
+        </nav>
+    </div>
 </main>
 
-<!--Footer fragment-->
 <div th:insert="~{common/footer :: footer}"></div>
 
-<!-- JavaScript for Dropdown -->
 <script>
     document.getElementById('sortButton').addEventListener('click', function () {
         var dropdown = document.getElementById('dropdownMenu');
         dropdown.classList.toggle('show');
     });
 
-    // 클릭한 곳이 Dropdown 메뉴 외부일 때 메뉴 닫기
     window.addEventListener('click', function (e) {
         if (!e.target.matches('#sortButton')) {
             var dropdown = document.getElementById('dropdownMenu');
