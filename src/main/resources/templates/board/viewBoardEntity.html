@@ -11,6 +11,7 @@
         .board-title {
             font-size: 2rem; /* 제목을 더 크게 설정 */
             font-weight: bold; /* 제목을 더 굵게 설정 */
+            margin-bottom: 0; /* 제목과 구분선 사이의 간격을 줄이기 위해 여백 제거 */
         }
 
         /* 내용 폰트 스타일 */
@@ -21,6 +22,26 @@
         /* 제목과 내용 사이의 간격 */
         .title-content-gap {
             margin-top: 2rem; /* 간격을 넓게 설정 */
+        }
+
+        /* 작성자와 작성일자 스타일 */
+        .board-info {
+            text-align: right; /* 우측 정렬 */
+            font-size: 0.9rem; /* 텍스트 크기 설정 */
+            color: #6c757d; /* 텍스트 색상 (부트스트랩의 text-muted와 같은 색상) */
+        }
+
+        /* 제목과 작성자 정보를 같은 높이에 표시하는 스타일 */
+        .title-row {
+            display: flex; /* Flexbox 레이아웃을 사용하여 요소들을 수평으로 배치함 */
+            justify-content: space-between; /* 요소들을 양쪽 끝으로 정렬하여 공간을 균등하게 분배함 */
+            align-items: center; /* 요소들을 수직 방향으로 중앙에 정렬하여 시각적으로 균형을 맞춤 */
+        }
+
+        /* 구분선 스타일 */
+        .separator {
+            border-top: 1px solid #e0e0e0; /* 구분선 스타일 설정 */
+            margin: 0.5rem 0; /* 구분선 위아래 여백을 줄여 제목과의 간격 좁힘 */
         }
     </style>
     <script>
@@ -94,25 +115,34 @@
 <div th:insert="~{common/header :: header}"></div>
 
 <div class="container mt-5 flex-grow">
+    <h2 class="card-title text-center mb-4"> 게시판 상세 페이지 </h2>
+
     <div class="card shadow-sm">
         <div class="card-body">
-            <h2 class="card-title text-center mb-4"> 게시판 상세 페이지 </h2>
 
-            <!-- Title Section -->
-            <div class="mb-4">
+            <!-- 제목과 작성자 정보가 같은 줄에 표시되도록 수정 -->
+            <div class="title-row mb-4">
+                <!-- Title Section -->
                 <h3 th:text="${board.title}" class="text-primary board-title">Board Title</h3>
-
-                <!-- Title-Content Gap -->
-                <div class="title-content-gap"></div>
-
-                <!-- Content Section -->
-                <p th:text="${board.content}" class="lead board-content">Board Content</p>
             </div>
 
+            <!-- 구분선 추가 -->
+            <div class="separator"></div>
+
+            <!-- 작성자와 작성일시를 한 줄로 표시 -->
+            <div class="board-info mb-4">
+                <p>
+                    <span>작성자:</span> <span th:text="${board.user.nickname}">User Nickname</span> |
+                    <span>작성일:</span> <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">Creation Date</span>
+                </p>
+            </div>
+
+            <!-- 구분선 추가 -->
+            <div class="separator"></div>
+
+            <!-- Content Section -->
             <div class="mb-4">
-                <!-- 수정된 부분: 사용자 닉네임 출력 -->
-                <p><strong>작성자 : </strong> <span th:text="${board.user.nickname}" class="text-muted">User Nickname</span></p>
-                <p><strong>생성 일시 : </strong> <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm:ss')}" class="text-muted">Creation Date and Time</span></p>
+                <p th:text="${board.content}" class="lead board-content">Board Content</p>
             </div>
 
             <div class="d-flex justify-content-between">
