@@ -79,11 +79,12 @@ public class BoardService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         if (keyword != null && !keyword.isEmpty()) {
-            return boardRepository.searchByKeyword(keyword, pageable);
+            return boardRepository.searchByKeywordAndIsDeletedFalse(keyword, pageable);
         } else {
-            return boardRepository.findAll(pageable);
+            return boardRepository.findByIsDeletedFalse(pageable);
         }
     }
+
 
     // 게시판 수정
     public BoardEntity updateBoard(Integer boardId, Integer currentUserId, UpdateBoardDTO updateBoardDTO) {
