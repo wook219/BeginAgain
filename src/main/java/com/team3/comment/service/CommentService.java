@@ -44,6 +44,8 @@ public class CommentService {
                         .post(post)
                         .build();
 
+
+
         return commentRepository.save(newComment);  // 댓글을 저장하고 저장된 댓글 반환
     }
 
@@ -65,8 +67,10 @@ public class CommentService {
             commentDto.setCommentId(comment.getCommentId());
             commentDto.setContent(comment.getContent());
             commentDto.setUserId(comment.getUser().getId());
+            commentDto.setNickname(comment.getUser().getNickname());
+            commentDto.setCreateAt(comment.getCreatedAt());
+            commentDto.setUpdatedAt(comment.getUpdatedAt());
             commentDto.setPostId(comment.getPost().getPostId());
-
             commentDtos.add(commentDto);
         }
 

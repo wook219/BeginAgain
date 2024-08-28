@@ -41,6 +41,7 @@ public class PostController {
     @Autowired
     private PostPhotoService postPhotoService;
 
+
     //boardId에 따른 게시글 목록 조회
     @GetMapping("/{boardId}")
     public String postList(@PathVariable("boardId") Integer boardId,
@@ -154,8 +155,6 @@ public class PostController {
         commentDto.setUserId(userId);
         commentDto.setPostId(postId);
 
-        System.out.println("userId = " + userId);
-        System.out.println("postId = " + postId);
 
         commentService.addComment(commentDto);
 

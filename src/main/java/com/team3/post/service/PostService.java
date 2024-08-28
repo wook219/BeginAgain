@@ -118,6 +118,7 @@ public class PostService {
             postDto.setViews(post.getViews());
             postDto.setContent(post.getContent());
             postDto.setUserId(post.getUser().getId());
+            postDto.setNickname(post.getUser().getNickname());
             postDto.setBoardId(post.getBoard().getBoardId());
             postDto.setCreatedAt(post.getCreatedAt());
             postDto.setUpdatedAt(post.getUpdatedAt());
@@ -144,6 +145,7 @@ public class PostService {
             postDto.setViews(post.getViews());
             postDto.setContent(post.getContent());
             postDto.setUserId(post.getUser().getId());
+            postDto.setNickname(post.getUser().getNickname());
             postDto.setBoardId(post.getBoard().getBoardId());
             postDto.setCreatedAt(post.getCreatedAt());
             postDto.setUpdatedAt(post.getUpdatedAt());
@@ -171,6 +173,7 @@ public class PostService {
             postDto.setViews(post.getViews());
             postDto.setContent(post.getContent());
             postDto.setUserId(post.getUser().getId());
+            postDto.setNickname(post.getUser().getNickname());
             postDto.setBoardId(post.getBoard().getBoardId());
             postDto.setCreatedAt(post.getCreatedAt());
             postDto.setUpdatedAt(post.getUpdatedAt());
