@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을수 없습니다. " + userId));
         return new MyPageDto(user);
     }
+
     // 닉네임 수정
     @Transactional
     public void updateNickname(Integer userId, String newNickname) {
@@ -81,6 +82,7 @@ public class UserServiceImpl implements UserService{
         user.updateNickname(newNickname);
         userRepository.save(user);
     }
+
     // 회원 삭제
     @Transactional
     public void deleteUserById(Integer userId) {
