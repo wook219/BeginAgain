@@ -9,6 +9,7 @@ import com.team3.post.repository.PostPhotoRepository;
 import com.team3.post.repository.PostRepository;
 import com.team3.user.entity.User;
 import com.team3.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
 
-    public PostService(PostRepository postRepository, PostPhotoRepository postPhotoRepository, UserRepository userRepository, BoardRepository boardRepository){
+    public PostService(PostRepository postRepository, PostPhotoRepository postPhotoRepository, UserRepository userRepository, BoardRepository boardRepository) {
         this.postRepository = postRepository;
         this.postPhotoRepository = postPhotoRepository;
         this.userRepository = userRepository;
@@ -103,7 +104,7 @@ public class PostService {
     }
 
     //최신 업데이트 순 정렬
-    public List<PostDto> getPostsByBoardIdUpdatedAtDesc(Integer boardId){
+    public List<PostDto> getPostsByBoardIdUpdatedAtDesc(Integer boardId) {
         //boardId에 해당하는 게시글 목록을 DB에서 조회
         List<PostEntity> posts = postRepository.findByBoard_BoardIdOrderByUpdatedAtDesc(boardId);
 
@@ -131,7 +132,7 @@ public class PostService {
     }
 
     //키워드(글의 내용) 검색을 통한 목록 조회
-    public List<PostDto> getPostsBySearch(Integer boardId, String keyword){
+    public List<PostDto> getPostsBySearch(Integer boardId, String keyword) {
         List<PostEntity> posts = postRepository.searchByContent(boardId, keyword);
 
         //PostDto 객체를 담을 리스트 생성
@@ -158,7 +159,7 @@ public class PostService {
     }
 
     //조회순 정렬
-    public List<PostDto> getPostsByBoardIdViewsDesc(Integer boardId){
+    public List<PostDto> getPostsByBoardIdViewsDesc(Integer boardId) {
         //boardId에 해당하는 게시글 목록을 DB에서 조회
         List<PostEntity> posts = postRepository.findByBoard_BoardIdOrderByViewsDesc(boardId);
 
@@ -185,7 +186,7 @@ public class PostService {
         return postDtos;
     }
 
-    public void incrementViews(Integer postId){
+    public void incrementViews(Integer postId) {
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
 
@@ -194,7 +195,7 @@ public class PostService {
     }
 
     //postId에 따른 게시글 단건 조회
-    public PostEntity getPostByPostId(Integer postId){
+    public PostEntity getPostByPostId(Integer postId) {
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
 
@@ -202,7 +203,7 @@ public class PostService {
     }
 
     //게시글 수정
-    public void modifyPost(PostDto postDto){
+    public void modifyPost(PostDto postDto) {
 
         PostEntity post = postRepository.findById(postDto.getPostId())
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
@@ -214,7 +215,7 @@ public class PostService {
     }
 
     //게시글 삭제
-    public void deletePost(Integer postId){
+    public void deletePost(Integer postId) {
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
 
@@ -222,12 +223,22 @@ public class PostService {
     }
 
     // 수정 or 삭제하려는 글의 작성자인지 아닌지 체크하는 메서드
-    public boolean userCheck(Integer sessionId, Integer userId){
+    public boolean userCheck(Integer sessionId, Integer userId) {
 
-        if(Objects.equals(sessionId, userId)){
+        if (Objects.equals(sessionId, userId)) {
             return true;
         }
         return false;
     }
 
+    // post service : 특정 BoardId를 가진 게시글들을 일괄 삭제
+    // boardId로 모든 게시글을 삭제하는 메서드
+    @Transactional
+    public void deletePostsByBoardId(Integer boardId) {
+        List<PostEntity> posts = postRepository.findByBoard_BoardId(boardId);
+        if (!posts.isEmpty()) {
+            postRepository.deleteAll(posts);
+        }
+
+    }
 }
