@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Board</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -12,28 +11,22 @@
 <!--Header fragment-->
 <div th:insert="~{common/header :: header}"></div>
 
-<div class="container mt-5 flex-grow">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h2 class="card-title text-center mb-4">게시판 생성</h2>
-            <form id="createForm">
-                <div class="mb-3">
-                    <label for="title" class="form-label fw-bold">게시판 제목</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter board title" required>
-                </div>
-                <div class="mb-3">
-                    <label for="content" class="form-label fw-bold">게시판 소개</label>
-                    <textarea class="form-control" id="content" name="content" placeholder="Enter board content" rows="6" required></textarea>
-                </div>
-<!--                <div class="mb-3">-->
-<!--                    <label for="user_id" class="form-label fw-bold">User ID</label>-->
-<!--                    <input type="text" class="form-control" id="user_id" name="user_id" placeholder="Enter your User ID" required>-->
-<!--                </div>-->
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary" onclick="submitForm()">생성</button>
-                </div>
-            </form>
-        </div>
+<div class="container mx-auto mt-5 flex-grow">
+    <div class="bg-white shadow-sm p-4">
+        <h2 class="text-center text-2xl font-bold mb-4">게시판 생성</h2>
+        <form id="createForm">
+            <div class="mb-3">
+                <label for="title" class="block font-bold mb-2">게시판 제목</label>
+                <input type="text" class="form-input w-full px-3 py-2 border border-gray-300 rounded-md" id="title" name="title" placeholder="Enter board title" required>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="block font-bold mb-2">게시판 소개</label>
+                <textarea class="form-textarea w-full px-3 py-2 border border-gray-300 rounded-md" id="content" name="content" placeholder="Enter board content" rows="6" required></textarea>
+            </div>
+            <div class="flex justify-end">
+                <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onclick="submitForm()">생성</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -44,20 +37,10 @@
     function submitForm() {
         const title = document.getElementById("title").value;
         const content = document.getElementById("content").value;
-        // const userId = document.getElementById("user_id").value;
-        //
-        // if (!userId) {
-        //     alert('User ID cannot be empty');
-        //     return;
-        // }
 
-        const data = {
-            title: title,
-            content: content,
-            // userId: parseInt(userId)  // 문자열을 정수로 변환하여 전송
-        };
+        const data = { title, content };
 
-        fetch('/board/create', {  // 경로를 '/api/board/create'에서 '/board/create'로 변경
+        fetch('/board/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -78,7 +61,10 @@
                     alert('Error creating board');
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error occurred while creating the board.');
+            });
     }
 </script>
 
