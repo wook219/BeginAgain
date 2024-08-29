@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>게시글 생성</title>
     <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Post CSS -->
@@ -18,7 +18,9 @@
     <form th:action="@{/post/create}" method="post" enctype="multipart/form-data">
         <input type="text" placeholder="제목을 입력해 주세요." name="title">
         <textarea cols="120" rows="30" placeholder="내용을 입력해 주세요." name="content"></textarea>
+
         <input type="file" name="images" multiple>
+
         <div class="button-group">
             <button type="submit" id="post-container-listbtn" class="post-container btn">게시하기</button>
         </div>
