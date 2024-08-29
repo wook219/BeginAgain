@@ -284,6 +284,7 @@ public class PostController {
 
         //글 작성자가 맞으면 삭제 반영, 아니면 메시지 띄운 후 다시 게시글 페이지로
         if(postService.userCheck((Integer)session.getAttribute("userId"), userId)){
+            commentService.deleteCommentsByPostId(postId);
             postService.deletePost(postId);
 
             return "redirect:/post/" + boardId;
