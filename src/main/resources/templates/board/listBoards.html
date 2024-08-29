@@ -96,7 +96,7 @@
                class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                 이전
             </a>
-            <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <span th:if="${totalPages > 1}" th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
                 <a th:href="@{/board(page=${i}, sortField=${sortField}, sortDir=${sortDir}, keyword=${keyword})}"
                    th:text="${i + 1}"
                    th:class="${i == currentPage} ? 'relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium bg-blue-500 text-white' : 'relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium bg-white text-gray-500 hover:bg-gray-50'"></a>
