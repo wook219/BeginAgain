@@ -41,6 +41,7 @@ public class PostController {
     @Autowired
     private PostPhotoService postPhotoService;
 
+
     //boardId에 따른 게시글 목록 조회
     @GetMapping("/{boardId}")
     public String postList(@PathVariable("boardId") Integer boardId,
@@ -115,10 +116,10 @@ public class PostController {
                              HttpSession session){
         //게시글 로직
         PostEntity post = postService.getPostByPostId(postId);
-        Integer boardId = post.getBoardId();
+        Integer boardId = post.getBoard().getBoardId();
         Integer currentSessionUserId = (Integer)session.getAttribute("userId");
 
-        Integer userId = postService.getPostByPostId(postId).getUserId();
+        Integer userId = postService.getPostByPostId(postId).getUser().getId();
         if(!postService.userCheck(currentSessionUserId, userId)) {
             m.addAttribute("user_check", "N");
         }
@@ -152,14 +153,15 @@ public class PostController {
 
         Integer userId = (Integer)session.getAttribute("userId");
         commentDto.setUserId(userId);
-
         commentDto.setPostId(postId);
+
 
         commentService.addComment(commentDto);
 
         return "redirect:/post/postdetail/"+postId;
     }
 
+    //댓글 수정
     @GetMapping("/comment/modify")
     public String updateComment(@RequestParam("commentId") Integer commentId,
                                 @RequestParam("postId") Integer postId,
@@ -191,7 +193,7 @@ public class PostController {
                                 RedirectAttributes rattr,
                                 HttpSession session){
 
-        Integer userId = commentService.getCommentById(commentId).getUserId();
+        Integer userId = commentService.getCommentById(commentId).getUser().getId();
         Integer currentUserId = (Integer) session.getAttribute("userId");
 
         commentService.deleteComment(commentId);
@@ -246,7 +248,7 @@ public class PostController {
                              RedirectAttributes rattr,
                              HttpSession session){
 
-        Integer userId = postService.getPostByPostId(postId).getUserId();
+        Integer userId = postService.getPostByPostId(postId).getUser().getId();
 
         //글 작성자가 맞으면 수정페이지로 이동, 아니면 메시지 띄운 후 다시 게시글 페이지로
         if(postService.userCheck((Integer)session.getAttribute("userId"), userId)){
@@ -278,7 +280,7 @@ public class PostController {
                              Model m,
                              HttpSession session){
 
-        Integer userId = postService.getPostByPostId(postId).getUserId();
+        Integer userId = postService.getPostByPostId(postId).getUser().getId();
 
         //글 작성자가 맞으면 삭제 반영, 아니면 메시지 띄운 후 다시 게시글 페이지로
         if(postService.userCheck((Integer)session.getAttribute("userId"), userId)){

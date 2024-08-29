@@ -13,21 +13,21 @@
 <div th:insert="~{common/header :: header}"></div>
 
 <div class="container mt-5 flex-grow">
+    <h2 class="card-title text-center mb-4">게시판 수정</h2>
     <div class="card shadow-sm">
         <div class="card-body">
-            <h2 class="card-title text-center mb-4">Edit Board</h2>
             <form id="editForm">
                 <div class="mb-3">
-                    <label for="title" class="form-label fw-bold">Title</label>
+                    <label for="title" class="form-label fw-bold">게시판 제목</label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${board.title}" required>
                 </div>
                 <div class="mb-3">
-                    <label for="content" class="form-label fw-bold">Content</label>
+                    <label for="content" class="form-label fw-bold">게시판 소개</label>
                     <textarea class="form-control" id="content" name="content" rows="8" required th:text="${board.content}"></textarea>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <a th:href="@{'/board/' + ${board.boardId}}" class="btn btn-secondary">Cancel</a> <!-- 경로 수정 -->
-                    <button type="button" class="btn btn-primary" onclick="submitForm()">Update</button>
+                    <a th:href="@{'/board/' + ${board.boardId}}" class="btn btn-secondary">취소</a> <!-- 경로 수정 -->
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">수정</button>
                 </div>
             </form>
         </div>
