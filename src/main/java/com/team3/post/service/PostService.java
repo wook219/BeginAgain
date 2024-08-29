@@ -239,6 +239,5 @@ public class PostService {
         if (!posts.isEmpty()) {
             postRepository.deleteAll(posts);
         }
-
     }
 }

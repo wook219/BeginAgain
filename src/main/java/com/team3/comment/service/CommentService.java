@@ -100,6 +100,12 @@ public class CommentService {
                 .orElseThrow(() -> new NoSuchElementException("댓글을 찾을 수 없습니다."));  // ID로 댓글을 조회하고, 존재하지 않으면 예외 발생
     }
 
+    public void deleteCommentsByPostId(Integer postId){
+        List<Comment> comments = commentRepository.findByPost_PostId(postId);
+        if(!comments.isEmpty()){
+            commentRepository.deleteAll(comments);
+        }
+    }
 
 }
 
