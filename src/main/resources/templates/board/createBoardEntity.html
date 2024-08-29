@@ -13,9 +13,9 @@
 <div th:insert="~{common/header :: header}"></div>
 
 <div class="container mt-5 flex-grow">
+    <h2 class="card-title text-center mb-4">게시판 생성</h2>
     <div class="card shadow-sm">
         <div class="card-body">
-            <h2 class="card-title text-center mb-4">게시판 생성</h2>
             <form id="createForm">
                 <div class="mb-3">
                     <label for="title" class="form-label fw-bold">게시판 제목</label>
@@ -25,10 +25,10 @@
                     <label for="content" class="form-label fw-bold">게시판 소개</label>
                     <textarea class="form-control" id="content" name="content" placeholder="Enter board content" rows="6" required></textarea>
                 </div>
-<!--                <div class="mb-3">-->
-<!--                    <label for="user_id" class="form-label fw-bold">User ID</label>-->
-<!--                    <input type="text" class="form-control" id="user_id" name="user_id" placeholder="Enter your User ID" required>-->
-<!--                </div>-->
+                <!--                <div class="mb-3">-->
+                <!--                    <label for="user_id" class="form-label fw-bold">User ID</label>-->
+                <!--                    <input type="text" class="form-control" id="user_id" name="user_id" placeholder="Enter your User ID" required>-->
+                <!--                </div>-->
                 <div class="d-flex justify-content-end">
                     <button type="button" class="btn btn-primary" onclick="submitForm()">생성</button>
                 </div>
