@@ -1,5 +1,6 @@
 package com.team3.board;
 
+import com.team3.post.service.PostService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,11 +19,13 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final PostService postService; // PostService 추가
     private final BoardUtils boardUtils;
 
     @Autowired
-    public BoardController(BoardService boardService, BoardUtils boardUtils) {
+    public BoardController(BoardService boardService, PostService postService, BoardUtils boardUtils) {
         this.boardService = boardService;
+        this.postService = postService; // PostService 초기화
         this.boardUtils = boardUtils;
     }
 
@@ -39,7 +42,7 @@ public class BoardController {
     @GetMapping("")
     public String getAllBoards(Model model,
                                @RequestParam(value = "page", defaultValue = "0") int page,
-                               @RequestParam(value = "size", defaultValue = "10") int size,
+                               @RequestParam(value = "size", defaultValue = "9") int size,
                                @RequestParam(value = "sortField", defaultValue = "createdAt") String sortField,
                                @RequestParam(value = "sortDir", defaultValue = "desc") String sortDir,
                                @RequestParam(value = "keyword", required = false) String keyword) {
@@ -148,11 +151,15 @@ public class BoardController {
             return boardUtils.buildRedirectLogin(sessionUserId);
         }
 
-        BoardEntity board = boardService.getBoard(id);
-        Integer authorUserId = board.getUser().getId();
+//        BoardEntity board = boardService.getBoard(id);
+//        Integer authorUserId = board.getUser().getId();
 
+        // 먼저 게시판에 속한 게시글들을 삭제
+        postService.deletePostsByBoardId(id); // 게시글 삭제 추가
 
+        // 이후 게시판 자체를 삭제
         boardService.deleteBoard(id, sessionUserId);
+
         return ResponseEntity.status(HttpStatus.OK).body("Board deleted successfully.");
     }
 }

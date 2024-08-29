@@ -34,12 +34,12 @@ public class BoardEntity {
     @Column(name = "content", length = 200, nullable = false)
     private String content;
 
-//    @Column(name = "user_id", nullable = false)
-//    private Integer userId;
-
-    @ManyToOne(fetch = FetchType.LAZY) // LAZY에서 EAGER로 변경
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;  // User와의 관계 설정
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PostEntity> posts;  // 일대다 관계를 위해 List로 변경
 
 //    @Column(name = "created_at", nullable = false)
 //    private LocalDateTime createdAt;
