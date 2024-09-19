@@ -16,3 +16,4 @@ https://www.notion.so/elice-track/BeginAgain-6016c02cceb64c30b6120290a1c2aca3
 <hr>
 
 ### Refactoring
+09-19 MapStruct 라이브러리를 이용하여 Dto, Entity간 변환 코드 간소화
