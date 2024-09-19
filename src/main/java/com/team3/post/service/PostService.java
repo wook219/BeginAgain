@@ -5,12 +5,14 @@ import com.team3.board.BoardRepository;
 import com.team3.post.entity.PostDto;
 import com.team3.post.entity.PostEntity;
 import com.team3.post.entity.PostPhotoEntity;
+import com.team3.post.mapper.PostMapper;
 import com.team3.post.repository.PostPhotoRepository;
 import com.team3.post.repository.PostRepository;
 import com.team3.user.entity.User;
 import com.team3.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +35,9 @@ public class PostService {
     private final PostPhotoRepository postPhotoRepository;
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+
+    @Autowired
+    private PostMapper postMapper;
 
     public PostService(PostRepository postRepository, PostPhotoRepository postPhotoRepository, UserRepository userRepository, BoardRepository boardRepository) {
         this.postRepository = postRepository;
@@ -111,20 +116,8 @@ public class PostService {
         //PostDto 객체를 담을 리스트 생성
         List<PostDto> postDtos = new ArrayList<>();
 
-        // 조회한 게시글 목록 루프 돌면서 postDtos에 추가
         for (PostEntity post : posts) {
-            PostDto postDto = new PostDto();
-            postDto.setPostId(post.getPostId());
-            postDto.setTitle(post.getTitle());
-            postDto.setViews(post.getViews());
-            postDto.setContent(post.getContent());
-            postDto.setUserId(post.getUser().getId());
-            postDto.setNickname(post.getUser().getNickname());
-            postDto.setBoardId(post.getBoard().getBoardId());
-            postDto.setCreatedAt(post.getCreatedAt());
-            postDto.setUpdatedAt(post.getUpdatedAt());
-
-            postDtos.add(postDto);
+            postDtos.add(postMapper.toPostDto(post));
         }
 
         //변환된 postDtos를 반환
@@ -140,18 +133,7 @@ public class PostService {
 
         // 조회한 게시글 목록 루프 돌면서 postDtos에 추가
         for (PostEntity post : posts) {
-            PostDto postDto = new PostDto();
-            postDto.setPostId(post.getPostId());
-            postDto.setTitle(post.getTitle());
-            postDto.setViews(post.getViews());
-            postDto.setContent(post.getContent());
-            postDto.setUserId(post.getUser().getId());
-            postDto.setNickname(post.getUser().getNickname());
-            postDto.setBoardId(post.getBoard().getBoardId());
-            postDto.setCreatedAt(post.getCreatedAt());
-            postDto.setUpdatedAt(post.getUpdatedAt());
-
-            postDtos.add(postDto);
+            postDtos.add(postMapper.toPostDto(post));
         }
 
         //변환된 postDtos를 반환
@@ -168,18 +150,7 @@ public class PostService {
 
         // 조회한 게시글 목록 루프 돌면서 postDtos에 추가
         for (PostEntity post : posts) {
-            PostDto postDto = new PostDto();
-            postDto.setPostId(post.getPostId());
-            postDto.setTitle(post.getTitle());
-            postDto.setViews(post.getViews());
-            postDto.setContent(post.getContent());
-            postDto.setUserId(post.getUser().getId());
-            postDto.setNickname(post.getUser().getNickname());
-            postDto.setBoardId(post.getBoard().getBoardId());
-            postDto.setCreatedAt(post.getCreatedAt());
-            postDto.setUpdatedAt(post.getUpdatedAt());
-
-            postDtos.add(postDto);
+            postDtos.add(postMapper.toPostDto(post));
         }
 
         //변환된 postDtos를 반환
