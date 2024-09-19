@@ -12,3 +12,7 @@ https://www.notion.so/elice-track/BeginAgain-6016c02cceb64c30b6120290a1c2aca3
 ![image](https://github.com/user-attachments/assets/86225b4a-9d65-4c28-bb3f-640c30f96517)
 ![image](https://github.com/user-attachments/assets/4bb1c874-5762-4095-894a-6e02410e7a1a)
 ![image](https://github.com/user-attachments/assets/9a6e6a96-61fd-4135-9afb-13697f4eda5d)
+
+<hr>
+
+### Refactoring
