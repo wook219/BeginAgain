@@ -2,6 +2,7 @@ package com.team3.comment.service;
 
 import com.team3.comment.entity.Comment;
 import com.team3.comment.entity.CommentDto;
+import com.team3.comment.mapper.CommentMapper;
 import com.team3.comment.repository.CommentRepository;
 import com.team3.post.entity.PostEntity;
 import com.team3.post.repository.PostRepository;
@@ -16,6 +17,9 @@ import java.util.NoSuchElementException;
 
 @Service
 public class CommentService {
+
+    @Autowired
+    CommentMapper commentMapper;
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
@@ -63,15 +67,7 @@ public class CommentService {
         List<CommentDto> commentDtos = new ArrayList<>();
 
         for (Comment comment : comments) {
-            CommentDto commentDto = new CommentDto();
-            commentDto.setCommentId(comment.getCommentId());
-            commentDto.setContent(comment.getContent());
-            commentDto.setUserId(comment.getUser().getId());
-            commentDto.setNickname(comment.getUser().getNickname());
-            commentDto.setCreateAt(comment.getCreatedAt());
-            commentDto.setUpdatedAt(comment.getUpdatedAt());
-            commentDto.setPostId(comment.getPost().getPostId());
-            commentDtos.add(commentDto);
+            commentDtos.add(commentMapper.toCommentDto(comment));
         }
 
         return commentDtos;
