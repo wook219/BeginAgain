@@ -1,5 +1,6 @@
 package com.team3.post.mapper;
 
+import com.team3.board.BoardEntity;
 import com.team3.post.entity.PostDto;
 import com.team3.post.entity.PostEntity;
 import com.team3.user.entity.User;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-09-19T17:12:14+0900",
+    date = "2024-09-20T14:13:17+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.1 (Oracle Corporation)"
 )
 @Component
@@ -23,6 +24,8 @@ public class PostMapperImpl implements PostMapper {
         PostDto postDto = new PostDto();
 
         postDto.setNickname( postEntityUserNickname( postEntity ) );
+        postDto.setBoardId( postEntityBoardBoardId( postEntity ) );
+        postDto.setUserId( postEntityUserId( postEntity ) );
         postDto.setPostId( postEntity.getPostId() );
         postDto.setTitle( postEntity.getTitle() );
         postDto.setContent( postEntity.getContent() );
@@ -62,5 +65,35 @@ public class PostMapperImpl implements PostMapper {
             return null;
         }
         return nickname;
+    }
+
+    private Integer postEntityBoardBoardId(PostEntity postEntity) {
+        if ( postEntity == null ) {
+            return null;
+        }
+        BoardEntity board = postEntity.getBoard();
+        if ( board == null ) {
+            return null;
+        }
+        Integer boardId = board.getBoardId();
+        if ( boardId == null ) {
+            return null;
+        }
+        return boardId;
+    }
+
+    private Integer postEntityUserId(PostEntity postEntity) {
+        if ( postEntity == null ) {
+            return null;
+        }
+        User user = postEntity.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        Integer id = user.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
     }
 }
