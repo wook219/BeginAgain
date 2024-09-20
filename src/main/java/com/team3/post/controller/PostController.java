@@ -1,14 +1,12 @@
 package com.team3.post.controller;
 
 
-import com.team3.board.BoardEntity;
 import com.team3.board.BoardService;
 import com.team3.comment.entity.Comment;
 import com.team3.comment.entity.CommentDto;
 import com.team3.comment.service.CommentService;
 import com.team3.post.entity.PostDto;
-import com.team3.post.entity.PostEntity;
-import com.team3.post.entity.PostPhotoEntity;
+import com.team3.post.entity.PostPhotoDto;
 import com.team3.post.service.PostPhotoService;
 import com.team3.post.service.PostService;
 import jakarta.servlet.http.HttpSession;
@@ -115,11 +113,11 @@ public class PostController {
                              Model m,
                              HttpSession session){
         //게시글 로직
-        PostEntity post = postService.getPostByPostId(postId);
-        Integer boardId = post.getBoard().getBoardId();
+        PostDto post = postService.getPostByPostId(postId);
+        Integer boardId = post.getBoardId();
         Integer currentSessionUserId = (Integer)session.getAttribute("userId");
 
-        Integer userId = postService.getPostByPostId(postId).getUser().getId();
+        Integer userId = postService.getPostByPostId(postId).getUserId();
         if(!postService.userCheck(currentSessionUserId, userId)) {
             m.addAttribute("user_check", "N");
         }
@@ -130,9 +128,9 @@ public class PostController {
         m.addAttribute("post", post);
 
         //게시글 사진 로직
-        List<PostPhotoEntity> postPhotos = postPhotoService.getPhotosByPostId(postId);
+        List<PostPhotoDto> postPhotos = postPhotoService.getPhotosByPostId(postId);
         List<String> imageUrls = postPhotos.stream()
-                .map(PostPhotoEntity::getImagePath)  // 파일 경로를 가져와서 URL로 변환
+                .map(PostPhotoDto::getImagePath)  // 파일 경로를 가져와서 URL로 변환
                 .toList();
 
         m.addAttribute("imageUrls", imageUrls);
@@ -248,11 +246,11 @@ public class PostController {
                              RedirectAttributes rattr,
                              HttpSession session){
 
-        Integer userId = postService.getPostByPostId(postId).getUser().getId();
+        Integer userId = postService.getPostByPostId(postId).getUserId();
 
         //글 작성자가 맞으면 수정페이지로 이동, 아니면 메시지 띄운 후 다시 게시글 페이지로
         if(postService.userCheck((Integer)session.getAttribute("userId"), userId)){
-            PostEntity post = postService.getPostByPostId(postId);
+            PostDto post = postService.getPostByPostId(postId);
 
             m.addAttribute("post", post);
             return "post/post_modify";
@@ -280,13 +278,12 @@ public class PostController {
                              Model m,
                              HttpSession session){
 
-        Integer userId = postService.getPostByPostId(postId).getUser().getId();
+        Integer userId = postService.getPostByPostId(postId).getUserId();
 
         //글 작성자가 맞으면 삭제 반영, 아니면 메시지 띄운 후 다시 게시글 페이지로
         if(postService.userCheck((Integer)session.getAttribute("userId"), userId)){
             commentService.deleteCommentsByPostId(postId);
             postService.deletePost(postId);
-
             return "redirect:/post/" + boardId;
         };
 
