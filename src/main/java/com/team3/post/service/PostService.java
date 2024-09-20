@@ -166,11 +166,11 @@ public class PostService {
     }
 
     //postId에 따른 게시글 단건 조회
-    public PostEntity getPostByPostId(Integer postId) {
+    public PostDto getPostByPostId(Integer postId) {
         PostEntity post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
 
-        return post;
+        return postMapper.toPostDto(post);
     }
 
     //게시글 수정
