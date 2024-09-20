@@ -118,6 +118,7 @@ public class PostController {
         Integer currentSessionUserId = (Integer)session.getAttribute("userId");
 
         Integer userId = postService.getPostByPostId(postId).getUserId();
+
         if(!postService.userCheck(currentSessionUserId, userId)) {
             m.addAttribute("user_check", "N");
         }
@@ -256,7 +257,6 @@ public class PostController {
             return "post/post_modify";
         };
 
-        rattr.addFlashAttribute("user_check", "N");
         return "redirect:/post/postdetail/" + postId;
     }
 

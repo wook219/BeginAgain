@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="/css/background.css">
 </head>
 <body class="min-h-screen flex flex-col">
-<!--Header fragment-->
+
+<!--게시글 수정, 삭제 버튼 confirm-->
 <script th:inline="javascript" type="text/javascript">
 
     var user_check = [[${user_check}]];
@@ -25,8 +26,16 @@
             return result;
         }
     }
+
+    function handleModify(){
+        if(user_check === 'N'){
+            alert("해당 게시글의 작성자가 아닙니다.");
+            return false;
+        }
+    }
 </script>
 
+<!--댓글 삭제 버튼 클릭 시 confirm-->
 <script th:inline="javascript" type="text/javascript">
     function commentDelete(){
         var result = confirm("댓글을 삭제하시겠습니까?");
@@ -34,6 +43,7 @@
     }
 </script>
 
+<!--이미지 모달 창 스크립트-->
 <script th:inline="javascript" type="text/javascript">
     function openModal(image) {
         var modal = document.getElementById("imageModal");
@@ -49,6 +59,7 @@
     }
 </script>
 
+<!--Header fragment-->
 <div th:insert="~{common/header :: header}"></div>
 
 <!--Content-->
@@ -73,7 +84,7 @@
 
         <div class="button-group">
             <a th:href="@{/post/{boardId}(boardId=${boardId})}" id="post-container-listbtn" class="post-container btn">목록</a>
-            <a th:href="@{/post/modify/{postId}(postId=${postId})}" id="post-container-modifybtn" class="post-container btn">수정</a>
+            <a th:href="@{/post/modify/{postId}(postId=${postId})}" id="post-container-modifybtn" class="post-container btn" onclick="return handleModify()">수정</a>
             <form th:action="@{/post/delete/{postId}(postId=${postId})}" method="post" id="delete-form" onsubmit="return handleDelete()">
                 <input type="hidden" th:value="${boardId}" name="boardId">
                 <button type="submit" id="post-container-deletebtn" class="post-container btn">삭제</button>
