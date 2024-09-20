@@ -10,13 +10,20 @@
   <link rel="stylesheet" href="/css/background.css">
 </head>
 <body class="min-h-screen flex flex-col">
+<script th:inline="javascript" type="text/javascript">
+  function modify(){
+      var result = confirm("게시글을 수정하시겠습니까?");
+      return result;
+  }
+</script>
+
 <!--Header fragment-->
 <div th:insert="~{common/header :: header}"></div>
 
 <!--Content-->
 <div class="post-container flex-grow">
   <h2 class="post-text">게시글 수정</h2>
-  <form th:action="@{/post/modify/{postId}(postId=${postId})}" method="post">
+  <form th:action="@{/post/modify/{postId}(postId=${postId})}" method="post" onsubmit="return modify()">
     <input type="text" th:value="${post.title}" name="title">
     <textarea cols="120" rows="30"  th:text="${post.content}" name="content"></textarea>
     <div class="button-group">
