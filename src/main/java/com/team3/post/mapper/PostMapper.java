@@ -11,6 +11,8 @@ public interface PostMapper {
 
     // PostEntity -> PostDto
     @Mapping(source = "user.nickname", target = "nickname")
+    @Mapping(source = "board.boardId", target = "boardId")
+    @Mapping(source = "user.id", target = "userId")
     PostDto toPostDto(PostEntity postEntity);
 
     // PostDto -> PostEntity
