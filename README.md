@@ -16,6 +16,7 @@ https://www.notion.so/elice-track/BeginAgain-6016c02cceb64c30b6120290a1c2aca3
 <hr>
 
 ### Refactoring
-09-19 MapStruct 라이브러리를 이용하여 Dto, Entity간 변환 코드 간소화
-09-20 컨트롤러단에서 Entity를 활용하는 부분은 Dto를 활용하여 로직작성
-09-20 수정 버튼 누를 때 메시지 안나오는 버그 수정, 수정완료 버튼 클릭시 confirm 추가
+09-19 MapStruct 라이브러리를 이용하여 Dto, Entity간 변환 코드 간소화  
+09-20 컨트롤러단에서 Entity를 활용하는 부분은 Dto를 활용하여 로직작성  
+09-20 수정 버튼 누를 때 메시지 안나오는 버그 수정, 수정완료 버튼 클릭시 confirm 추가  
+09-24 게시글 목록 내 페이지네이션 제대로 적용되지 않던 오류 해결  
