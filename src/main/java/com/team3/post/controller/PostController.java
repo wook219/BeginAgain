@@ -67,26 +67,48 @@ public class PostController {
 
     //최신 업데이트 순 정렬
     @GetMapping("/{boardId}/updatedAt")
-    public String postListOrderByUpdatedAt(@PathVariable("boardId") Integer boardId, Model m){
-        List<PostDto> posts = postService.getPostsByBoardIdUpdatedAtDesc(boardId);
+    public String postListOrderByUpdatedAt(@PathVariable("boardId") Integer boardId,
+                                           @RequestParam(value = "page", defaultValue = "1") int pageNumber,
+                                           @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                                           @RequestParam(value = "sort", defaultValue = "updatedAt") String sortBy,
+                                           @RequestParam(value = "asc", defaultValue = "false") boolean ascending,
+                                           Model m){
+        Page<PostDto> posts = postService.getPostsByBoardIdUpdatedAtDesc(boardId, pageNumber, pageSize, sortBy, ascending);
         String boardTitle = boardService.getBoard(boardId).getTitle();
 
-        m.addAttribute("posts",posts);
+        m.addAttribute("posts", posts.getContent());
         m.addAttribute("boardId", boardId);
         m.addAttribute("boardTitle", boardTitle);
+        m.addAttribute("currentPage", posts.getNumber() + 1);
+        m.addAttribute("sortBy", sortBy);
+        m.addAttribute("ascending", ascending);
+        m.addAttribute("totalPages", posts.getTotalPages());
+        m.addAttribute("totalItems", posts.getTotalElements());
+        m.addAttribute("pageSize", pageSize);
 
         return "post/postList";
     }
 
     //조회수 순 정렬
     @GetMapping("/{boardId}/views")
-    public String postListOrderByViewsAt(@PathVariable("boardId") Integer boardId, Model m){
-        List<PostDto> posts = postService.getPostsByBoardIdViewsDesc(boardId);
+    public String postListOrderByViewsAt(@PathVariable("boardId") Integer boardId,
+                                         @RequestParam(value = "page", defaultValue = "1") int pageNumber,
+                                         @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                                         @RequestParam(value = "sort", defaultValue = "updatedAt") String sortBy,
+                                         @RequestParam(value = "asc", defaultValue = "false") boolean ascending,
+                                         Model m){
+        Page<PostDto> posts = postService.getPostsByBoardIdViewsDesc(boardId, pageNumber, pageSize, sortBy, ascending);
         String boardTitle = boardService.getBoard(boardId).getTitle();
 
-        m.addAttribute("posts",posts);
+        m.addAttribute("posts", posts.getContent());
         m.addAttribute("boardId", boardId);
         m.addAttribute("boardTitle", boardTitle);
+        m.addAttribute("currentPage", posts.getNumber() + 1);
+        m.addAttribute("sortBy", sortBy);
+        m.addAttribute("ascending", ascending);
+        m.addAttribute("totalPages", posts.getTotalPages());
+        m.addAttribute("totalItems", posts.getTotalElements());
+        m.addAttribute("pageSize", pageSize);
 
         return "post/postList";
     }

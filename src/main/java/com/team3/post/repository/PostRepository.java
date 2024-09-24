@@ -13,8 +13,8 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<PostEntity, Integer> {
     Page<PostEntity> findByBoard_BoardId(Integer boardId, Pageable pageable);
     List<PostEntity> findByBoard_BoardId(Integer boardId);
-    List<PostEntity> findByBoard_BoardIdOrderByUpdatedAtDesc(Integer boardId);
-    List<PostEntity> findByBoard_BoardIdOrderByViewsDesc(Integer boardId);
+    Page<PostEntity> findByBoard_BoardIdOrderByUpdatedAtDesc(Integer boardId, Pageable pageable);
+    Page<PostEntity> findByBoard_BoardIdOrderByViewsDesc(Integer boardId, Pageable pageable);
 
     @Query("SELECT p FROM PostEntity p WHERE p.content LIKE %:keyword% AND p.board.id = :boardId")
     List<PostEntity> searchByContent(@Param("boardId")Integer boardId, @Param("keyword")String keyword);

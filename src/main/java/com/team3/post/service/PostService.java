@@ -96,32 +96,40 @@ public class PostService {
         }
     }
 
-
-    //BoardId에 따른 게시글리스트 조회
-    public Page<PostDto> getPostsByBoardId(Integer boardId, int pageNumber, int pageSize, String sortBy, boolean ascending) {
+    private Pageable paging(Integer boardId, int pageNumber, int pageSize, String sortBy, boolean ascending) {
         int page = Math.max(0, pageNumber - 1);
 
         Pageable pageable = PageRequest.of(page, pageSize,
                 Sort.by(ascending ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy));
+        return pageable;
+    }
+
+    //BoardId에 따른 게시글리스트 조회
+    public Page<PostDto> getPostsByBoardId(Integer boardId, int pageNumber, int pageSize, String sortBy, boolean ascending) {
+        Pageable pageable = paging(boardId, pageNumber, pageSize, sortBy, ascending);
+
         Page<PostEntity> pageResult = postRepository.findByBoard_BoardId(boardId, pageable);
 
         return pageResult.map(PostDto::new);
     }
 
+
     //최신 업데이트 순 정렬
-    public List<PostDto> getPostsByBoardIdUpdatedAtDesc(Integer boardId) {
-        //boardId에 해당하는 게시글 목록을 DB에서 조회
-        List<PostEntity> posts = postRepository.findByBoard_BoardIdOrderByUpdatedAtDesc(boardId);
+    public Page<PostDto> getPostsByBoardIdUpdatedAtDesc(Integer boardId, int pageNumber, int pageSize, String sortBy, boolean ascending) {
+        Pageable pageable = paging(boardId, pageNumber, pageSize, sortBy, ascending);
 
-        //PostDto 객체를 담을 리스트 생성
-        List<PostDto> postDtos = new ArrayList<>();
+        Page<PostEntity> pageResult = postRepository.findByBoard_BoardIdOrderByUpdatedAtDesc(boardId, pageable);
 
-        for (PostEntity post : posts) {
-            postDtos.add(postMapper.toPostDto(post));
-        }
+        return pageResult.map(PostDto::new);
+    }
 
-        //변환된 postDtos를 반환
-        return postDtos;
+    //조회순 정렬
+    public Page<PostDto> getPostsByBoardIdViewsDesc(Integer boardId, int pageNumber, int pageSize, String sortBy, boolean ascending) {
+        Pageable pageable = paging(boardId, pageNumber, pageSize, sortBy, ascending);
+
+        Page<PostEntity> pageResult = postRepository.findByBoard_BoardIdOrderByViewsDesc(boardId, pageable);
+
+        return pageResult.map(PostDto::new);
     }
 
     //키워드(글의 내용) 검색을 통한 목록 조회
@@ -140,22 +148,7 @@ public class PostService {
         return postDtos;
     }
 
-    //조회순 정렬
-    public List<PostDto> getPostsByBoardIdViewsDesc(Integer boardId) {
-        //boardId에 해당하는 게시글 목록을 DB에서 조회
-        List<PostEntity> posts = postRepository.findByBoard_BoardIdOrderByViewsDesc(boardId);
 
-        //PostDto 객체를 담을 리스트 생성
-        List<PostDto> postDtos = new ArrayList<>();
-
-        // 조회한 게시글 목록 루프 돌면서 postDtos에 추가
-        for (PostEntity post : posts) {
-            postDtos.add(postMapper.toPostDto(post));
-        }
-
-        //변환된 postDtos를 반환
-        return postDtos;
-    }
 
     public void incrementViews(Integer postId) {
         PostEntity post = postRepository.findById(postId)
@@ -211,4 +204,7 @@ public class PostService {
             postRepository.deleteAll(posts);
         }
     }
+
+
+
 }
