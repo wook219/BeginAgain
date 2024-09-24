@@ -49,8 +49,7 @@ public class PostController {
                            @RequestParam(value = "asc", defaultValue = "false") boolean ascending,
                            Model m){
 
-        int page = Math.max(0, pageNumber - 1);
-        Page<PostDto> posts = postService.getPostsByBoardId(boardId, page, pageSize, sortBy, ascending);
+        Page<PostDto> posts = postService.getPostsByBoardId(boardId, pageNumber, pageSize, sortBy, ascending);
         String boardTitle = boardService.getBoard(boardId).getTitle();
 
         m.addAttribute("posts", posts.getContent());

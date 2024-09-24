@@ -54,14 +54,14 @@
 
         <div class="post-paging">
             <!--페이징 구현할 곳-->
-            <span th:text="'Page ' + ${currentPage} + ' of ' + ${totalPages}"></span>
             <div>
                 <a th:if="${currentPage > 1}"
-                   th:href="@{/post/${boardId}?page=${currentPage - 1}&size=${pageSize}&sort=${sortBy}&asc=${ascending}}">
+                   th:href="@{'/post/' + ${boardId} + '?page=' + (${currentPage - 1}) + '&size=' + ${pageSize} + '&sort=' + ${sortBy} + '&asc=' + ${ascending}}">
                     Previous
                 </a>
+                <span th:text="'Page ' + ${currentPage} + ' of ' + ${totalPages}"></span>
                 <a th:if="${currentPage < totalPages}"
-                   th:href="@{/post/${boardId}?page=${currentPage + 1}&size=${pageSize}&sort=${sortBy}&asc=${ascending}}">
+                   th:href="@{'/post/' + ${boardId} + '?page=' + (${currentPage + 1}) + '&size=' + ${pageSize} + '&sort=' + ${sortBy} + '&asc=' + ${ascending}}">
                     Next
                 </a>
             </div>
