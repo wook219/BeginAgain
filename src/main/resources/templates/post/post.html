@@ -71,7 +71,7 @@
         <div class="post-images-wrapper">
             <div class="post-images">
                 <div th:each="imageUrl : ${imageUrls}" class="post-image-container">
-                    <img th:src="@{${imageUrl}}" alt="Post Image" class="post-image" onclick="openModal(this)">
+                    <img th:src="${imageUrl}" alt="Post Image" class="post-image" onclick="openModal(this)">
                 </div>
             </div>
         </div>
