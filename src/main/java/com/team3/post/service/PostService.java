@@ -22,14 +22,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.*;
 
 @Service
 public class PostService {
-
-    @Value("${spring.servlet.multipart.location:C:/uploads/}")
-    private String uploadDir;
 
     private final PostRepository postRepository;
     private final PostPhotoRepository postPhotoRepository;
@@ -66,34 +66,23 @@ public class PostService {
 
         postRepository.save(newPost);
 
+        // 2. 이미지 파일 저장
         if (images != null && !images.isEmpty()) {
-            File uploadDirFile = new File(uploadDir);
-            if (!uploadDirFile.exists() && !uploadDirFile.mkdirs()) {
-                throw new IOException("Failed to create directory: " + uploadDir);
-            }
+            for (MultipartFile imageFile : images) {
+                if (!imageFile.isEmpty()) {
+                    try {
+                        String imagePath = saveImageFile(imageFile); // 이미지를 서버에 저장하고 경로 반환
 
-            for (MultipartFile image : images) {
-                if (!image.isEmpty()) {
-                    String originalFileName = image.getOriginalFilename();
-                    if (originalFileName == null) {
-                        throw new IOException("Original filename is null");
+                        // 3. 이미지 경로를 PostPhotoEntity에 저장
+                        PostPhotoEntity postPhoto = new PostPhotoEntity(newPost, imagePath);
+                        postPhotoRepository.save(postPhoto);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                    String uuidFileName = UUID.randomUUID() + "_" + originalFileName;
-                    File uuidFile = new File(uploadDirFile, uuidFileName);
-
-                    try (InputStream inputStream = image.getInputStream();
-                         OutputStream outputStream = new FileOutputStream(uuidFile)) {
-                        IOUtils.copy(inputStream, outputStream);
-                    }
-
-                    String webPath = "/uploads/" + uuidFileName;
-
-                    PostPhotoEntity postPhotoEntity = new PostPhotoEntity(newPost, webPath);
-                    postPhotoRepository.save(postPhotoEntity);
                 }
             }
         }
+
     }
 
     private Pageable paging(Integer boardId, int pageNumber, int pageSize, String sortBy, boolean ascending) {
@@ -205,6 +194,21 @@ public class PostService {
         }
     }
 
+    private String saveImageFile(MultipartFile imageFile) throws IOException {
+        String uploadDir = "src/main/resources/static/uploads/";
 
+        // 파일명 생성
+        String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+
+        //파일 경로 생성
+        Path filePath = Paths.get(uploadDir, fileName);
+
+        //파일을 해당 경로에 저장
+        Files.createDirectories(filePath.getParent()); // 디렉토리가 없다면 생성
+        Files.write(filePath, imageFile.getBytes());
+
+        // DB에 저장할 경로 (웹에서 접근 가능한 경로)
+        return "/uploads/" + fileName;
+    }
 
 }
