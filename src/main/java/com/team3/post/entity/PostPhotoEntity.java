@@ -9,7 +9,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "post_photo")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostPhotoEntity {

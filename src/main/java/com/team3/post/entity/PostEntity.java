@@ -48,11 +48,4 @@ public class PostEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    //게시글 create를 위한 생성자
-//    public PostEntity (String title, String content, User user, BoardEntity board) {
-//        this.title = title;
-//        this.content = content;
-//        this.user = user;
-//        this.board = board;
-//    }
 }

@@ -33,21 +33,6 @@ public class PostDto {
         this.createdAt = postEntity.getCreatedAt();
         this.updatedAt = postEntity.getUpdatedAt();
     }
-
-    @Override
-    public String toString() {
-        return "PostDto{" +
-                "postId=" + postId +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", views=" + views +
-                ", userId=" + userId +
-                ", nickname='" + nickname + '\'' +
-                ", boardId=" + boardId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }
 
 

@@ -13,7 +13,6 @@ public class PostPhotoDto {
     private Integer photoId;
     private Integer postId;
     private String imagePath;
-
 }
 
 
